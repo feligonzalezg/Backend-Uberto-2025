@@ -1,3 +1,4 @@
+import uberto.backendgrupo72025.DTO.UsuarioLoginDTO
 import uberto.backendgrupo72025.domain.Vehiculo
 import uberto.backendgrupo72025.domain.Viaje
 
@@ -9,6 +10,13 @@ abstract class Usuario(
     val viajesRealizados: MutableList<Viaje> = mutableListOf(),
     var telefono : Int
 ) {
+
+
+    //access
+    fun accesoUsuario(user: UsuarioLoginDTO): Boolean {
+        return user.usuario == username && user.contrasenia == contrasenia
+    }
+
 
     // Validaciones
     fun esValidoNombre() = nombreYApellido.isEmpty()
@@ -40,7 +48,8 @@ class Conductor(
     contrasenia: String,
     viajesRealizados: MutableList<Viaje> = mutableListOf(),
     telefono: Int,
-    val vehiculo: Vehiculo
+    val vehiculo: Vehiculo,
+    val precioBaseDelViaje : Int
 ) : Usuario(nombreYApellido,edad, username, contrasenia, viajesRealizados,telefono) {
 
 

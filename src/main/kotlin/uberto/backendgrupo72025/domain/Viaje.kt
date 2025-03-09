@@ -15,4 +15,8 @@ class Viaje(
     fun duracionAleatoria(): Int {
         return (1..99).random()
     }
+
+    fun costoDelViaje(): Int {
+        return duracionAleatoria()
+    }
 }

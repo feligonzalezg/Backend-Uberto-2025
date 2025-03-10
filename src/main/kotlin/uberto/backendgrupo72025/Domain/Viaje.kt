@@ -8,15 +8,15 @@ class Viaje(
     val destino : String,
     val fecha : LocalDateTime,
     val cantidadDePasajeros : Int,
-    val duracion : Int,
+    var duracion : Int,
     val chofer : Conductor
     ) {
 
-    fun duracionAleatoria(): Int {
-        return (1..99).random()
+    fun duracionAleatoria() {
+        duracion = (1..99).random()
     }
 
-    fun costoDelViaje(): Int {
-        return duracionAleatoria()
+    fun costoDelViaje(): Double {
+        return chofer.precioBaseDelViaje + duracion * chofer.vehiculo.tipoVehiculo.calculoExtra(this)
     }
 }

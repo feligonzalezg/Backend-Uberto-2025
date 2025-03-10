@@ -1,6 +1,6 @@
 import uberto.backendgrupo72025.DTO.UsuarioLoginDTO
-import uberto.backendgrupo72025.domain.Vehiculo
-import uberto.backendgrupo72025.domain.Viaje
+import uberto.backendgrupo72025.Domain.Vehiculo
+import uberto.backendgrupo72025.Domain.Viaje
 
 abstract class Usuario(
     val nombreYApellido: String,
@@ -31,13 +31,27 @@ abstract class Usuario(
 
     fun esValidoContrasenia() = nombreYApellido.isEmpty()
     fun validarContrasenia() {
-        if(esValidoContrasenia()) throw RuntimeException("El contraseña esta vacio")
+        if(esValidoContrasenia()) throw RuntimeException("La contraseña esta vacio")
     }
+
+    fun esValidaLaEdad() = edad > 0
+    fun validarEdad() {
+        if(esValidaLaEdad() ) throw RuntimeException("La edad ingresada no puede ser menor o igual a 0")
+    }
+
+    fun esValidoElTelefono() = telefono > 0
+    fun validarTelefono() {
+        if(esValidoElTelefono() ) throw RuntimeException("El telefono ingresado no puede ser menor o igual a 0")
+    }
+
+    abstract fun validacionesPorUsuario()
 
     fun validar() {
         validarNombre()
         validarContrasenia()
         validarUsername()
+        validarEdad()
+        validarTelefono()
     }
 }
 
@@ -52,6 +66,10 @@ class Conductor(
     val precioBaseDelViaje : Int
 ) : Usuario(nombreYApellido,edad, username, contrasenia, viajesRealizados,telefono) {
 
+    override fun validacionesPorUsuario() {
+        TODO("Not yet implemented")
+    }
+
 
 }
 
@@ -65,5 +83,8 @@ class Viajero(
     var saldo : Double,
 ) : Usuario(nombreYApellido,edad,  username, contrasenia, viajesRealizados,telefono) {
 
+    override fun validacionesPorUsuario() {
+        TODO("Not yet implemented")
+    }
 
 }

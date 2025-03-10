@@ -1,9 +1,9 @@
-package uberto.backendgrupo72025.Boostrap
+package uberto.backendgrupo72025.Bootstrap
 
 
 import org.springframework.beans.factory.InitializingBean
 
 
-class UbertoBoostrap: InitializingBean {
+class UbertoBootstrap: InitializingBean {
     override fun afterPropertiesSet() {}
 }

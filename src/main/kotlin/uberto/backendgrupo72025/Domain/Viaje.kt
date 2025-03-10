@@ -1,4 +1,4 @@
-package uberto.backendgrupo72025.domain
+package uberto.backendgrupo72025.Domain
 
 import Conductor
 import java.time.LocalDateTime

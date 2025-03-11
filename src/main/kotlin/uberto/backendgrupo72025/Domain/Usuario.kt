@@ -1,4 +1,5 @@
 import uberto.backendgrupo72025.DTO.UsuarioLoginDTO
+import uberto.backendgrupo72025.Domain.Comentario
 import uberto.backendgrupo72025.Domain.Vehiculo
 import uberto.backendgrupo72025.Domain.Viaje
 
@@ -8,7 +9,8 @@ abstract class Usuario(
     val username: String,
     val contrasenia: String,
     val viajesRealizados: MutableList<Viaje> = mutableListOf(),
-    var telefono : Int
+    var telefono : Int,
+    private val comentarios: MutableList<Comentario> = mutableListOf()
 ) {
 
 
@@ -53,6 +55,15 @@ abstract class Usuario(
         validarEdad()
         validarTelefono()
     }
+
+    fun getComentarios(): List<Comentario> = comentarios.toList()
+
+    fun agregarComentario(comentario: Comentario) {
+        if (!comentarioValido(comentario)) throw Exception("No se puede calificar")
+        comentarios.add(comentario)
+    }
+
+    private fun comentarioValido(comentario: Comentario): Boolean = comentario.autor is Viajero
 }
 
 class Conductor(

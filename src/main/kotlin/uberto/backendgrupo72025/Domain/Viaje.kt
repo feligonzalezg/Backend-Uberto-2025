@@ -1,16 +1,17 @@
 package uberto.backendgrupo72025.Domain
 
 import Conductor
+import Viajero
 import java.time.LocalDateTime
 
 class Viaje(
-    val origen : String,
-    val destino : String,
-    val fecha : LocalDateTime,
-    val cantidadDePasajeros : Int,
-    var duracion : Int,
-    val chofer : Conductor
-    ) {
+    val origen: String,
+    val destino: String,
+    val fecha: LocalDateTime,
+    val cantidadDePasajeros: Int,
+    var duracion: Int,
+    val chofer: Conductor
+) {
 
     fun duracionAleatoria() {
         duracion = (1..99).random()

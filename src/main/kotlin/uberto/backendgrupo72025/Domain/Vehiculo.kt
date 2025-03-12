@@ -20,6 +20,7 @@ class Vehiculo(
         validarModelo()
         validarPatente()
         validarAnio()
+        tipoVehiculo.validaLaCondicion(this)
     }
 
     fun esValidoMarca() = marca.isNotEmpty()

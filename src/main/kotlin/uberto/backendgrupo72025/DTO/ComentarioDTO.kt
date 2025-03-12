@@ -9,7 +9,7 @@ class ComentarioDTO(
     val mensaje: String
 ) {
     fun Comentario.toDTO() = ComentarioDTO(
-        viajeId = viajeId,
+        viajeId = viajeId,//falta crear el id del viaje para vincularlo
         autor = autor.nombreYApellido,
         puntaje = puntaje,
         mensaje = mensaje,

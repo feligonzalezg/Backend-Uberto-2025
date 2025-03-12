@@ -13,37 +13,35 @@ abstract class Usuario(
     private val comentarios: MutableList<Comentario> = mutableListOf()
 ) {
 
-
     //access
     fun accesoUsuario(user: UsuarioLoginDTO): Boolean {
         return user.usuario == username && user.contrasenia == contrasenia
     }
 
-
     // Validaciones
-    fun esValidoNombre() = nombreYApellido.isEmpty()
+    fun esValidoNombre() = nombreYApellido.isNotEmpty()
     fun validarNombre() {
-        if(esValidoNombre()) throw RuntimeException("El nombre esta vacio")
+        if(!esValidoNombre()) throw RuntimeException("El nombre esta vacio")
     }
 
-    fun esValidoUsername() = nombreYApellido.isEmpty()
+    fun esValidoUsername() = nombreYApellido.isNotEmpty()
     fun validarUsername() {
-        if(esValidoUsername()) throw RuntimeException("El username esta vacio")
+        if(!esValidoUsername()) throw RuntimeException("El username esta vacio")
     }
 
-    fun esValidoContrasenia() = nombreYApellido.isEmpty()
+    fun esValidoContrasenia() = nombreYApellido.isNotEmpty()
     fun validarContrasenia() {
-        if(esValidoContrasenia()) throw RuntimeException("La contraseña esta vacio")
+        if(!esValidoContrasenia()) throw RuntimeException("La contraseña esta vacio")
     }
 
     fun esValidaLaEdad() = edad > 0
     fun validarEdad() {
-        if(esValidaLaEdad() ) throw RuntimeException("La edad ingresada no puede ser menor o igual a 0")
+        if(!esValidaLaEdad() ) throw RuntimeException("La edad ingresada no puede ser menor o igual a 0")
     }
 
     fun esValidoElTelefono() = telefono > 0
     fun validarTelefono() {
-        if(esValidoElTelefono() ) throw RuntimeException("El telefono ingresado no puede ser menor o igual a 0")
+        if(!esValidoElTelefono() ) throw RuntimeException("El telefono ingresado no puede ser menor o igual a 0")
     }
 
     abstract fun validacionesPorUsuario()
@@ -54,6 +52,7 @@ abstract class Usuario(
         validarUsername()
         validarEdad()
         validarTelefono()
+        validacionesPorUsuario()
     }
 
     fun getComentarios(): List<Comentario> = comentarios.toList()
@@ -78,9 +77,16 @@ class Conductor(
 ) : Usuario(nombreYApellido,edad, username, contrasenia, viajesRealizados,telefono) {
 
     override fun validacionesPorUsuario() {
-        TODO("Not yet implemented")
+        validarVehiculo()
+        validarPrecioBaseDelViaje()
     }
 
+    private fun validarVehiculo() { vehiculo.validar() }
+
+    private fun esValidoPrecioBaseDelViaje() = precioBaseDelViaje > 0
+    private fun validarPrecioBaseDelViaje() {
+        if (!esValidoPrecioBaseDelViaje()) throw RuntimeException("El precio base no puede ser menor o igual a 0")
+    }
 
 }
 
@@ -95,7 +101,16 @@ class Viajero(
 ) : Usuario(nombreYApellido,edad,  username, contrasenia, viajesRealizados,telefono) {
 
     override fun validacionesPorUsuario() {
-        TODO("Not yet implemented")
+        validarSaldo()
+    }
+
+    fun agregarSaldo(saldoAAgregar: Double) {
+        saldo += saldoAAgregar
+    }
+
+    private fun esSaldoValido() = saldo >= 0.0
+    private fun validarSaldo() {
+        if (!esSaldoValido()) throw RuntimeException("El saldo no puede ser menor a 0")
     }
 
 }

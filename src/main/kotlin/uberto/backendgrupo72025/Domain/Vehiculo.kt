@@ -1,38 +1,63 @@
 package uberto.backendgrupo72025.Domain
 
 import java.time.LocalDate
-import java.time.LocalDateTime
 
 class Vehiculo(
     val marca: String,
     val modelo : String,
     val patente : String,
-    val año: Int,
+    val anio: Int,
     val tipoVehiculo : TipoVehiculo,
 ) {
 
-    fun antiguedad(): Int = LocalDate.now().year - año
+    fun antiguedad(): Int = LocalDate.now().year - anio
 
+    fun calculoPlusPorTipoVehiculo(viaje: Viaje): Double = tipoVehiculo.calculoPlus(viaje)
+
+    fun validar() {
+        validarMarca()
+        validarModelo()
+        validarPatente()
+        validarAnio()
+    }
+
+    fun esValidoMarca() = marca.isNotEmpty()
+    fun validarMarca() {
+        if (!esValidoMarca()) throw RuntimeException("La marca del vehículo esta vacia")
+    }
+
+    fun esValidoModelo() = modelo.isNotEmpty()
+    fun validarModelo() {
+        if (!esValidoModelo()) throw RuntimeException("El modelo del vehículo esta vacio")
+    }
+
+    fun esValidoPatente() = patente.isNotEmpty()
+    fun validarPatente() {
+        if (!esValidoPatente()) throw RuntimeException("La patente del vehículo esta vacia")
+    }
+
+    fun esValidoAnio() = anio >= 1867
+    fun validarAnio() {
+        if (!esValidoAnio()) throw RuntimeException("El año debe ser realista, no puede ser de un año anterior al de su invención")
+    }
 }
 
 interface TipoVehiculo {
-    fun calculoExtra(viaje: Viaje): Double
+    fun calculoPlus(viaje: Viaje): Double
 }
 
 object Simple: TipoVehiculo {
-    override fun calculoExtra(viaje: Viaje): Double = 1000.toDouble()
+    override fun calculoPlus(viaje: Viaje): Double = 1000.toDouble()
 }
 
 object Ejecutivo: TipoVehiculo {
-    override fun calculoExtra(viaje: Viaje): Double = costoPorCantidadDePasajeros(viaje)
+    override fun calculoPlus(viaje: Viaje): Double = costoPorCantidadDePasajeros(viaje.cantidadDePasajeros)
 
-    private fun costoPorCantidadDePasajeros(viaje: Viaje):Double =
-        if (viaje.cantidadDePasajeros == 1) 2000.toDouble() else 1500.toDouble()
+    private fun costoPorCantidadDePasajeros(cantidadDePasajeros: Int):Double = if (cantidadDePasajeros == 1) 2000.toDouble() else 1500.toDouble()
 }
 
 object Moto: TipoVehiculo {
-    override fun calculoExtra(viaje: Viaje): Double = costoPorDuracion(viaje)
+    override fun calculoPlus(viaje: Viaje): Double = costoPorDuracion(viaje.duracion)
 
-    private fun costoPorDuracion(viaje: Viaje): Double =
-        if (viaje.duracion <= 30) 500.toDouble() else 600.toDouble()
+    private fun costoPorDuracion(duracion: Int): Double = if (duracion <= 30) 500.toDouble() else 600.toDouble()
 }

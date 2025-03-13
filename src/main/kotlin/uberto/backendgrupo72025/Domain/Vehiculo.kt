@@ -4,6 +4,7 @@ import TipoVehiculo
 import java.time.LocalDate
 
 class Vehiculo(
+//    var id: Long? = 0,
     val marca: String,
     val modelo : String,
     val patente : String,

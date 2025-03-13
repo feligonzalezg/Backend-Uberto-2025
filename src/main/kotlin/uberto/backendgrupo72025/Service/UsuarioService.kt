@@ -18,7 +18,6 @@ class UsuarioService {
         if(usuario.isNotEmpty()) {
             return usuario.first()
         } else {
-
             throw RuntimeException("Los datos ingresados son incorrectos")
         }
     }

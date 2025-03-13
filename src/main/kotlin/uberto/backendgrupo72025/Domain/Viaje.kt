@@ -5,6 +5,7 @@ import Viajero
 import java.time.LocalDateTime
 
 class Viaje(
+//    var id: Long? = 0,
     val origen: String,
     val destino: String,
     val fecha: LocalDateTime,

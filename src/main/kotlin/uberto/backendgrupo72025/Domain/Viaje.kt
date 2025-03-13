@@ -9,7 +9,7 @@ class Viaje(
     val destino: String,
     val fecha: LocalDateTime,
     val cantidadDePasajeros: Int,
-    var duracion: Int = (1..99).random(),
+    val duracion: Int = (1..99).random(),
     val chofer: Conductor
 ) {
 

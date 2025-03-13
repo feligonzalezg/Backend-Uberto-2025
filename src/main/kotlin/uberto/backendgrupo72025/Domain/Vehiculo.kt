@@ -1,5 +1,6 @@
 package uberto.backendgrupo72025.Domain
 
+import TipoVehiculo
 import java.time.LocalDate
 
 class Vehiculo(
@@ -19,6 +20,7 @@ class Vehiculo(
         validarModelo()
         validarPatente()
         validarAnio()
+        tipoVehiculo.validaLaCondicion(this)
     }
 
     fun esValidoMarca() = marca.isNotEmpty()
@@ -42,22 +44,3 @@ class Vehiculo(
     }
 }
 
-interface TipoVehiculo {
-    fun calculoPlus(viaje: Viaje): Double
-}
-
-object Simple: TipoVehiculo {
-    override fun calculoPlus(viaje: Viaje): Double = 1000.toDouble()
-}
-
-object Ejecutivo: TipoVehiculo {
-    override fun calculoPlus(viaje: Viaje): Double = costoPorCantidadDePasajeros(viaje.cantidadDePasajeros)
-
-    private fun costoPorCantidadDePasajeros(cantidadDePasajeros: Int):Double = if (cantidadDePasajeros == 1) 2000.toDouble() else 1500.toDouble()
-}
-
-object Moto: TipoVehiculo {
-    override fun calculoPlus(viaje: Viaje): Double = costoPorDuracion(viaje.duracion)
-
-    private fun costoPorDuracion(duracion: Int): Double = if (duracion <= 30) 500.toDouble() else 600.toDouble()
-}

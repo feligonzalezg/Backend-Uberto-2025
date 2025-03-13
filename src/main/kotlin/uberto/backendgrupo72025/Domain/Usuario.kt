@@ -4,6 +4,7 @@ import uberto.backendgrupo72025.Domain.Vehiculo
 import uberto.backendgrupo72025.Domain.Viaje
 
 abstract class Usuario(
+//    var id: Long?= 0,
     val nombreYApellido: String,
     var edad : Int,
     val username: String,
@@ -98,7 +99,7 @@ class Viajero(
     viajesRealizados: MutableList<Viaje> = mutableListOf(),
     telefono: Int,
     var saldo : Double,
-) : Usuario(nombreYApellido,edad,  username, contrasenia, viajesRealizados,telefono) {
+) : Usuario(nombreYApellido, edad, username, contrasenia, viajesRealizados,telefono) {
 
     override fun validacionesPorUsuario() {
         validarSaldo()

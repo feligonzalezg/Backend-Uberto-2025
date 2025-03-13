@@ -24,11 +24,9 @@ class UbertoBootstrap: InitializingBean {
 
 
     override fun afterPropertiesSet() {
+        crearPasajeros()
         crearVehiculos()
         crearChoferes()
-        crearPasajeros()
-        crearPasajeros()
-
     }
 
     val viajero1 = Viajero(
@@ -85,7 +83,7 @@ class UbertoBootstrap: InitializingBean {
     val autoEjecutivo2 = Vehiculo("Chevrolet", "Cruze", "JKL012", 2019, Ejecutivo)
     val moto = Vehiculo("Yamaha", "FZ25", "MNO345", 2022, Moto)
 
-    fun crearChoferes() {
+    fun crearVehiculos() {
         vehiculoRepository.save(autoSimple)
         vehiculoRepository.save(autoSimple2)
         vehiculoRepository.save(autoEjecutivo)
@@ -116,7 +114,7 @@ class UbertoBootstrap: InitializingBean {
         precioBaseDelViaje = 450
     )
 
-    fun crearVehiculos(){
+    fun crearChoferes(){
         usuarioRepository.save(conductor1)
         usuarioRepository.save(conductor2)
     }

@@ -10,7 +10,7 @@ abstract class Usuario(
     val contrasenia: String,
     val viajesRealizados: MutableList<Viaje> = mutableListOf(),
     var telefono : Int,
-    private val comentarios: MutableList<Comentario> = mutableListOf()
+    val comentarios: MutableList<Comentario> = mutableListOf()
 ) {
 
     //access

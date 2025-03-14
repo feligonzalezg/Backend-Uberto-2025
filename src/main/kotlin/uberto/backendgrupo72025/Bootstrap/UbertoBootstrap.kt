@@ -1,15 +1,15 @@
 package uberto.backendgrupo72025.Bootstrap
 
 
-import Conductor
 import Ejecutivo
 import Moto
 import Simple
-import Viajero
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import uberto.backendgrupo72025.Domain.Conductor
 import uberto.backendgrupo72025.Domain.Vehiculo
+import uberto.backendgrupo72025.Domain.Viajero
 import uberto.backendgrupo72025.Repository.UsuarioRepository
 import uberto.backendgrupo72025.Repository.VehiculoRepository
 
@@ -36,37 +36,45 @@ class UbertoBootstrap: InitializingBean {
         edad = 28,
         viajesRealizados = mutableListOf(),
         telefono = 123456789,
-        saldo = 1500.50
+        comentarios = mutableListOf(), // Lista vacía por ahora
+        saldo = 1500.50,
+        amigos = mutableListOf(), // Lista vacía por ahora
     )
 
     val viajero2 = Viajero(
         nombreYApellido = "María González",
+        edad = 34,
         username = "mariag",
         contrasenia = "secure456",
-        edad = 34,
         viajesRealizados = mutableListOf(),
         telefono = 987654321,
-        saldo = 2300.75
+        comentarios = mutableListOf(), // Lista vacía por ahora
+        saldo = 2300.75,
+        amigos = mutableListOf(), // Lista vacía por ahora
     )
 
     val viajero3 = Viajero(
         nombreYApellido = "Carlos López",
+        edad = 23,
         username = "carlosl",
         contrasenia = "mypwd789",
-        edad = 23,
         viajesRealizados = mutableListOf(),
         telefono = 456789123,
-        saldo = 800.25
+        comentarios = mutableListOf(), // Lista vacía por ahora
+        saldo = 800.25,
+        amigos = mutableListOf(), // Lista vacía por ahora
     )
 
     val viajero4 = Viajero(
         nombreYApellido = "Ana Martínez",
+        edad = 41,
         username = "anam",
         contrasenia = "password1",
-        edad = 41,
         viajesRealizados = mutableListOf(),
         telefono = 321654987,
-        saldo = 3500.00
+        comentarios = mutableListOf(), // Lista vacía por ahora
+        saldo = 3500.00,
+        amigos = mutableListOf(), // Lista vacía por ahora
     )
 
      fun crearPasajeros() {
@@ -94,22 +102,24 @@ class UbertoBootstrap: InitializingBean {
 
     val conductor1 = Conductor(
         nombreYApellido = "Juan Pérez",
-        username = "juanp123",
         edad = 35,
+        username = "juanp123",
         contrasenia = "pass1234",
         viajesRealizados = mutableListOf(), // Lista vacía por ahora
         telefono = 123456789,
+        comentarios = mutableListOf(), // Lista vacía por ahora
         autoEjecutivo,
         precioBaseDelViaje = 500
     )
 
     val conductor2 = Conductor(
         nombreYApellido = "María Gómez",
-        username = "mariagomez",
         edad = 28,
+        username = "mariagomez",
         contrasenia = "secure5678",
         viajesRealizados = mutableListOf(), // Lista vacía por ahora
         telefono = 987654321,
+        comentarios = mutableListOf(), // Lista vacía por ahora
         autoSimple,
         precioBaseDelViaje = 450
     )

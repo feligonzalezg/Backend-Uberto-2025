@@ -1,7 +1,5 @@
 package uberto.backendgrupo72025.Domain
 
-import Conductor
-import Viajero
 import java.time.LocalDateTime
 
 class Viaje(

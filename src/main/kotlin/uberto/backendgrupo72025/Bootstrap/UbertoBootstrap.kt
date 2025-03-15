@@ -9,22 +9,30 @@ import org.springframework.beans.factory.InitializingBean
 import org.springframework.stereotype.Component
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import uberto.backendgrupo72025.Domain.Comentario
 import uberto.backendgrupo72025.Domain.Conductor
 import uberto.backendgrupo72025.Domain.Vehiculo
+import uberto.backendgrupo72025.Repository.ComentarioRepository
 import uberto.backendgrupo72025.Repository.UsuarioRepository
 import uberto.backendgrupo72025.Repository.VehiculoRepository
 
 import uberto.backendgrupo72025.Service.UsuarioService
+import java.time.LocalDate
 
 //
 @Component
 class UbertoBootstrap(
     val usuarioRepository: UsuarioRepository,
-    val vehiculoRepository : VehiculoRepository
+    val vehiculoRepository : VehiculoRepository,
+    val comentarioRepository : ComentarioRepository
 ): InitializingBean {
 
     override fun afterPropertiesSet() {
         crearUsuarios()
+        crearVehiculos()
+        crearComentarios()
+        crearChoferes()
+
     }
 
     val viajero1 = Viajero(
@@ -99,6 +107,35 @@ class UbertoBootstrap(
 
     // conductores
 
+
+
+    val comentario1 = Comentario(
+        autor = viajero1,
+        puntaje = 5,
+        mensaje = "Excelente viaje, muy cómodo y puntual. ¡Totalmente recomendado!",
+        fecha = LocalDate.of(2025, 3, 10)
+    )
+
+    val comentario2 = Comentario(
+        autor = viajero1,
+        puntaje = 4,
+        mensaje = "Buen viaje, aunque el servicio de comida podría mejorar.",
+        fecha = LocalDate.of(2025, 3, 12)
+    )
+
+     val comentario3 = Comentario(
+        autor = viajero2,
+        puntaje = 3,
+        mensaje = "Viaje aceptable, pero el tiempo de espera fue demasiado largo.",
+        fecha = LocalDate.of(2025, 3, 14)
+    )
+
+    fun crearComentarios(){
+        comentarioRepository.save(comentario1)
+        comentarioRepository.save(comentario2)
+        comentarioRepository.save(comentario3)
+    }
+
     val conductor1 = Conductor(
         nombreYApellido = "Juan Pérez",
         edad = 35,
@@ -118,7 +155,7 @@ class UbertoBootstrap(
         contrasenia = "secure5678",
         viajesRealizados = mutableListOf(), // Lista vacía por ahora
         telefono = 987654321,
-        comentarios = mutableListOf(), // Lista vacía por ahora
+        comentarios = mutableListOf(comentario1,comentario2), // Lista vacía por ahora
         autoSimple,
         precioBaseDelViaje = 450
     )
@@ -127,7 +164,6 @@ class UbertoBootstrap(
         usuarioRepository.save(conductor1)
         usuarioRepository.save(conductor2)
     }
-
 
 
 

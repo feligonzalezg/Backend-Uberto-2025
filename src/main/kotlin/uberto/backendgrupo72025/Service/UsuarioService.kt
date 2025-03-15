@@ -29,7 +29,7 @@ class UsuarioService(val repoUsuario: UsuarioRepository) {
 
     fun comentariosRecibidos(id :Long) = getUsuarioById(id).comentarios
 
-    fun calificacion(id :Long) = (puntajeTotal(id) / cantidadComentarios(id)).toDouble()
+    fun calificacion(id :Long) = puntajeTotal(id).toDouble() / cantidadComentarios(id).toDouble()
 
     fun puntajeTotal(id: Long) = comentariosRecibidos(id).sumOf { it.puntaje }
 

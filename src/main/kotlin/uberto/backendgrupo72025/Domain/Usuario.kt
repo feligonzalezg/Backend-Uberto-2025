@@ -14,6 +14,7 @@ abstract class Usuario(
     val viajesRealizados: MutableList<Viaje> = mutableListOf(),
     var telefono: Int,
     val comentarios: MutableList<Comentario> = mutableListOf(),
+    //val esChofer : Boolean
 ): ItemRepo {
     override var id: Long = -1
 
@@ -61,7 +62,7 @@ abstract class Usuario(
         validacionesPorUsuario()
     }
 
-//    fun getComentarios(): List<Comentario> = comentarios.toList()
+
 
     fun agregarComentario(comentario: Comentario) {
         if (!comentarioValido(comentario)) throw Exception("No se puede calificar")

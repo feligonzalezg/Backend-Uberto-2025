@@ -1,6 +1,9 @@
+package uberto.backendgrupo72025.Domain
+
 import uberto.backendgrupo72025.DTO.UsuarioLoginDTO
 import uberto.backendgrupo72025.Domain.Comentario
 import uberto.backendgrupo72025.Domain.Viaje
+import uberto.backendgrupo72025.Repository.ItemRepo
 
 abstract class Usuario(
 //    var id: Long?= 0,
@@ -11,8 +14,8 @@ abstract class Usuario(
     val viajesRealizados: MutableList<Viaje> = mutableListOf(),
     var telefono: Int,
     val comentarios: MutableList<Comentario> = mutableListOf(),
-) {
-//    val id: Long = 0
+): ItemRepo {
+    override var id: Long = -1
 
     abstract val esConductor: Boolean
 

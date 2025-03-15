@@ -1,6 +1,7 @@
 package uberto.backendgrupo72025.Domain
 
 import TipoVehiculo
+import uberto.backendgrupo72025.Repository.ItemRepo
 import java.time.LocalDate
 
 class Vehiculo(
@@ -10,7 +11,8 @@ class Vehiculo(
     val patente : String,
     val anio: Int,
     val tipoVehiculo : TipoVehiculo,
-) {
+) : ItemRepo {
+    override var id: Long = -1
 
     fun antiguedad(): Int = LocalDate.now().year - anio
 

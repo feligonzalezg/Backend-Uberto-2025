@@ -1,9 +1,13 @@
 package uberto.backendgrupo72025.Repository
 
-import Usuario
-import org.springframework.data.repository.CrudRepository
+import org.springframework.stereotype.Component
+import uberto.backendgrupo72025.Domain.Usuario
 
+@Component
+class UsuarioRepository: Repository<Usuario>() {
+    override val items: MutableSet<Usuario> = mutableSetOf()
 
-interface UsuarioRepository  : CrudRepository<Usuario, Long>{
+    override var nameEntityRepo: String = "usuario"
+
 
 }

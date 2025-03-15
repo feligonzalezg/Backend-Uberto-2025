@@ -7,9 +7,9 @@ abstract class Repository<T : ItemRepo> {
 
     private fun itemExists(item: T): Boolean = items.map { it.id }.contains(item.id)
 
-    fun createItem(item: T): Int {
+    fun save(item: T): Long {
         if (itemExists(item)) {
-            throw Exception("El item ya existe en el repositorio.")
+            update(item)
         }
 
         val lastId = items.maxOfOrNull { it.id }
@@ -19,7 +19,7 @@ abstract class Repository<T : ItemRepo> {
         return item.id
     }
 
-    fun updateItem(item: T) {
+    fun update(item: T) {
         if (!itemExists(item)) {
             throw Exception("No hay un item con ese ID en el repositorio.")
         }
@@ -28,14 +28,14 @@ abstract class Repository<T : ItemRepo> {
         items.add(item)
     }
 
-    fun deleteItem(item: T) {
+    fun delete(item: T) {
         if (!itemExists(item)) {
             throw Exception("No hay un item con ese ID en el repositorio.")
         }
         items.removeIf { it.id == item.id }
     }
 
-    fun itemById(id: Int, entityType: String = ""): T {
+    fun findById(id: Long, entityType: String = ""): T {
 
         val item = items.find { it.id == id }
         if (item == null && entityType == "") {
@@ -47,9 +47,7 @@ abstract class Repository<T : ItemRepo> {
         return item
     }
 
-    abstract fun searchItems(patron: String): List<T>
-
-    fun items() = items.toList()
+    fun findAll() = items.toList()
 
     fun cleanForTests() = items.clear()
 
@@ -58,5 +56,5 @@ abstract class Repository<T : ItemRepo> {
 }
 
 interface ItemRepo {
-    var id: Int
+    var id: Long
 }

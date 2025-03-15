@@ -1,6 +1,6 @@
 package uberto.backendgrupo72025.Controller
 
-import Usuario
+import uberto.backendgrupo72025.Domain.Usuario
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.CrossOrigin

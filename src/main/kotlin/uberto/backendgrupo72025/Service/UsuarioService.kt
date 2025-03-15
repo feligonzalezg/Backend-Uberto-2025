@@ -1,16 +1,17 @@
 package uberto.backendgrupo72025.Service
 
-import Usuario
+import uberto.backendgrupo72025.Domain.Usuario
+import uberto.backendgrupo72025.DTO.UsuarioLoginDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import uberto.backendgrupo72025.DTO.UsuarioLoginDTO
 import uberto.backendgrupo72025.Repository.UsuarioRepository
 
-@Service
-class UsuarioService {
 
-    @Autowired
-    lateinit var repoUsuario : UsuarioRepository
+@Service
+class UsuarioService() {
+
+    @Autowired (required = false)
+    lateinit var repoUsuario: UsuarioRepository
 
 
     fun getUsuarioLogin(user: UsuarioLoginDTO): Usuario {

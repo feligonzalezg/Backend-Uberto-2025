@@ -1,7 +1,7 @@
 package uberto.backendgrupo72025.Domain
 
-import Usuario
-import uberto.backendgrupo72025.Repository.ItemRepo
+import uberto.backendgrupo72025.Domain.Usuario
+
 import java.time.LocalDateTime
 
 class Comentario(
@@ -9,8 +9,8 @@ class Comentario(
     val viaje: Viaje,
     private var puntaje: Int,
     private var mensaje: String,
-) :ItemRepo{
-    override var id: Int = -1
+) {
+
     fun puntaje(): Int = puntaje
 
     fun mensaje(): String = mensaje

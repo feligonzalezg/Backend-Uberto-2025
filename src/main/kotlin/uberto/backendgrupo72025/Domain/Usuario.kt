@@ -1,3 +1,5 @@
+package uberto.backendgrupo72025.Domain
+
 import uberto.backendgrupo72025.DTO.UsuarioLoginDTO
 import uberto.backendgrupo72025.Domain.Comentario
 import uberto.backendgrupo72025.Domain.Viaje

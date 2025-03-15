@@ -1,6 +1,6 @@
 package uberto.backendgrupo72025.Domain
 
-import Usuario
+import uberto.backendgrupo72025.Domain.Usuario
 
 class Viajero(
     nombreYApellido: String,

@@ -1,6 +1,7 @@
 package uberto.backendgrupo72025.DTO
 
-import Usuario
+
+import uberto.backendgrupo72025.Domain.Usuario
 
 data class UsuarioLoginDTO(
     val usuario : String,

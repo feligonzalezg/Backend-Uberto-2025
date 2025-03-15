@@ -49,4 +49,5 @@ class Viajero(
 
     fun esAmigo(viajero: Viajero) = amigos.contains(viajero)
 
+
 }

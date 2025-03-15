@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import uberto.backendgrupo72025.Repository.UsuarioRepository
 //
-@Service
+@Component
 class UbertoBootstrap: InitializingBean {
 
     @Autowired (required = false)
@@ -36,7 +36,3 @@ class UbertoBootstrap: InitializingBean {
 
 
 }
-//
-//
-//
-//

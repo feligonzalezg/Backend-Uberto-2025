@@ -7,12 +7,13 @@ import org.springframework.stereotype.Component
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import uberto.backendgrupo72025.Repository.UsuarioRepository
+import uberto.backendgrupo72025.Service.UsuarioService
+
 //
 @Component
-class UbertoBootstrap: InitializingBean {
-
-    @Autowired (required = false)
-    lateinit var repoUsuario: UsuarioRepository
+class UbertoBootstrap(
+    val repoUsuario: UsuarioRepository,
+): InitializingBean {
 
     override fun afterPropertiesSet() {
         crearUsuarios()

@@ -13,10 +13,8 @@ import uberto.backendgrupo72025.Repository.UsuarioRepository
 
 
 @Service
-class UsuarioService() {
+class UsuarioService(val repoUsuario: UsuarioRepository) {
 
-    @Autowired (required = false)
-    lateinit var repoUsuario: UsuarioRepository
 
     fun getUsuarioLogin(user: UsuarioLoginDTO): Usuario? {
         val usuario = repoUsuario.findAll().filter { it.accesoUsuario(user) }
@@ -27,7 +25,7 @@ class UsuarioService() {
         }
     }
 
-    fun getUsuarioById(id: Long) = repoUsuario.findById(id).get()
+    fun getUsuarioById(id: Long) = repoUsuario.findById(id)
 
     fun comentariosRecibidos(id :Long) = getUsuarioById(id).comentarios
 
@@ -43,7 +41,7 @@ class UsuarioService() {
         val viajero = getUsuarioById(viajeDTO.idViajero)
         val conductor = getUsuarioById(viajeDTO.idConductor)
         val viaje = viajeDTO.toViaje()
-        validarPuedeRealizarseViaje(viajero, conductor, viaje)
+        //validarPuedeRealizarseViaje(viajero, conductor, viaje)
         //viajero.contratarViaje(viaje,conductor)
     }
 

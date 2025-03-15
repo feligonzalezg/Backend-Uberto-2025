@@ -1,6 +1,7 @@
 package uberto.backendgrupo72025.Domain
 
 import uberto.backendgrupo72025.Domain.Usuario
+import uberto.backendgrupo72025.Repository.ItemRepo
 
 import java.time.LocalDate
 
@@ -10,7 +11,8 @@ class Comentario(
     var puntaje: Int,
     var mensaje: String,
     var fecha : LocalDate = LocalDate.now(),
-) {
+): ItemRepo {
+    override var id: Long = -1
 
     fun modificarComentario(nuevoMensaje: String) {
         if (nuevoMensaje.isBlank()) throw Exception("El comentario no puede estar vacio")

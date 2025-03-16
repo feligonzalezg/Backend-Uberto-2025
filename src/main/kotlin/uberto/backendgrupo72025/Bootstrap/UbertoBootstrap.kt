@@ -11,17 +11,15 @@ import uberto.backendgrupo72025.Domain.Comentario
 import uberto.backendgrupo72025.Domain.Viaje
 import uberto.backendgrupo72025.Domain.Conductor
 import uberto.backendgrupo72025.Domain.Vehiculo
-import uberto.backendgrupo72025.Repository.ComentarioRepository
-import uberto.backendgrupo72025.Repository.UsuarioRepository
-import uberto.backendgrupo72025.Repository.VehiculoRepository
-import uberto.backendgrupo72025.Repository.ViajeRepository
+import uberto.backendgrupo72025.Repository.*
 import java.time.LocalDate
 import java.time.LocalDateTime
 
 //
 @Component
 class UbertoBootstrap(
-    val usuarioRepository: UsuarioRepository,
+    val conductorRepository: ConductorRepository,
+    val viajeroRepository: ViajeroRepository,
     val vehiculoRepository : VehiculoRepository,
     val comentarioRepository : ComentarioRepository,
     val viajeRepository : ViajeRepository
@@ -89,10 +87,10 @@ class UbertoBootstrap(
     )
 
     fun crearUsuarios() {
-        usuarioRepository.save(viajero1)
-        usuarioRepository.save(viajero2)
-        usuarioRepository.save(viajero3)
-        usuarioRepository.save(viajero4)
+        viajeroRepository.save(viajero1)
+        viajeroRepository.save(viajero2)
+        viajeroRepository.save(viajero3)
+        viajeroRepository.save(viajero4)
     }
 
     // Vehiculos
@@ -166,8 +164,8 @@ class UbertoBootstrap(
     )
 
     fun crearChoferes(){
-        usuarioRepository.save(conductor1)
-        usuarioRepository.save(conductor2)
+        conductorRepository.save(conductor1)
+        conductorRepository.save(conductor2)
     }
 
 

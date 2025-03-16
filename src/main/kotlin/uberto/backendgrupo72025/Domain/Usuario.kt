@@ -68,7 +68,9 @@ abstract class Usuario(
 
     private fun comentarioValido(comentario: Comentario): Boolean = !comentario.autor.esChofer
 
-
+    fun agregarViaje(viaje: Viaje) {
+        viajes.add(viaje)
+    }
 
 
     abstract fun disponible(fechaNueva: LocalDateTime, duracion: Int): Boolean

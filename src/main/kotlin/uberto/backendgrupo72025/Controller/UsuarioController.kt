@@ -15,6 +15,10 @@ import uberto.backendgrupo72025.Service.UsuarioService
 @CrossOrigin("*")
 class UsuarioController (@Autowired val userService : UsuarioService) {
 
+    @GetMapping("/users")
+    @Operation(summary = "Devuelve los choferes disponibles")
+    fun usuarios() = userService.getUsuarios()
+
     @PostMapping("/usuarioLogin")
     @Operation(summary = "Devuelve un usuario que coincida user y pass")
     fun postUsuarioLoggin(@RequestBody user: UsuarioLoginDTO) = userService.getUsuarioLogin(user)

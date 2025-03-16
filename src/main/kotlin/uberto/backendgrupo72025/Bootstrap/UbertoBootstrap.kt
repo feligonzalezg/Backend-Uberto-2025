@@ -7,16 +7,12 @@ import Simple
 import uberto.backendgrupo72025.Domain.Viajero
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.stereotype.Component
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.stereotype.Service
 import uberto.backendgrupo72025.Domain.Comentario
 import uberto.backendgrupo72025.Domain.Conductor
 import uberto.backendgrupo72025.Domain.Vehiculo
 import uberto.backendgrupo72025.Repository.ComentarioRepository
 import uberto.backendgrupo72025.Repository.UsuarioRepository
 import uberto.backendgrupo72025.Repository.VehiculoRepository
-
-import uberto.backendgrupo72025.Service.UsuarioService
 import java.time.LocalDate
 
 //
@@ -40,9 +36,10 @@ class UbertoBootstrap(
         username = "juanp",
         contrasenia = "pass123",
         edad = 28,
-        viajesRealizados = mutableListOf(),
+        viajes = mutableListOf(),
         telefono = 123456789,
         comentarios = mutableListOf(), // Lista vacía por ahora
+        esChofer = false,
         saldo = 1500.50,
         amigos = mutableListOf(), // Lista vacía por ahora
     )
@@ -52,9 +49,10 @@ class UbertoBootstrap(
         edad = 34,
         username = "mariag",
         contrasenia = "secure456",
-        viajesRealizados = mutableListOf(),
+        viajes = mutableListOf(),
         telefono = 987654321,
         comentarios = mutableListOf(), // Lista vacía por ahora
+        esChofer = false,
         saldo = 2300.75,
         amigos = mutableListOf(), // Lista vacía por ahora
     )
@@ -64,9 +62,10 @@ class UbertoBootstrap(
         edad = 23,
         username = "carlosl",
         contrasenia = "mypwd789",
-        viajesRealizados = mutableListOf(),
+        viajes = mutableListOf(),
         telefono = 456789123,
         comentarios = mutableListOf(), // Lista vacía por ahora
+        esChofer = false,
         saldo = 800.25,
         amigos = mutableListOf(), // Lista vacía por ahora
     )
@@ -76,9 +75,10 @@ class UbertoBootstrap(
         edad = 41,
         username = "anam",
         contrasenia = "password1",
-        viajesRealizados = mutableListOf(),
+        viajes = mutableListOf(),
         telefono = 321654987,
         comentarios = mutableListOf(), // Lista vacía por ahora
+        esChofer = false,
         saldo = 3500.00,
         amigos = mutableListOf(), // Lista vacía por ahora
     )
@@ -139,9 +139,10 @@ class UbertoBootstrap(
         edad = 35,
         username = "juanp123",
         contrasenia = "pass1234",
-        viajesRealizados = mutableListOf(), // Lista vacía por ahora
+        viajes = mutableListOf(), // Lista vacía por ahora
         telefono = 123456789,
         comentarios = mutableListOf(), // Lista vacía por ahora
+        esChofer = true,
         autoEjecutivo,
         precioBaseDelViaje = 500
     )
@@ -151,9 +152,10 @@ class UbertoBootstrap(
         edad = 28,
         username = "mariagomez",
         contrasenia = "secure5678",
-        viajesRealizados = mutableListOf(),
+        viajes = mutableListOf(),
         telefono = 987654321,
         comentarios = mutableListOf(comentario1,comentario2),
+        esChofer = true,
         autoSimple,
         precioBaseDelViaje = 450
     )

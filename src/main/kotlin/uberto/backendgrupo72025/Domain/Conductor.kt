@@ -1,20 +1,18 @@
 package uberto.backendgrupo72025.Domain
 
-import uberto.backendgrupo72025.Domain.Usuario
-
 class Conductor(
     nombreYApellido: String,
     edad: Int,
     username: String,
     contrasenia: String,
-    viajesRealizados: MutableList<Viaje> = mutableListOf(),
+    viajes: MutableList<Viaje> = mutableListOf(),
     telefono: Int,
     comentarios: MutableList<Comentario> = mutableListOf(),
+    esChofer: Boolean,
     val vehiculo: Vehiculo,
     val precioBaseDelViaje: Int
-) : Usuario(nombreYApellido, edad, username, contrasenia, viajesRealizados, telefono, comentarios) {
+) : Usuario(nombreYApellido, edad, username, contrasenia, viajes, telefono, comentarios, esChofer) {
 
-    override val esConductor: Boolean = true
 
     override fun validacionesPorUsuario() {
         validarVehiculo()

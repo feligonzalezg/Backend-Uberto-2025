@@ -8,19 +8,23 @@ import uberto.backendgrupo72025.Domain.Viajero
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.stereotype.Component
 import uberto.backendgrupo72025.Domain.Comentario
+import uberto.backendgrupo72025.Domain.Viaje
 import uberto.backendgrupo72025.Domain.Conductor
 import uberto.backendgrupo72025.Domain.Vehiculo
 import uberto.backendgrupo72025.Repository.ComentarioRepository
 import uberto.backendgrupo72025.Repository.UsuarioRepository
 import uberto.backendgrupo72025.Repository.VehiculoRepository
+import uberto.backendgrupo72025.Repository.ViajeRepository
 import java.time.LocalDate
+import java.time.LocalDateTime
 
 //
 @Component
 class UbertoBootstrap(
     val usuarioRepository: UsuarioRepository,
     val vehiculoRepository : VehiculoRepository,
-    val comentarioRepository : ComentarioRepository
+    val comentarioRepository : ComentarioRepository,
+    val viajeRepository : ViajeRepository
 ): InitializingBean {
 
     override fun afterPropertiesSet() {
@@ -28,6 +32,7 @@ class UbertoBootstrap(
         crearVehiculos()
         crearComentarios()
         crearChoferes()
+        crearViaje()
 
     }
 
@@ -166,6 +171,12 @@ class UbertoBootstrap(
     }
 
 
+    val viaje1 = Viaje(
+       "Salta", "Tucumán", LocalDateTime.now() ,1 ,10)
+
+    fun crearViaje(){
+        viajeRepository.save(viaje1)
+    }
 
 
 

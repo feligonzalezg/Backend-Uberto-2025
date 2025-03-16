@@ -8,7 +8,7 @@ class Viaje(
 //    var id: Long? = 0,
     val origen: String,
     val destino: String,
-    val fechaInicio: LocalDateTime = LocalDateTime.now(),
+    val fechaInicio: LocalDateTime,
     val cantidadDePasajeros: Int,
     val duracion: Int,
 ): ItemRepo {

@@ -41,6 +41,7 @@ class UsuarioService(val repoUsuario: UsuarioRepository) {
         val viajero = getUsuarioById(viajeDTO.idViajero)
         val conductor = getUsuarioById(viajeDTO.idConductor)
         val viaje = viajeDTO.toViaje()
+
         //validarPuedeRealizarseViaje(viajero, conductor, viaje)
         //viajero.contratarViaje(viaje,conductor)
     }

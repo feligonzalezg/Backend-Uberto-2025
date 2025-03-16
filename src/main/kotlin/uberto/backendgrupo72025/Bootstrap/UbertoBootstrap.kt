@@ -107,8 +107,6 @@ class UbertoBootstrap(
 
     // conductores
 
-
-
     val comentario1 = Comentario(
         autor = viajero1,
         puntaje = 5,
@@ -153,9 +151,9 @@ class UbertoBootstrap(
         edad = 28,
         username = "mariagomez",
         contrasenia = "secure5678",
-        viajesRealizados = mutableListOf(), // Lista vacía por ahora
+        viajesRealizados = mutableListOf(),
         telefono = 987654321,
-        comentarios = mutableListOf(comentario1,comentario2), // Lista vacía por ahora
+        comentarios = mutableListOf(comentario1,comentario2),
         autoSimple,
         precioBaseDelViaje = 450
     )

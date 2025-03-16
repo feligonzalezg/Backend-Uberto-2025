@@ -1,5 +1,7 @@
 package uberto.backendgrupo72025.Domain
 
+import java.time.LocalDateTime
+
 class Conductor(
     nombreYApellido: String,
     edad: Int,
@@ -27,5 +29,11 @@ class Conductor(
     private fun validarPrecioBaseDelViaje() {
         if (!esValidoPrecioBaseDelViaje()) throw RuntimeException("El precio base no puede ser menor o igual a 0")
     }
+
+    fun disponible(fechaNueva: LocalDateTime, duracion: Int) = true
+
+    fun viajesPendientes() = viajes.filter { it.estaPendiente() }
+
+
 
 }

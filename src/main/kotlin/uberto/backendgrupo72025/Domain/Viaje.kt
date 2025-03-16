@@ -11,20 +11,22 @@ class Viaje(
     val fechaInicio: LocalDateTime = LocalDateTime.now(),
     val cantidadDePasajeros: Int,
     val duracion: Int,
-    val fechaFin: LocalDateTime = fechaInicio.plus(duracion.toLong(), ChronoUnit.MINUTES)
 ): ItemRepo {
     override var id: Long = -1
+
+    fun fechaFin() = fechaInicio.plus(duracion.toLong(), ChronoUnit.MINUTES)
 
     fun costoDelViaje(chofer: Conductor): Double {
         return chofer.precioBaseDelViaje + duracion * chofer.vehiculo.calculoPlusPorTipoVehiculo(this)
     }
 
-    fun estaPendiente(fechaActual: LocalDateTime): Boolean {
-        return fechaFin > fechaActual
+    fun estaPendiente(): Boolean {
+        return fechaFin() > LocalDateTime.now()
     }
 
-//    fun seSolapan(viajeExistente: Viaje, nuevoViaje: Viaje): Boolean {
-//        return viajeExistente.fechaInicio <= nuevoViaje.fechaFin &&
-//                nuevoViaje.fechaInicio <= viajeExistente.fechaFin
-//    }  val viajesPendientes = chofer.viajes.filter { it.estaPendiente(fechaActual) }
+    fun seSolapan(viajeExistente: Viaje, nuevoViaje: Viaje): Boolean {
+        return viajeExistente.fechaInicio > nuevoViaje.fechaFin() &&
+                nuevoViaje.fechaInicio > viajeExistente.fechaFin()
+    }
+
 }

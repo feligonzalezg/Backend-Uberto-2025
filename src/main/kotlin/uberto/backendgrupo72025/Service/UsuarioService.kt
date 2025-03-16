@@ -10,6 +10,7 @@ import uberto.backendgrupo72025.Domain.Conductor
 import uberto.backendgrupo72025.Domain.Usuario
 import uberto.backendgrupo72025.Domain.Viaje
 import uberto.backendgrupo72025.Repository.UsuarioRepository
+import java.time.LocalDateTime
 
 
 @Service
@@ -37,10 +38,16 @@ class UsuarioService(val repoUsuario: UsuarioRepository) {
 
 //    fun getAmigos(id: Long) = getUsuarioById(id).amigos
 
+    fun getChoferesDisponibles(fechaNueva: LocalDateTime, duracion: Int) {
+        val choferes = repoUsuario.findAll().filter { it.esChofer }
+        choferes.filter { it.disponible(fechaNueva, duracion) }
+    }
+
     fun contratarViaje(viajeDTO : ViajeDTO) {
         val viajero = getUsuarioById(viajeDTO.idViajero)
         val conductor = getUsuarioById(viajeDTO.idConductor)
         val viaje = viajeDTO.toViaje()
+
 
         //validarPuedeRealizarseViaje(viajero, conductor, viaje)
         //viajero.contratarViaje(viaje,conductor)

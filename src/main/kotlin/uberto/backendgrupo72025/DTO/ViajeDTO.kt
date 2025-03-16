@@ -9,14 +9,14 @@ data class ViajeDTO(
     val idConductor: Long,
     val origen: String,
     val destino: String,
-    val fecha: LocalDateTime,
+    val fechaInicio: LocalDateTime,
     val cantidadDePasajeros: Int,
     val duracion: Int)
 
 fun ViajeDTO.toViaje() = Viaje(
     origen = origen,
     destino =  destino,
-    fecha = fecha,
+    fechaInicio = fechaInicio,
     cantidadDePasajeros = cantidadDePasajeros,
     duracion = duracion,
 )

@@ -4,6 +4,7 @@ import uberto.backendgrupo72025.Domain.Usuario
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import uberto.backendgrupo72025.DTO.BusquedaDTO
 import uberto.backendgrupo72025.DTO.UsuarioLoginDTO
 import uberto.backendgrupo72025.DTO.ViajeDTO
 
@@ -20,9 +21,7 @@ class UsuarioController (@Autowired val userService : UsuarioService) {
 
     @GetMapping("/home/buscar")
     @Operation(summary = "Devuelve los choferes disponibles")
-    fun getChoferesDisponiles() {
-
-    }
+    fun getChoferesDisponiles(@RequestBody busqueda: BusquedaDTO) = userService.getChoferesDisponibles(busqueda.fecha, busqueda.duracion)
 
 
     @GetMapping("/comentario/{id}")

@@ -30,10 +30,7 @@ class Conductor(
         if (!esValidoPrecioBaseDelViaje()) throw RuntimeException("El precio base no puede ser menor o igual a 0")
     }
 
-    override fun disponible(fechaNueva: LocalDateTime, duracion: Int) = !viajes.any { it.seSolapan(fechaNueva, duracion) }
-
-    fun viajesPendientes() = viajes.filter { it.estaPendiente() }
-
+    fun disponible(fechaNueva: LocalDateTime, duracion: Int) = !viajes.any { it.seSolapan(fechaNueva, duracion) }
 
 
 }

@@ -16,7 +16,7 @@ import uberto.backendgrupo72025.Service.UsuarioService
 class UsuarioController (@Autowired val userService : UsuarioService) {
 
     @GetMapping("/users")
-    @Operation(summary = "Devuelve los choferes disponibles")
+    @Operation(summary = "Devuelve todos los usuarios")
     fun usuarios() = userService.getUsuarios()
 
     @PostMapping("/usuarioLogin")
@@ -27,7 +27,6 @@ class UsuarioController (@Autowired val userService : UsuarioService) {
     @Operation(summary = "Devuelve los choferes disponibles")
     fun getChoferesDisponiles(@RequestBody busquedaDTO: BusquedaDTO) = userService.getChoferesDisponibles(busquedaDTO)
 
-
     @GetMapping("/comentario/{id}")
     @Operation(summary = "Devuelve los comentarios por usuario")
     fun getComentariosPorUsuario(@PathVariable id:Long) = userService.comentariosRecibidos(id)
@@ -36,9 +35,9 @@ class UsuarioController (@Autowired val userService : UsuarioService) {
     @Operation(summary = "Devuelve devuelve el puntaje por chofer")
     fun getPuntajePorChofer(@PathVariable id:Long) = userService.calificacion(id)
 
-     // @GetMapping("/amigos/{id}")
-    // @Operation(summary = "Devuelve devuelve la lista de amigues")
-    //fun getAmigos(@PathVariable id:Long) = userService.getAmigos(id)
+    @GetMapping("/amigos/{id}")
+    @Operation(summary = "Devuelve devuelve la lista de amigues")
+    fun getAmigos(@PathVariable id:Long) = userService.getAmigos(id)
 
     @PostMapping("/")
     @Operation(summary = "Contratar viaje")

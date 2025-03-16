@@ -22,13 +22,11 @@ class Viajeontroller (
     fun crearViaje(@RequestBody viajeDTO: ViajeDTO) {
         //viajero.contratarViaje()
         viajeService.create(viajeDTO.toViaje())
-
-
     }
+
     @GetMapping("/viaje")
     @Operation(summary = "crear viaje")
     fun buscarViaje() = viajeService.buscar()
-
 
 
 }

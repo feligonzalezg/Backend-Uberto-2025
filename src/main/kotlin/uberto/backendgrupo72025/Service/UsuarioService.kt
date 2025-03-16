@@ -63,20 +63,19 @@ class UsuarioService(
         val viajero = getViajeroById(viajeDTO.idViajero)
         val conductor = getConductorById(viajeDTO.idConductor)
         val viaje = viajeDTO.toViaje()
-
-
-        //validarPuedeRealizarseViaje(viajero, conductor, viaje)
-        //viajero.contratarViaje(viaje,conductor)
-
+        val costoDelViaje = viaje.costoDelViaje(conductor)
+        validarPuedeRealizarseViaje(viajero, costoDelViaje)
+        viajero.contratarViaje(viaje, costoDelViaje)
         viajeRepository.save(viaje)
-        viajero.agregarViaje(viaje)
         conductor.agregarViaje(viaje)
         viajeroRepository.save(viajero)
         conductorRepository.save(conductor)
 
     }
 
-    fun validarPuedeRealizarseViaje(viajero: Viajero, conductor: Conductor, viaje: Viaje) {
+    fun validarPuedeRealizarseViaje(viajero: Viajero, costoDelViaje: Double) {
+        //conductor.disponible(viaje.fecha, viaje.duracion)
+        viajero.validarSaldoSuficiente(costoDelViaje)
 
     }
 }

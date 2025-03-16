@@ -72,6 +72,6 @@ abstract class Usuario(
         viajes.add(viaje)
     }
 
+    fun viajesPendientes() = viajes.filter { it.estaPendiente() }
 
-    abstract fun disponible(fechaNueva: LocalDateTime, duracion: Int): Boolean
 }

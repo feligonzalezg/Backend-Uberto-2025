@@ -7,15 +7,6 @@ import uberto.backendgrupo72025.Domain.Conductor
 
 
 @Component
-class UsuarioRepository: Repository<Usuario>() {
-    override val items: MutableSet<Usuario> = mutableSetOf()
-
-    override var nameEntityRepo: String = "usuario"
-
-
-}
-
-@Component
 class ViajeroRepository: Repository<Viajero>() {
     override val items: MutableSet<Viajero> = mutableSetOf()
 

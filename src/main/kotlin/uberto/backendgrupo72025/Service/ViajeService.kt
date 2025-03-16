@@ -14,5 +14,5 @@ class ViajeService(
 
     }
 
-    fun buscar(id :Long) = viajeRepository.findById(id)
+    fun buscar() = viajeRepository.findAll()
 }

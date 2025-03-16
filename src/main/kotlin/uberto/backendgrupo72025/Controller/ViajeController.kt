@@ -16,14 +16,13 @@ class Viajeontroller (@Autowired val viajeService: ViajeService) {
     @PostMapping("/crearViaje")
     @Operation(summary = "crear viaje")
     fun crearViaje(@RequestBody viajeDTO: ViajeDTO){
-
         viajeService.create(viajeDTO.toViaje())
     }
 
-    @GetMapping("/viaje/{id}")
+    @GetMapping("/viaje")
     @Operation(summary = "crear viaje")
-    fun buscarViaje(@PathVariable id:Long){
-        viajeService.buscar(id)
+    fun buscarViaje(){
+        viajeService.buscar()
     }
 
 

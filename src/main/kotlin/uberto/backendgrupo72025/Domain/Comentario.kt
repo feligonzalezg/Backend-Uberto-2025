@@ -7,7 +7,7 @@ import java.time.LocalDate
 
 class Comentario(
     val autor: Usuario,
-    val viaje: Viaje,
+    //val viaje: Viaje,
     var puntaje: Int,
     var mensaje: String,
     var fecha : LocalDate = LocalDate.now(),

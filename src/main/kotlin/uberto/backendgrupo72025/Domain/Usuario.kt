@@ -1,9 +1,8 @@
 package uberto.backendgrupo72025.Domain
 
 import uberto.backendgrupo72025.DTO.UsuarioLoginDTO
-import uberto.backendgrupo72025.Domain.Comentario
-import uberto.backendgrupo72025.Domain.Viaje
 import uberto.backendgrupo72025.Repository.ItemRepo
+import java.time.LocalDateTime
 
 abstract class Usuario(
 //    var id: Long?= 0,
@@ -11,13 +10,12 @@ abstract class Usuario(
     var edad: Int,
     val username: String,
     val contrasenia: String,
-    val viajesRealizados: MutableList<Viaje> = mutableListOf(),
+    val viajes: MutableList<Viaje> = mutableListOf(),
     var telefono: Int,
     val comentarios: MutableList<Comentario> = mutableListOf(),
+    val esChofer : Boolean = false
 ): ItemRepo {
     override var id: Long = -1
-
-    abstract val esConductor: Boolean
 
     //access
     fun accesoUsuario(user: UsuarioLoginDTO): Boolean {
@@ -61,15 +59,17 @@ abstract class Usuario(
         validacionesPorUsuario()
     }
 
-//    fun getComentarios(): List<Comentario> = comentarios.toList()
+
 
     fun agregarComentario(comentario: Comentario) {
         if (!comentarioValido(comentario)) throw Exception("No se puede calificar")
         comentarios.add(comentario)
     }
 
-    private fun comentarioValido(comentario: Comentario): Boolean = !comentario.autor.esConductor
+    private fun comentarioValido(comentario: Comentario): Boolean = !comentario.autor.esChofer
+
+
+
+
+    abstract fun disponible(fechaNueva: LocalDateTime, duracion: Int): Boolean
 }
-
-
-

@@ -1,20 +1,20 @@
 package uberto.backendgrupo72025.Domain
 
-import uberto.backendgrupo72025.Domain.Usuario
+import java.time.LocalDateTime
 
 class Conductor(
     nombreYApellido: String,
     edad: Int,
     username: String,
     contrasenia: String,
-    viajesRealizados: MutableList<Viaje> = mutableListOf(),
+    viajes: MutableList<Viaje> = mutableListOf(),
     telefono: Int,
     comentarios: MutableList<Comentario> = mutableListOf(),
+    esChofer: Boolean,
     val vehiculo: Vehiculo,
     val precioBaseDelViaje: Int
-) : Usuario(nombreYApellido, edad, username, contrasenia, viajesRealizados, telefono, comentarios) {
+) : Usuario(nombreYApellido, edad, username, contrasenia, viajes, telefono, comentarios, esChofer) {
 
-    override val esConductor: Boolean = true
 
     override fun validacionesPorUsuario() {
         validarVehiculo()
@@ -29,5 +29,11 @@ class Conductor(
     private fun validarPrecioBaseDelViaje() {
         if (!esValidoPrecioBaseDelViaje()) throw RuntimeException("El precio base no puede ser menor o igual a 0")
     }
+
+    override fun disponible(fechaNueva: LocalDateTime, duracion: Int) = !viajes.any { it.seSolapan(fechaNueva, duracion) }
+
+    fun viajesPendientes() = viajes.filter { it.estaPendiente() }
+
+
 
 }

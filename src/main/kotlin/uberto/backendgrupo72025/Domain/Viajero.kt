@@ -1,20 +1,20 @@
 package uberto.backendgrupo72025.Domain
 
-import uberto.backendgrupo72025.Domain.Usuario
+import java.time.LocalDateTime
 
 class Viajero(
     nombreYApellido: String,
     edad: Int,
     username: String,
     contrasenia: String,
-    viajesRealizados: MutableList<Viaje> = mutableListOf(),
+    viajes: MutableList<Viaje> = mutableListOf(),
     telefono: Int,
     comentarios: MutableList<Comentario> = mutableListOf(),
+    esChofer: Boolean,
     var saldo: Double,
     val amigos: MutableList<Viajero> = mutableListOf()
-) : Usuario(nombreYApellido, edad, username, contrasenia, viajesRealizados, telefono, comentarios) {
+) : Usuario(nombreYApellido, edad, username, contrasenia, viajes, telefono, comentarios, esChofer) {
 
-    override val esConductor: Boolean = false
 
     override fun validacionesPorUsuario() {
         validarSaldo()
@@ -50,4 +50,7 @@ class Viajero(
     fun esAmigo(viajero: Viajero) = amigos.contains(viajero)
 
 
+
+
+    override fun disponible(fechaNueva: LocalDateTime, duracion: Int) = false
 }

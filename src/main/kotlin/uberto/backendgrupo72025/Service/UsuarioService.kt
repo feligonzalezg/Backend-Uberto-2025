@@ -4,6 +4,7 @@ import uberto.backendgrupo72025.Domain.Viajero
 import uberto.backendgrupo72025.DTO.UsuarioLoginDTO
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
+import uberto.backendgrupo72025.DTO.BusquedaDTO
 import uberto.backendgrupo72025.DTO.ViajeDTO
 import uberto.backendgrupo72025.DTO.toViaje
 import uberto.backendgrupo72025.Domain.Conductor
@@ -38,9 +39,9 @@ class UsuarioService(val repoUsuario: UsuarioRepository) {
 
 //    fun getAmigos(id: Long) = getUsuarioById(id).amigos
 
-    fun getChoferesDisponibles(fechaNueva: LocalDateTime, duracion: Int) {
+    fun getChoferesDisponibles(busquedaDTO: BusquedaDTO): List<Usuario> {
         val choferes = repoUsuario.findAll().filter { it.esChofer }
-        choferes.filter { it.disponible(fechaNueva, duracion) }
+        return choferes.filter { it.disponible(busquedaDTO.fecha, busquedaDTO.duracion) }
     }
 
     fun contratarViaje(viajeDTO : ViajeDTO) {

@@ -16,6 +16,8 @@ class Viaje(
 
     fun fechaFin() = fechaInicio.plus(duracion.toLong(), ChronoUnit.MINUTES)
 
+    fun fechaFin(fecha: LocalDateTime, duracion: Int) = fecha.plus(duracion.toLong(), ChronoUnit.MINUTES)
+
     fun costoDelViaje(chofer: Conductor): Double {
         return chofer.precioBaseDelViaje + duracion * chofer.vehiculo.calculoPlusPorTipoVehiculo(this)
     }
@@ -24,9 +26,9 @@ class Viaje(
         return fechaFin() > LocalDateTime.now()
     }
 
-    fun seSolapan(viajeExistente: Viaje, nuevoViaje: Viaje): Boolean {
-        return viajeExistente.fechaInicio > nuevoViaje.fechaFin() &&
-                nuevoViaje.fechaInicio > viajeExistente.fechaFin()
+    fun seSolapan(fechaNueva: LocalDateTime, duracion: Int): Boolean {
+        return fechaInicio > fechaFin(fechaNueva, duracion) &&
+                fechaNueva > fechaFin()
     }
 
 }

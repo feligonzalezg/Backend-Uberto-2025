@@ -21,7 +21,7 @@ class UsuarioController (@Autowired val userService : UsuarioService) {
 
     @GetMapping("/home/buscar")
     @Operation(summary = "Devuelve los choferes disponibles")
-    fun getChoferesDisponiles(@RequestBody busqueda: BusquedaDTO) = userService.getChoferesDisponibles(busqueda.fecha, busqueda.duracion)
+    fun getChoferesDisponiles(@RequestBody busquedaDTO: BusquedaDTO) = userService.getChoferesDisponibles(busquedaDTO)
 
 
     @GetMapping("/comentario/{id}")

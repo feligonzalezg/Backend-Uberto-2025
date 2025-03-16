@@ -2,6 +2,7 @@ package uberto.backendgrupo72025.Domain
 
 import uberto.backendgrupo72025.DTO.UsuarioLoginDTO
 import uberto.backendgrupo72025.Repository.ItemRepo
+import java.time.LocalDateTime
 
 abstract class Usuario(
 //    var id: Long?= 0,
@@ -66,4 +67,9 @@ abstract class Usuario(
     }
 
     private fun comentarioValido(comentario: Comentario): Boolean = !comentario.autor.esChofer
+
+
+
+
+    abstract fun disponible(fechaNueva: LocalDateTime, duracion: Int): Boolean
 }

@@ -1,5 +1,7 @@
 package uberto.backendgrupo72025.Domain
 
+import java.time.LocalDateTime
+
 class Viajero(
     nombreYApellido: String,
     edad: Int,
@@ -48,4 +50,7 @@ class Viajero(
     fun esAmigo(viajero: Viajero) = amigos.contains(viajero)
 
 
+
+
+    override fun disponible(fechaNueva: LocalDateTime, duracion: Int) = false
 }

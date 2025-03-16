@@ -13,4 +13,6 @@ class ViajeService(
         viajeRepository.save(viaje)
 
     }
+
+    fun buscar(id :Long) = viajeRepository.findById(id)
 }

@@ -43,7 +43,7 @@ class UsuarioController (@Autowired val userService : UsuarioService) {
     @Operation(summary = "Devuelve devuelve la lista de amigues")
     fun getAmigos(@PathVariable id:Long) = userService.getAmigos(id)
 
-    @PostMapping("/")
+    @PostMapping("/confirmar")
     @Operation(summary = "Contratar viaje")
     fun contratarViaje(@RequestBody viaje: ViajeDTO) = userService.contratarViaje(viaje)
 

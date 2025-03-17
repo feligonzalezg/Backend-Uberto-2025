@@ -75,4 +75,12 @@ class UsuarioService(
         viajero.validarSaldoSuficiente(costoDelViaje)
 
     }
+
+    fun getUsuarioPerfil(id: Long, esChofer: Boolean): PerfilDTO {
+        return if (esChofer) {
+             getConductorById(id).toPerfilDTO()
+        }else {
+             getViajeroById(id).toPerfilDTO()
+        }
+    }
 }

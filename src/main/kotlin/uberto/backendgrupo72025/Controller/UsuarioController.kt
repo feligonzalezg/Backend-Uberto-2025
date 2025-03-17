@@ -4,10 +4,7 @@ import uberto.backendgrupo72025.Domain.Usuario
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
-import uberto.backendgrupo72025.DTO.BusquedaDTO
-import uberto.backendgrupo72025.DTO.UsuarioLoginDTO
-import uberto.backendgrupo72025.DTO.ViajeDTO
-import uberto.backendgrupo72025.DTO.toDTO
+import uberto.backendgrupo72025.DTO.*
 
 import uberto.backendgrupo72025.Service.UsuarioService
 
@@ -24,7 +21,13 @@ class UsuarioController (@Autowired val userService : UsuarioService) {
     @Operation(summary = "Devuelve un usuario que coincida user y pass")
     fun postUsuarioLoggin(@RequestBody user: UsuarioLoginDTO) = userService.getUsuarioLogin(user)
 
-    @GetMapping("/home/buscar")
+    @GetMapping("/perfil/{id}")
+    @Operation(summary = "Devuelve los datos para el perfil")
+    fun getUsuarioPerfil(
+        @PathVariable id: Long,
+        @RequestParam esChofer: Boolean) = userService.getUsuarioPerfil(id, esChofer)
+
+    @PostMapping("/home/buscar")
     @Operation(summary = "Devuelve los choferes disponibles")
     fun getChoferesDisponiles(@RequestBody busquedaDTO: BusquedaDTO) = userService.getChoferesDisponibles(busquedaDTO)
 

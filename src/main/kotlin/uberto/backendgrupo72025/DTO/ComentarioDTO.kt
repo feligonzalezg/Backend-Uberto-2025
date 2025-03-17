@@ -1,19 +1,18 @@
 package uberto.backendgrupo72025.DTO
 
 import uberto.backendgrupo72025.Domain.Comentario
+import java.time.LocalDate
 
 class ComentarioDTO(
-
-    val viajeId: Int,
     val autor: String,
     val puntaje: Int,
-    val mensaje: String
+    val mensaje: String,
+    val fecha: LocalDate
 ) {
-    fun Comentario.toDTO() = ComentarioDTO(
-
-        viajeId = viajeId,//falta crear el id del viaje para vincularlo
-        autor = autor.nombreYApellido,
+    fun Comentario.toComentarioDTO() = ComentarioDTO(
+        autor = "$autor.nombre $autor.apellido",
         puntaje = puntaje,
         mensaje = mensaje,
+        fecha = fecha
     )
 }

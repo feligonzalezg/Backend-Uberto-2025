@@ -35,7 +35,8 @@ class UbertoBootstrap(
     }
 
     val viajero1 = Viajero(
-        nombreYApellido = "Juan Pérez",
+        nombre = "Juan",
+        apellido = "Pérez",
         username = "juanp",
         contrasenia = "pass123",
         edad = 28,
@@ -48,7 +49,8 @@ class UbertoBootstrap(
     )
 
     val viajero2 = Viajero(
-        nombreYApellido = "María González",
+        nombre = "María",
+        apellido = "González",
         edad = 34,
         username = "mariag",
         contrasenia = "secure456",
@@ -61,7 +63,8 @@ class UbertoBootstrap(
     )
 
     val viajero3 = Viajero(
-        nombreYApellido = "Carlos López",
+        nombre = "Carlos",
+        apellido = "López",
         edad = 23,
         username = "carlosl",
         contrasenia = "mypwd789",
@@ -74,7 +77,8 @@ class UbertoBootstrap(
     )
 
     val viajero4 = Viajero(
-        nombreYApellido = "Ana Martínez",
+        nombre = "Ana",
+        apellido = "Martínez",
         edad = 41,
         username = "anam",
         contrasenia = "password1",
@@ -87,6 +91,7 @@ class UbertoBootstrap(
     )
 
     fun crearUsuarios() {
+        viajero1.agregarAmigo(viajero2)
         viajeroRepository.save(viajero1)
         viajeroRepository.save(viajero2)
         viajeroRepository.save(viajero3)
@@ -138,7 +143,8 @@ class UbertoBootstrap(
     }
 
     val conductor1 = Conductor(
-        nombreYApellido = "Juan Pérez",
+        nombre = "Juan",
+        apellido = "Pérez",
         edad = 35,
         username = "juanp123",
         contrasenia = "pass1234",
@@ -151,7 +157,8 @@ class UbertoBootstrap(
     )
 
     val conductor2 = Conductor(
-        nombreYApellido = "María Gómez",
+        nombre = "María",
+        apellido = "Gómez",
         edad = 28,
         username = "mariagomez",
         contrasenia = "secure5678",

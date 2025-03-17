@@ -3,7 +3,8 @@ package uberto.backendgrupo72025.Domain
 import java.time.LocalDateTime
 
 class Conductor(
-    nombreYApellido: String,
+    nombre: String,
+    apellido: String,
     edad: Int,
     username: String,
     contrasenia: String,
@@ -13,7 +14,7 @@ class Conductor(
     esChofer: Boolean,
     val vehiculo: Vehiculo,
     val precioBaseDelViaje: Double
-) : Usuario(nombreYApellido, edad, username, contrasenia, viajes, telefono, comentarios, esChofer) {
+) : Usuario(nombre, apellido, edad, username, contrasenia, viajes, telefono, comentarios, esChofer) {
 
 
     override fun validacionesPorUsuario() {

@@ -47,4 +47,7 @@ class UsuarioController (@Autowired val userService : UsuarioService) {
     @Operation(summary = "Contratar viaje")
     fun contratarViaje(@RequestBody viaje: ViajeDTO) = userService.contratarViaje(viaje)
 
+    @GetMapping("/viajePorUser/{id}")
+    @Operation(summary = "Devuelve los viajes")
+    fun getViajePorChofer(@PathVariable id:Long) = userService.viajes(id)
 }

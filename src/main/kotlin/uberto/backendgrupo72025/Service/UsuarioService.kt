@@ -84,4 +84,6 @@ class UsuarioService(
              getViajeroById(id).toPerfilDTO()
         }
     }
+
+    fun viajes(id :Long) = viajeroRepository.findById(id).viajes
 }

@@ -45,12 +45,11 @@ fun Conductor.toPerfilDTO() = PerfilChoferDTO(
 )
 
 data class LoginDTO(
-    val usuario : String,
     val id : Long,
+    val esChofer: Boolean
 )
 
 fun Usuario.toDTO1() = LoginDTO(
-    usuario = username,
     id =  id,
-
+    esChofer = esChofer
     )

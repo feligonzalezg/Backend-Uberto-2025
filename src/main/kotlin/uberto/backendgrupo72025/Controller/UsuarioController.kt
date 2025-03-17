@@ -33,7 +33,7 @@ class UsuarioController (@Autowired val userService : UsuarioService) {
 
     @GetMapping("/comentario/{id}")
     @Operation(summary = "Devuelve los comentarios por usuario")
-    fun getComentariosPorUsuario(@PathVariable id:Long) = userService.comentariosRecibidos(id)
+    fun getComentariosPorUsuario(@PathVariable id:Long) = userService.getComentarios(id)
 
     @GetMapping("/puntaje/{id}")
     @Operation(summary = "Devuelve devuelve el puntaje por chofer")
@@ -43,8 +43,11 @@ class UsuarioController (@Autowired val userService : UsuarioService) {
     @Operation(summary = "Devuelve devuelve la lista de amigues")
     fun getAmigos(@PathVariable id:Long) = userService.getAmigos(id)
 
-    @PostMapping("/")
+    @PostMapping("/confirmar")
     @Operation(summary = "Contratar viaje")
     fun contratarViaje(@RequestBody viaje: ViajeDTO) = userService.contratarViaje(viaje)
 
+    @GetMapping("/viajePorUser/{id}")
+    @Operation(summary = "Devuelve los viajes")
+    fun getViajePorChofer(@PathVariable id:Long) = userService.viajes(id)
 }

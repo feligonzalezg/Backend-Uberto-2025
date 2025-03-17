@@ -23,9 +23,8 @@ class UsuarioController (@Autowired val userService : UsuarioService) {
 
     @GetMapping("/perfil/{id}")
     @Operation(summary = "Devuelve los datos para el perfil")
-    fun getUsuarioPerfil(
-        @PathVariable id: Long,
-        @RequestParam esChofer: Boolean) = userService.getUsuarioPerfil(id, esChofer)
+    fun getUsuarioPerfil(@PathVariable id: Long,
+                         @RequestParam esChofer: Boolean) = userService.getUsuarioPerfil(id, esChofer)
 
     @PostMapping("/home/buscar")
     @Operation(summary = "Devuelve los choferes disponibles")
@@ -33,7 +32,8 @@ class UsuarioController (@Autowired val userService : UsuarioService) {
 
     @GetMapping("/comentario/{id}")
     @Operation(summary = "Devuelve los comentarios por usuario")
-    fun getComentariosPorUsuario(@PathVariable id:Long) = userService.getComentarios(id)
+    fun getComentariosPorUsuario(@PathVariable id:Long,
+                                 @RequestParam esChofer: Boolean) = userService.getComentarios(id, esChofer)
 
     @GetMapping("/puntaje/{id}")
     @Operation(summary = "Devuelve devuelve el puntaje por chofer")
@@ -47,7 +47,9 @@ class UsuarioController (@Autowired val userService : UsuarioService) {
     @Operation(summary = "Contratar viaje")
     fun contratarViaje(@RequestBody viaje: ViajeDTO) = userService.contratarViaje(viaje)
 
-    @GetMapping("/viajePorUser/{id}")
-    @Operation(summary = "Devuelve los viajes")
-    fun getViajePorUsuario(@PathVariable id:Long) = userService.getViajesByUsuario(id)
+    @GetMapping("/viajesRealizados/{id}")
+    @Operation(summary = "Devuelve los viajes realizados")
+    fun getViajesRealizadosPorUsuario(@PathVariable id:Long,
+                                      @RequestParam esChofer: Boolean) = userService.getViajesRealizadosByUsuario(id, esChofer)
+
 }

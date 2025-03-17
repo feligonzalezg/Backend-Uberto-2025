@@ -17,6 +17,7 @@ data class ViajeDTO(
 )
 
 fun ViajeDTO.toViaje() = Viaje(
+    idConductor = idConductor,
     origen = origen,
     destino =  destino,
     fechaInicio = fechaInicio,
@@ -25,20 +26,27 @@ fun ViajeDTO.toViaje() = Viaje(
     importe = importe
 )
 
+//data class ViajesDTO(
+//    val viajesRealizados: List<ViajePerfilDTO>
+//    val viajesPendientes: List<ViajePerfilDTO>,
+//)
+
 data class ViajePerfilDTO(
-    val conductor: AmigoDTO,
+    val conductor: String,
     val origen: String,
     val destino: String,
     val fechaInicio: LocalDateTime,
     val cantidadDePasajeros: Int,
-    val importe: Double
+    val importe: Double,
+    val pendiente: Boolean
 )
 
 fun Viaje.toViajePerfilDTO(conductor: Conductor) = ViajePerfilDTO(
-    conductor = conductor.toAmigoDTO(),
+    conductor = "${conductor.nombre} + ${conductor.apellido}",
     origen = origen,
     destino = destino,
     fechaInicio = fechaInicio,
     cantidadDePasajeros = cantidadDePasajeros,
-    importe = importe
+    importe = importe,
+    pendiente = estaPendiente()
 )

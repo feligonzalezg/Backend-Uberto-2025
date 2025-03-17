@@ -4,6 +4,7 @@ import uberto.backendgrupo72025.Domain.Viajero
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import uberto.backendgrupo72025.DTO.*
+import uberto.backendgrupo72025.Domain.Viaje
 import uberto.backendgrupo72025.Repository.*
 
 
@@ -23,14 +24,14 @@ class UsuarioService(
 
     fun getUsuarioLogin(user: UsuarioLoginDTO): LoginDTO {
         val usuario = getUsuarios().filter { it.accesoUsuario(user) }
-        if(usuario.isNotEmpty()) {
+        if (usuario.isNotEmpty()) {
             return usuario.first().toDTO1()
         } else {
             throw RuntimeException("Los datos ingresados son incorrectos")
         }
     }
 
-     // viajero
+    // viajero
     fun getViajeroById(id: Long) = viajeroRepository.findById(id)
 
     fun getAmigos(id: Long) = getViajeroById(id).amigos
@@ -39,17 +40,24 @@ class UsuarioService(
     //chofer
     fun getConductorById(id: Long) = conductorRepository.findById(id)
 
-    fun getComentarios(id :Long) = getConductorById(id).comentarios.map { it.toComentarioDTO() }
+    fun getComentarios(id: Long, esChofer: Boolean): List<ComentarioDTO> {
+        return if (esChofer) {
+            getConductorById(id).comentarios.map { it.toComentarioDTO() }
+        } else {
+            getViajeroById(id).comentarios.map { it.toComentarioDTO() }
+        }
+    }
 
     fun getCalificacionChofer(id: Long) = getConductorById(id).calificacion()
 
 
     fun getChoferesDisponibles(busquedaDTO: BusquedaDTO) =
-        getConductores().filter { it.disponible(busquedaDTO.fecha, busquedaDTO.duracion) }.map { it.toConductorDTO(busquedaDTO.cantidadDePasajeros, busquedaDTO.duracion) }
+        getConductores().filter { it.disponible(busquedaDTO.fecha, busquedaDTO.duracion) }
+            .map { it.toConductorDTO(busquedaDTO.cantidadDePasajeros, busquedaDTO.duracion) }
 
 
     @Transactional
-    fun contratarViaje(viajeDTO : ViajeDTO) {
+    fun contratarViaje(viajeDTO: ViajeDTO) {
         val viajero = getViajeroById(viajeDTO.idViajero)
         val conductor = getConductorById(viajeDTO.idConductor)
         validarPuedeRealizarseViaje(viajero, viajeDTO.importe)
@@ -67,12 +75,22 @@ class UsuarioService(
 
     fun getUsuarioPerfil(id: Long, esChofer: Boolean): PerfilDTO {
         return if (esChofer) {
-             getConductorById(id).toPerfilDTO()
-        }else {
-             getViajeroById(id).toPerfilDTO()
+            getConductorById(id).toPerfilDTO()
+        } else {
+            getViajeroById(id).toPerfilDTO()
         }
     }
 
-    fun getViajesByUsuario(id :Long) = viajeroRepository.findById(id)
+    fun getViajesRealizadosByUsuario(id: Long, esChofer: Boolean): List<ViajePerfilDTO> {
+        return if (esChofer) {
+            val conductor = getConductorById(id)
+            conductor.viajes.map { it.toViajePerfilDTO(conductor) }
+        } else {
+            getViajeroById(id).viajes.map { it.toViajePerfilDTO(getConductorById(it.idConductor)) }
+        }
+    }
+
+
+
 
 }

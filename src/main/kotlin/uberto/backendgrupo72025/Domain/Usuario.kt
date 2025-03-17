@@ -79,6 +79,8 @@ abstract class Usuario(
         viajes.add(viaje)
     }
 
+    fun viajesRealizados() = viajes.filter { !it.estaPendiente() }
+
     fun viajesPendientes() = viajes.filter { it.estaPendiente() }
 
 }

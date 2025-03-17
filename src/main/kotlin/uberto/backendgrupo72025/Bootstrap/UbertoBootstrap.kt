@@ -31,7 +31,7 @@ class UbertoBootstrap(
         crearComentarios()
         crearChoferes()
         crearViaje()
-
+        agregarComentario()
     }
 
     val viajero2 = Viajero(
@@ -113,7 +113,6 @@ class UbertoBootstrap(
     }
 
     // conductores
-
     val comentario1 = Comentario(
         autor = viajero1,
         puntaje = 5,
@@ -169,6 +168,7 @@ class UbertoBootstrap(
         precioBaseDelViaje = 450.0
     )
 
+
     fun crearChoferes(){
         conductorRepository.save(conductor1)
         conductorRepository.save(conductor2)
@@ -176,12 +176,20 @@ class UbertoBootstrap(
 
 
     val viaje1 = Viaje(
-       "Salta", "Tucumán", LocalDateTime.now() ,1 ,10)
-
+        idConductor = conductor1.id,
+        origen = "Salta",
+        destino = "Tucumán",
+        fechaInicio = LocalDateTime.now(),
+        cantidadDePasajeros = 1,
+        duracion = 10
+    )
     fun crearViaje(){
         viajeRepository.save(viaje1)
     }
 
-
+    fun agregarComentario(){
+        viajero1.agregarComentario(comentario1)
+        viajeroRepository.update(viajero1)
+    }
 
 }

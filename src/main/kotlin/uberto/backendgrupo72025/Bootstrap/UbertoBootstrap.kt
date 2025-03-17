@@ -34,20 +34,6 @@ class UbertoBootstrap(
 
     }
 
-    val viajero1 = Viajero(
-        nombre = "Juan",
-        apellido = "Pérez",
-        username = "juanp",
-        contrasenia = "pass123",
-        edad = 28,
-        viajes = mutableListOf(),
-        telefono = 123456789,
-        comentarios = mutableListOf(), // Lista vacía por ahora
-        esChofer = false,
-        saldo = 1500.50,
-        amigos = mutableListOf(), // Lista vacía por ahora
-    )
-
     val viajero2 = Viajero(
         nombre = "María",
         apellido = "González",
@@ -60,6 +46,20 @@ class UbertoBootstrap(
         esChofer = false,
         saldo = 2300.75,
         amigos = mutableListOf(), // Lista vacía por ahora
+    )
+
+    val viajero1 = Viajero(
+        nombre = "Juan",
+        apellido = "Pérez",
+        username = "juanp",
+        contrasenia = "pass123",
+        edad = 28,
+        viajes = mutableListOf(),
+        telefono = 123456789,
+        comentarios = mutableListOf(), // Lista vacía por ahora
+        esChofer = false,
+        saldo = 1500.50,
+        amigos = mutableListOf(viajero2), // Lista vacía por ahora
     )
 
     val viajero3 = Viajero(
@@ -91,7 +91,6 @@ class UbertoBootstrap(
     )
 
     fun crearUsuarios() {
-        viajero1.agregarAmigo(viajero2)
         viajeroRepository.save(viajero1)
         viajeroRepository.save(viajero2)
         viajeroRepository.save(viajero3)

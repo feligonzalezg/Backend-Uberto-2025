@@ -42,10 +42,11 @@ class UsuarioService(
     //chofer
     fun getConductorById(id: Long) = conductorRepository.findById(id)
 
-    fun comentariosRecibidos(id :Long) = getConductorById(id).comentarios
+    fun getComentarios(id :Long) = getConductorById(id).comentarios.map { it.toComentarioDTO() }
 
-    fun cantidadComentarios(id: Long) = comentariosRecibidos(id).size
-    fun puntajeTotal(id: Long) = comentariosRecibidos(id).sumOf { it.puntaje }
+    fun cantidadComentarios(id: Long) = getComentarios(id).size
+
+    fun puntajeTotal(id: Long) = getComentarios(id).sumOf { it.puntaje }
 
     fun calificacion(id :Long) = puntajeTotal(id).toDouble() / cantidadComentarios(id).toDouble()
 

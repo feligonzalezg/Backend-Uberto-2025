@@ -33,7 +33,7 @@ class UsuarioController (@Autowired val userService : UsuarioService) {
 
     @GetMapping("/comentario/{id}")
     @Operation(summary = "Devuelve los comentarios por usuario")
-    fun getComentariosPorUsuario(@PathVariable id:Long) = userService.comentariosRecibidos(id)
+    fun getComentariosPorUsuario(@PathVariable id:Long) = userService.getComentarios(id)
 
     @GetMapping("/puntaje/{id}")
     @Operation(summary = "Devuelve devuelve el puntaje por chofer")

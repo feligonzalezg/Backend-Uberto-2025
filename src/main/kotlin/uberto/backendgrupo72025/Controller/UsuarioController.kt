@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*
 import uberto.backendgrupo72025.DTO.BusquedaDTO
 import uberto.backendgrupo72025.DTO.UsuarioLoginDTO
 import uberto.backendgrupo72025.DTO.ViajeDTO
+import uberto.backendgrupo72025.DTO.toDTO
 
 import uberto.backendgrupo72025.Service.UsuarioService
 

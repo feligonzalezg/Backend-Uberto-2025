@@ -1,12 +1,9 @@
 package uberto.backendgrupo72025.Service
 
 import uberto.backendgrupo72025.Domain.Viajero
-import uberto.backendgrupo72025.DTO.UsuarioLoginDTO
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import uberto.backendgrupo72025.DTO.BusquedaDTO
-import uberto.backendgrupo72025.DTO.ViajeDTO
-import uberto.backendgrupo72025.DTO.toViaje
+import uberto.backendgrupo72025.DTO.*
 import uberto.backendgrupo72025.Domain.Conductor
 import uberto.backendgrupo72025.Domain.Usuario
 import uberto.backendgrupo72025.Domain.Viaje
@@ -27,10 +24,10 @@ class UsuarioService(
     fun getUsuarios() = getConductores() + getViajeros()
 
 
-    fun getUsuarioLogin(user: UsuarioLoginDTO): Usuario {
+    fun getUsuarioLogin(user: UsuarioLoginDTO): LoginDTO {
         val usuario = getUsuarios().filter { it.accesoUsuario(user) }
         if(usuario.isNotEmpty()) {
-            return usuario.first()
+            return usuario.first().toDTO1()
         } else {
             throw RuntimeException("Los datos ingresados son incorrectos")
         }

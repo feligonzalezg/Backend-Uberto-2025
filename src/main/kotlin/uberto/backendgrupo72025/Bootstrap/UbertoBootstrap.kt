@@ -147,7 +147,7 @@ class UbertoBootstrap(
         comentarios = mutableListOf(), // Lista vacía por ahora
         esChofer = true,
         autoEjecutivo,
-        precioBaseDelViaje = 500
+        precioBaseDelViaje = 500.0
     )
 
     val conductor2 = Conductor(
@@ -160,7 +160,7 @@ class UbertoBootstrap(
         comentarios = mutableListOf(comentario1,comentario2),
         esChofer = true,
         autoSimple,
-        precioBaseDelViaje = 450
+        precioBaseDelViaje = 450.0
     )
 
     fun crearChoferes(){

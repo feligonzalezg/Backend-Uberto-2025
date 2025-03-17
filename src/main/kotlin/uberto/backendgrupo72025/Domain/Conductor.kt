@@ -3,7 +3,8 @@ package uberto.backendgrupo72025.Domain
 import java.time.LocalDateTime
 
 class Conductor(
-    nombreYApellido: String,
+    nombre: String,
+    apellido: String,
     edad: Int,
     username: String,
     contrasenia: String,
@@ -12,8 +13,8 @@ class Conductor(
     comentarios: MutableList<Comentario> = mutableListOf(),
     esChofer: Boolean,
     val vehiculo: Vehiculo,
-    val precioBaseDelViaje: Int
-) : Usuario(nombreYApellido, edad, username, contrasenia, viajes, telefono, comentarios, esChofer) {
+    val precioBaseDelViaje: Double
+) : Usuario(nombre, apellido, edad, username, contrasenia, viajes, telefono, comentarios, esChofer) {
 
 
     override fun validacionesPorUsuario() {
@@ -30,10 +31,7 @@ class Conductor(
         if (!esValidoPrecioBaseDelViaje()) throw RuntimeException("El precio base no puede ser menor o igual a 0")
     }
 
-    override fun disponible(fechaNueva: LocalDateTime, duracion: Int) = !viajes.any { it.seSolapan(fechaNueva, duracion) }
-
-    fun viajesPendientes() = viajes.filter { it.estaPendiente() }
-
+    fun disponible(fechaNueva: LocalDateTime, duracion: Int) = !viajes.any { it.seSolapan(fechaNueva, duracion) }
 
 
 }

@@ -15,4 +15,6 @@ class ViajeService(
     }
 
     fun buscar() = viajeRepository.findAll()
+    
+
 }

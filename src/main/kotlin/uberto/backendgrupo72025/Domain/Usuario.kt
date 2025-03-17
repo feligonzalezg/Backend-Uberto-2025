@@ -6,7 +6,8 @@ import java.time.LocalDateTime
 
 abstract class Usuario(
 //    var id: Long?= 0,
-    val nombreYApellido: String,
+    val nombre: String,
+    val apellido: String,
     var edad: Int,
     val username: String,
     val contrasenia: String,
@@ -23,17 +24,22 @@ abstract class Usuario(
     }
 
     // Validaciones
-    fun esValidoNombre() = nombreYApellido.isNotEmpty()
+    fun esValidoNombre() = nombre.isNotEmpty()
     fun validarNombre() {
         if (!esValidoNombre()) throw RuntimeException("El nombre esta vacio")
     }
 
-    fun esValidoUsername() = nombreYApellido.isNotEmpty()
+    fun esValidoApellido() = apellido.isNotEmpty()
+    fun validarApellido() {
+        if (!esValidoApellido()) throw RuntimeException("El apellido esta vacio")
+    }
+
+    fun esValidoUsername() = username.isNotEmpty()
     fun validarUsername() {
         if (!esValidoUsername()) throw RuntimeException("El username esta vacio")
     }
 
-    fun esValidoContrasenia() = nombreYApellido.isNotEmpty()
+    fun esValidoContrasenia() = contrasenia.isNotEmpty()
     fun validarContrasenia() {
         if (!esValidoContrasenia()) throw RuntimeException("La contraseña esta vacio")
     }
@@ -52,6 +58,7 @@ abstract class Usuario(
 
     fun validar() {
         validarNombre()
+        validarApellido()
         validarContrasenia()
         validarUsername()
         validarEdad()
@@ -68,8 +75,10 @@ abstract class Usuario(
 
     private fun comentarioValido(comentario: Comentario): Boolean = !comentario.autor.esChofer
 
+    fun agregarViaje(viaje: Viaje) {
+        viajes.add(viaje)
+    }
 
+    fun viajesPendientes() = viajes.filter { it.estaPendiente() }
 
-
-    abstract fun disponible(fechaNueva: LocalDateTime, duracion: Int): Boolean
 }

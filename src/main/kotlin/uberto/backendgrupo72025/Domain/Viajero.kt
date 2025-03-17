@@ -3,7 +3,8 @@ package uberto.backendgrupo72025.Domain
 import java.time.LocalDateTime
 
 class Viajero(
-    nombreYApellido: String,
+    nombre: String,
+    apellido: String,
     edad: Int,
     username: String,
     contrasenia: String,
@@ -13,7 +14,7 @@ class Viajero(
     esChofer: Boolean,
     var saldo: Double,
     val amigos: MutableList<Viajero> = mutableListOf()
-) : Usuario(nombreYApellido, edad, username, contrasenia, viajes, telefono, comentarios, esChofer) {
+) : Usuario(nombre, apellido, edad, username, contrasenia, viajes, telefono, comentarios, esChofer) {
 
 
     override fun validacionesPorUsuario() {
@@ -49,8 +50,16 @@ class Viajero(
 
     fun esAmigo(viajero: Viajero) = amigos.contains(viajero)
 
+    fun validarSaldoSuficiente(costoDelViaje: Double) {
+        if (!saldoSuficiente(costoDelViaje)) throw Exception("Saldo insuficiente.")
 
+    }
+    fun saldoSuficiente(costoDelViaje: Double) = saldo >= costoDelViaje
 
+    fun contratarViaje(viaje: Viaje, costoDelViaje: Double) {
+        descontarSaldo(costoDelViaje)
+        agregarViaje(viaje)
+    }
 
-    override fun disponible(fechaNueva: LocalDateTime, duracion: Int) = false
+    fun descontarSaldo(costoDelViaje: Double) { saldo -= costoDelViaje }
 }

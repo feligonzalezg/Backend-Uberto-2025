@@ -6,7 +6,7 @@ import uberto.backendgrupo72025.Repository.ItemRepo
 import java.time.LocalDate
 
 class Comentario(
-    val autor: Usuario,
+    val autor: Viajero,
     //val viaje: Viaje,
     var puntaje: Int,
     var mensaje: String,

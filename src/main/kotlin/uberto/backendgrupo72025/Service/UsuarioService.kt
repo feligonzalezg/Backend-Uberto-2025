@@ -4,9 +4,6 @@ import uberto.backendgrupo72025.Domain.Viajero
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import uberto.backendgrupo72025.DTO.*
-import uberto.backendgrupo72025.Domain.Conductor
-import uberto.backendgrupo72025.Domain.Usuario
-import uberto.backendgrupo72025.Domain.Viaje
 import uberto.backendgrupo72025.Repository.*
 
 
@@ -14,7 +11,7 @@ import uberto.backendgrupo72025.Repository.*
 class UsuarioService(
     val viajeroRepository: ViajeroRepository,
     val conductorRepository: ConductorRepository,
-    val viajeRepository: ViajeRepository,
+    val viajeService: ViajeService,
 ) {
 
     fun getConductores() = conductorRepository.findAll()
@@ -44,37 +41,28 @@ class UsuarioService(
 
     fun getComentarios(id :Long) = getConductorById(id).comentarios.map { it.toComentarioDTO() }
 
-    fun cantidadComentarios(id: Long) = getComentarios(id).size
-
-    fun puntajeTotal(id: Long) = getComentarios(id).sumOf { it.puntaje }
-
-    fun calificacion(id :Long) = puntajeTotal(id).toDouble() / cantidadComentarios(id).toDouble()
-
+    fun getCalificacionChofer(id: Long) = getConductorById(id).calificacion()
 
 
     fun getChoferesDisponibles(busquedaDTO: BusquedaDTO) =
-        getConductores().filter { it.disponible(busquedaDTO.fecha, busquedaDTO.duracion) }
+        getConductores().filter { it.disponible(busquedaDTO.fecha, busquedaDTO.duracion) }.map { it.toConductorDTO(busquedaDTO.cantidadDePasajeros, busquedaDTO.duracion) }
 
 
     @Transactional
     fun contratarViaje(viajeDTO : ViajeDTO) {
         val viajero = getViajeroById(viajeDTO.idViajero)
         val conductor = getConductorById(viajeDTO.idConductor)
-        val viaje = viajeDTO.toViaje()
-        val costoDelViaje = viaje.costoDelViaje(conductor)
-        validarPuedeRealizarseViaje(viajero, costoDelViaje)
-        viajero.contratarViaje(viaje, costoDelViaje)
-        viajeRepository.save(viaje)
+        validarPuedeRealizarseViaje(viajero, viajeDTO.importe)
+        val viaje = viajeService.crearViaje(viajeDTO)
+        viajero.contratarViaje(viaje)
         conductor.agregarViaje(viaje)
         viajeroRepository.save(viajero)
         conductorRepository.save(conductor)
-
     }
 
     fun validarPuedeRealizarseViaje(viajero: Viajero, costoDelViaje: Double) {
-        //conductor.disponible(viaje.fecha, viaje.duracion)
+//        conductor.disponible(viaje.fecha, viaje.duracion)
         viajero.validarSaldoSuficiente(costoDelViaje)
-
     }
 
     fun getUsuarioPerfil(id: Long, esChofer: Boolean): PerfilDTO {
@@ -85,5 +73,6 @@ class UsuarioService(
         }
     }
 
-    fun viajes(id :Long) = viajeroRepository.findById(id).viajes
+    fun getViajesByUsuario(id :Long) = viajeroRepository.findById(id)
+
 }

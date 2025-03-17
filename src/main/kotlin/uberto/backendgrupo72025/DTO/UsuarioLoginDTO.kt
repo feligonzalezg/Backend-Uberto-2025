@@ -14,5 +14,14 @@ fun Usuario.toDTO() = UsuarioLoginDTO(
 
 )
 
+data class LoginDTO(
+    val id : Long,
+    val esChofer: Boolean
+)
+
+fun Usuario.toDTO1() = LoginDTO(
+    id =  id,
+    esChofer = esChofer
+)
 
 

@@ -56,8 +56,8 @@ class Viajero(
     }
     fun saldoSuficiente(costoDelViaje: Double) = saldo >= costoDelViaje
 
-    fun contratarViaje(viaje: Viaje, costoDelViaje: Double) {
-        descontarSaldo(costoDelViaje)
+    fun contratarViaje(viaje: Viaje) {
+        descontarSaldo(viaje.importe)
         agregarViaje(viaje)
     }
 

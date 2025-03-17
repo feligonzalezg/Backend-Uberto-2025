@@ -37,7 +37,7 @@ class UsuarioController (@Autowired val userService : UsuarioService) {
 
     @GetMapping("/puntaje/{id}")
     @Operation(summary = "Devuelve devuelve el puntaje por chofer")
-    fun getPuntajePorChofer(@PathVariable id:Long) = userService.calificacion(id)
+    fun getPuntajePorChofer(@PathVariable id:Long) = userService.getCalificacionChofer(id)
 
     @GetMapping("/amigos/{id}")
     @Operation(summary = "Devuelve devuelve la lista de amigues")
@@ -49,5 +49,5 @@ class UsuarioController (@Autowired val userService : UsuarioService) {
 
     @GetMapping("/viajePorUser/{id}")
     @Operation(summary = "Devuelve los viajes")
-    fun getViajePorChofer(@PathVariable id:Long) = userService.viajes(id)
+    fun getViajePorUsuario(@PathVariable id:Long) = userService.getViajesByUsuario(id)
 }

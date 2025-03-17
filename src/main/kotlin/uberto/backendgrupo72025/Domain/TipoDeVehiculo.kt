@@ -4,7 +4,7 @@ import uberto.backendgrupo72025.Domain.Viaje
 interface TipoVehiculo {
     var mensaje :String
 
-    fun calculoPlus(viaje: Viaje): Double
+    fun calculoPlus(cantidadDePasajeros: Int, duracion: Int): Double
 
     fun esValidaLaCondicion(vehiculo: Vehiculo) = true
 
@@ -15,12 +15,12 @@ interface TipoVehiculo {
 
 object Simple: TipoVehiculo {
     override var mensaje: String = ""
-    override fun calculoPlus(viaje: Viaje): Double = 1000.toDouble()
+    override fun calculoPlus(cantidadDePasajeros: Int, duracion: Int): Double = 1000.toDouble()
 }
 
 object Ejecutivo: TipoVehiculo {
     override var mensaje: String = "No cumple con los requisitos de la antiguedad, el vehiculo debe tener menor a 10 años"
-    override fun calculoPlus(viaje: Viaje): Double = costoPorCantidadDePasajeros(viaje.cantidadDePasajeros)
+    override fun calculoPlus(cantidadDePasajeros: Int, duracion: Int): Double = costoPorCantidadDePasajeros(cantidadDePasajeros)
 
     override fun esValidaLaCondicion(vehiculo: Vehiculo) = vehiculo.antiguedad() < 10
 
@@ -30,7 +30,7 @@ object Ejecutivo: TipoVehiculo {
 object Moto: TipoVehiculo {
     override var mensaje: String = ""
 
-    override fun calculoPlus(viaje: Viaje): Double = costoPorDuracion(viaje.duracion)
+    override fun calculoPlus(cantidadDePasajeros: Int, duracion: Int): Double = costoPorDuracion(duracion)
 
     private fun costoPorDuracion(duracion: Int): Double = if (duracion <= 30) 500.toDouble() else 600.toDouble()
 }

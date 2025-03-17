@@ -16,7 +16,7 @@ class Vehiculo(
 
     fun antiguedad(): Int = LocalDate.now().year - anio
 
-    fun calculoPlusPorTipoVehiculo(viaje: Viaje): Double = tipoVehiculo.calculoPlus(viaje)
+    fun calculoPlusPorTipoVehiculo(cantidadDePasajeros: Int, duracion: Int): Double = tipoVehiculo.calculoPlus(cantidadDePasajeros, duracion)
 
     fun validar() {
         validarMarca()

@@ -40,7 +40,7 @@ data class ViajeCardDTO(
     val fechaInicio: String,
     val cantidadDePasajeros: Int,
     val importe: Double
-)gitgit
+)
 
 fun Viaje.toViajeCardDTO(conductor: Conductor) = ViajeCardDTO(
     id = id,

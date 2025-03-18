@@ -33,15 +33,17 @@ fun ViajeDTO.toViaje() = Viaje(
 //)
 
 data class ViajeCardDTO(
+    val id: Long,
     val conductor: String,
     val origen: String,
     val destino: String,
     val fechaInicio: String,
     val cantidadDePasajeros: Int,
     val importe: Double
-)
+)gitgit
 
 fun Viaje.toViajeCardDTO(conductor: Conductor) = ViajeCardDTO(
+    id = id,
     conductor = "${conductor.nombre} ${conductor.apellido}",
     origen = origen,
     destino = destino,

@@ -94,5 +94,4 @@ class UsuarioService(
         return getViajeroById(id).viajesPendientes().map { it.toViajeCardDTO(getConductorById(it.idConductor)) }
     }
 
-
 }

@@ -56,10 +56,12 @@ fun Conductor.toPerfilDTO() = PerfilChoferDTO(
 
 data class AmigoDTO(
     val nombreYApellido : String,
-    val username: String
+    val username: String,
+    val id: Long
 )
 
 fun Usuario.toAmigoDTO() = AmigoDTO(
     nombreYApellido = "$nombre $apellido",
-    username = username
+    username = username,
+    id = id
 )

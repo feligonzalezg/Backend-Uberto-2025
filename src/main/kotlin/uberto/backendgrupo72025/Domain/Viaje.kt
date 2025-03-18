@@ -6,21 +6,19 @@ import java.time.temporal.ChronoUnit
 
 class Viaje(
 //    var id: Long? = 0,
+    val idConductor: Long,
     val origen: String,
     val destino: String,
     val fechaInicio: LocalDateTime,
     val cantidadDePasajeros: Int,
     val duracion: Int,
+    var importe: Double = 0.0
 ): ItemRepo {
     override var id: Long = -1
 
     fun fechaFin() = fechaInicio.plus(duracion.toLong(), ChronoUnit.MINUTES)
 
     fun fechaFin(fecha: LocalDateTime, duracion: Int) = fecha.plus(duracion.toLong(), ChronoUnit.MINUTES)
-
-    fun costoDelViaje(chofer: Conductor): Double {
-        return chofer.precioBaseDelViaje + duracion * chofer.vehiculo.calculoPlusPorTipoVehiculo(this)
-    }
 
     fun estaPendiente(): Boolean {
         return fechaFin() > LocalDateTime.now()

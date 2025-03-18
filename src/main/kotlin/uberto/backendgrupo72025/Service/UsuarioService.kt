@@ -4,9 +4,6 @@ import uberto.backendgrupo72025.Domain.Viajero
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import uberto.backendgrupo72025.DTO.*
-import uberto.backendgrupo72025.Domain.Conductor
-import uberto.backendgrupo72025.Domain.Usuario
-import uberto.backendgrupo72025.Domain.Viaje
 import uberto.backendgrupo72025.Repository.*
 
 
@@ -14,7 +11,7 @@ import uberto.backendgrupo72025.Repository.*
 class UsuarioService(
     val viajeroRepository: ViajeroRepository,
     val conductorRepository: ConductorRepository,
-    val viajeRepository: ViajeRepository,
+    val viajeService: ViajeService,
 ) {
 
     fun getConductores() = conductorRepository.findAll()
@@ -26,14 +23,14 @@ class UsuarioService(
 
     fun getUsuarioLogin(user: UsuarioLoginDTO): LoginDTO {
         val usuario = getUsuarios().filter { it.accesoUsuario(user) }
-        if(usuario.isNotEmpty()) {
+        if (usuario.isNotEmpty()) {
             return usuario.first().toDTO1()
         } else {
             throw RuntimeException("Los datos ingresados son incorrectos")
         }
     }
 
-     // viajero
+    // viajero
     fun getViajeroById(id: Long) = viajeroRepository.findById(id)
 
     fun getAmigos(id: Long) = getViajeroById(id).amigos
@@ -42,48 +39,60 @@ class UsuarioService(
     //chofer
     fun getConductorById(id: Long) = conductorRepository.findById(id)
 
-    fun getComentarios(id :Long) = getConductorById(id).comentarios.map { it.toComentarioDTO() }
+    fun getComentarios(id: Long, esChofer: Boolean): List<ComentarioDTO> {
+        return if (esChofer) {
+            getConductorById(id).comentarios.map { it.toComentarioDTO() }
+        } else {
+            getViajeroById(id).comentarios.map { it.toComentarioDTO() }
+        }
+    }
 
-    fun cantidadComentarios(id: Long) = getComentarios(id).size
-
-    fun puntajeTotal(id: Long) = getComentarios(id).sumOf { it.puntaje }
-
-    fun calificacion(id :Long) = puntajeTotal(id).toDouble() / cantidadComentarios(id).toDouble()
-
+    fun getCalificacionChofer(id: Long) = getConductorById(id).calificacion()
 
 
     fun getChoferesDisponibles(busquedaDTO: BusquedaDTO) =
         getConductores().filter { it.disponible(busquedaDTO.fecha, busquedaDTO.duracion) }
+            .map { it.toConductorDTO(busquedaDTO.cantidadDePasajeros, busquedaDTO.duracion) }
 
 
     @Transactional
-    fun contratarViaje(viajeDTO : ViajeDTO) {
+    fun contratarViaje(viajeDTO: ViajeDTO) {
         val viajero = getViajeroById(viajeDTO.idViajero)
         val conductor = getConductorById(viajeDTO.idConductor)
-        val viaje = viajeDTO.toViaje()
-        val costoDelViaje = viaje.costoDelViaje(conductor)
-        validarPuedeRealizarseViaje(viajero, costoDelViaje)
-        viajero.contratarViaje(viaje, costoDelViaje)
-        viajeRepository.save(viaje)
+        validarPuedeRealizarseViaje(viajero, viajeDTO.importe)
+        val viaje = viajeService.crearViaje(viajeDTO)
+        viajero.contratarViaje(viaje)
         conductor.agregarViaje(viaje)
         viajeroRepository.save(viajero)
         conductorRepository.save(conductor)
-
     }
 
     fun validarPuedeRealizarseViaje(viajero: Viajero, costoDelViaje: Double) {
-        //conductor.disponible(viaje.fecha, viaje.duracion)
+//        conductor.disponible(viaje.fecha, viaje.duracion)
         viajero.validarSaldoSuficiente(costoDelViaje)
-
     }
 
     fun getUsuarioPerfil(id: Long, esChofer: Boolean): PerfilDTO {
         return if (esChofer) {
-             getConductorById(id).toPerfilDTO()
-        }else {
-             getViajeroById(id).toPerfilDTO()
+            getConductorById(id).toPerfilDTO()
+        } else {
+            getViajeroById(id).toPerfilDTO()
         }
     }
 
-    fun viajes(id :Long) = viajeroRepository.findById(id).viajes
+    fun getViajesRealizadosByUsuario(id: Long, esChofer: Boolean): List<ViajeCardDTO> {
+        return if (esChofer) {
+            val conductor = getConductorById(id)
+            conductor.viajesRealizados().map { it.toViajeCardDTO(conductor) }
+        } else {
+            getViajeroById(id).viajesRealizados().map { it.toViajeCardDTO(getConductorById(it.idConductor)) }
+        }
+    }
+
+    fun getViajesPendientesByUsuario(id: Long, esChofer: Boolean): List<ViajeCardDTO> {
+        if (esChofer) throw Exception("Inaccesible")
+        return getViajeroById(id).viajesPendientes().map { it.toViajeCardDTO(getConductorById(it.idConductor)) }
+    }
+
+
 }

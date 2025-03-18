@@ -4,69 +4,55 @@ import uberto.backendgrupo72025.Domain.Conductor
 import uberto.backendgrupo72025.Domain.Usuario
 import uberto.backendgrupo72025.Domain.Viajero
 
-open class PerfilDTO(
-     val id: Long,
-     val nombre: String,
-     val apellido: String,
-     val esChofer: Boolean,
-     val comentarios: List<ComentarioDTO>
-)
+interface PerfilDTO {
+    val id: Long
+    val nombre: String
+    val apellido: String
+    val esChofer: Boolean
+}
 
-class PerfilViajeroDTO(
-    id: Long,
-    nombre: String,
-    apellido: String,
-    esChofer: Boolean,
-    comentarios: List<ComentarioDTO>,
+data class PerfilViajeroDTO(
+    override val id: Long,
+    override val nombre: String,
+    override val apellido: String,
+    override val esChofer: Boolean,
     val telefono: Int,
     val saldo: Double,
     val amigos: List<AmigoDTO>
-): PerfilDTO(id, nombre, apellido, esChofer, comentarios)
+): PerfilDTO
 
 fun Viajero.toPerfilDTO() = PerfilViajeroDTO(
     id = id,
     nombre = nombre,
     apellido = apellido,
     esChofer = esChofer,
-    comentarios = comentarios.map { it.toComentarioDTO() },
     telefono = telefono,
     saldo = saldo,
     amigos = amigos.map { it.toAmigoDTO() }
 )
 
-class PerfilChoferDTO(
-    id: Long,
-    nombre: String,
-    apellido: String,
-    esChofer: Boolean,
-    comentarios: List<ComentarioDTO>,
+data class PerfilChoferDTO(
+    override val id: Long,
+    override val nombre: String,
+    override val apellido: String,
+    override val esChofer: Boolean,
     val precioBase: Double,
     val dominio: String,
     val descripcion: String,
     val modelo: String
-): PerfilDTO(id, nombre, apellido, esChofer, comentarios)
+): PerfilDTO
 
 fun Conductor.toPerfilDTO() = PerfilChoferDTO(
     id = id,
     nombre = nombre,
     apellido = apellido,
     esChofer = esChofer,
-    comentarios = comentarios.map { it.toComentarioDTO() },
     precioBase = precioBaseDelViaje,
     dominio = vehiculo.patente,
     descripcion = vehiculo.marca,
     modelo = vehiculo.modelo
 )
 
-data class LoginDTO(
-    val id : Long,
-    val esChofer: Boolean
-)
-
-fun Usuario.toDTO1() = LoginDTO(
-    id =  id,
-    esChofer = esChofer
-    )
 
 data class AmigoDTO(
     val nombreYApellido : String,

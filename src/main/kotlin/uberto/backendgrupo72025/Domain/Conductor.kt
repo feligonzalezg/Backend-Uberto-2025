@@ -31,7 +31,16 @@ class Conductor(
         if (!esValidoPrecioBaseDelViaje()) throw RuntimeException("El precio base no puede ser menor o igual a 0")
     }
 
+    fun cantidadComentarios() = comentarios.size
+
+    fun puntajeTotal() = comentarios.sumOf { it.puntaje }
+
+    fun calificacion() = puntajeTotal().toDouble() / cantidadComentarios().toDouble()
+
     fun disponible(fechaNueva: LocalDateTime, duracion: Int) = !viajes.any { it.seSolapan(fechaNueva, duracion) }
+
+    fun importeViaje(cantidadDePasajeros: Int, duracion: Int) =
+        precioBaseDelViaje + duracion * vehiculo.calculoPlusPorTipoVehiculo(cantidadDePasajeros, duracion)
 
 
 }

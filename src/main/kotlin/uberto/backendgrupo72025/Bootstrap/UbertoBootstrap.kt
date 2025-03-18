@@ -183,9 +183,21 @@ class UbertoBootstrap(
         cantidadDePasajeros = 1,
         duracion = 10
     )
-    fun crearViaje(){
+    fun crearViaje() {
+        val conductorGuardado = conductorRepository.findById(conductor1.id)
+        val viaje1 = Viaje(
+            idConductor = conductorGuardado.id,
+            origen = "Salta",
+            destino = "Tucumán",
+            fechaInicio = LocalDateTime.now().minusDays(1),
+            cantidadDePasajeros = 1,
+            duracion = 10
+        )
         viajeRepository.save(viaje1)
+        conductorGuardado.agregarViaje(viaje1)
+        conductorRepository.update(conductorGuardado)
     }
+
 
     fun agregarComentario(){
         viajero1.agregarComentario(comentario1)

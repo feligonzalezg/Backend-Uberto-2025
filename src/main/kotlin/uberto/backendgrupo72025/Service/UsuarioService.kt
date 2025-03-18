@@ -84,13 +84,16 @@ class UsuarioService(
     fun getViajesRealizadosByUsuario(id: Long, esChofer: Boolean): List<ViajePerfilDTO> {
         return if (esChofer) {
             val conductor = getConductorById(id)
-            conductor.viajes.map { it.toViajePerfilDTO(conductor) }
+            conductor.viajesRealizados().map { it.toViajePerfilDTO(conductor) }
         } else {
-            getViajeroById(id).viajes.map { it.toViajePerfilDTO(getConductorById(it.idConductor)) }
+            getViajeroById(id).viajesRealizados().map { it.toViajePerfilDTO(getConductorById(it.idConductor)) }
         }
     }
 
-
+    fun getViajesPendientesByUsuario(id: Long, esChofer: Boolean): List<ViajePerfilDTO> {
+        if (esChofer) throw Exception("Inaccesible")
+        return getViajeroById(id).viajesPendientes().map { it.toViajePerfilDTO(getConductorById(it.idConductor)) }
+    }
 
 
 }

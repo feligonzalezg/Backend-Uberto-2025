@@ -11,9 +11,9 @@ import uberto.backendgrupo72025.Service.UsuarioService
 
 @RestController
 @CrossOrigin("*")
-class UsuarioController (@Autowired val userService : UsuarioService) {
+class UsuarioController(@Autowired val userService: UsuarioService) {
 
-    @GetMapping("/users")
+    @GetMapping("/users")//test
     @Operation(summary = "Devuelve todos los usuarios")
     fun usuarios() = userService.getUsuarios()
 
@@ -23,8 +23,10 @@ class UsuarioController (@Autowired val userService : UsuarioService) {
 
     @GetMapping("/perfil/{id}")
     @Operation(summary = "Devuelve los datos para el perfil")
-    fun getUsuarioPerfil(@PathVariable id: Long,
-                         @RequestParam esChofer: Boolean) = userService.getUsuarioPerfil(id, esChofer)
+    fun getUsuarioPerfil(
+        @PathVariable id: Long,
+        @RequestParam esChofer: Boolean
+    ) = userService.getUsuarioPerfil(id, esChofer)
 
     @PostMapping("/home/buscar")
     @Operation(summary = "Devuelve los choferes disponibles")
@@ -32,16 +34,18 @@ class UsuarioController (@Autowired val userService : UsuarioService) {
 
     @GetMapping("/comentario/{id}")
     @Operation(summary = "Devuelve los comentarios por usuario")
-    fun getComentariosPorUsuario(@PathVariable id:Long,
-                                 @RequestParam esChofer: Boolean) = userService.getComentarios(id, esChofer)
+    fun getComentariosPorUsuario(
+        @PathVariable id: Long,
+        @RequestParam esChofer: Boolean
+    ) = userService.getComentarios(id, esChofer)
 
     @GetMapping("/puntaje/{id}")
     @Operation(summary = "Devuelve devuelve el puntaje por chofer")
-    fun getPuntajePorChofer(@PathVariable id:Long) = userService.getCalificacionChofer(id)
+    fun getPuntajePorChofer(@PathVariable id: Long) = userService.getCalificacionChofer(id)
 
     @GetMapping("/amigos/{id}")
     @Operation(summary = "Devuelve devuelve la lista de amigues")
-    fun getAmigos(@PathVariable id:Long) = userService.getAmigos(id)
+    fun getAmigos(@PathVariable id: Long) = userService.getAmigos(id)
 
     @PostMapping("/confirmar")
     @Operation(summary = "Contratar viaje")
@@ -49,7 +53,15 @@ class UsuarioController (@Autowired val userService : UsuarioService) {
 
     @GetMapping("/viajesRealizados/{id}")
     @Operation(summary = "Devuelve los viajes realizados")
-    fun getViajesRealizadosPorUsuario(@PathVariable id:Long,
-                                      @RequestParam esChofer: Boolean) = userService.getViajesRealizadosByUsuario(id, esChofer)
+    fun getViajesRealizadosPorUsuario(
+        @PathVariable id: Long,
+        @RequestParam esChofer: Boolean
+    ) = userService.getViajesRealizadosByUsuario(id, esChofer)
+
+    @GetMapping("/viajesPendientes/{id}")
+    @Operation(summary = "Devuelve los viajes Pendientes")
+    fun getViajesPendientesPorUsuario(@PathVariable id: Long,
+                                      @RequestParam esChofer: Boolean
+    ) = userService.getViajesPendientesByUsuario(id, esChofer)
 
 }

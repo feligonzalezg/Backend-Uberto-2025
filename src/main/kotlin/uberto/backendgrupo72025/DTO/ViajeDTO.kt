@@ -37,16 +37,14 @@ data class ViajePerfilDTO(
     val destino: String,
     val fechaInicio: LocalDateTime,
     val cantidadDePasajeros: Int,
-    val importe: Double,
-    val pendiente: Boolean
+    val importe: Double
 )
 
 fun Viaje.toViajePerfilDTO(conductor: Conductor) = ViajePerfilDTO(
-    conductor = "${conductor.nombre} + ${conductor.apellido}",
+    conductor = "${conductor.nombre} ${conductor.apellido}",
     origen = origen,
     destino = destino,
     fechaInicio = fechaInicio,
     cantidadDePasajeros = cantidadDePasajeros,
-    importe = importe,
-    pendiente = estaPendiente()
+    importe = importe
 )

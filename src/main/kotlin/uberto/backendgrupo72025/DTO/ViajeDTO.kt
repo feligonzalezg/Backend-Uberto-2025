@@ -3,6 +3,7 @@ package uberto.backendgrupo72025.DTO
 import uberto.backendgrupo72025.Domain.Conductor
 import uberto.backendgrupo72025.Domain.Viaje
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 data class ViajeDTO(
@@ -31,20 +32,21 @@ fun ViajeDTO.toViaje() = Viaje(
 //    val viajesPendientes: List<ViajePerfilDTO>,
 //)
 
-data class ViajePerfilDTO(
+data class ViajeCardDTO(
     val conductor: String,
     val origen: String,
     val destino: String,
-    val fechaInicio: LocalDateTime,
+    val fechaInicio: String,
     val cantidadDePasajeros: Int,
     val importe: Double
 )
 
-fun Viaje.toViajePerfilDTO(conductor: Conductor) = ViajePerfilDTO(
+fun Viaje.toViajeCardDTO(conductor: Conductor) = ViajeCardDTO(
     conductor = "${conductor.nombre} ${conductor.apellido}",
     origen = origen,
     destino = destino,
-    fechaInicio = fechaInicio,
+    fechaInicio = fechaInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
     cantidadDePasajeros = cantidadDePasajeros,
     importe = importe
 )
+

@@ -4,7 +4,6 @@ import uberto.backendgrupo72025.Domain.Viajero
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import uberto.backendgrupo72025.DTO.*
-import uberto.backendgrupo72025.Domain.Viaje
 import uberto.backendgrupo72025.Repository.*
 
 
@@ -81,18 +80,18 @@ class UsuarioService(
         }
     }
 
-    fun getViajesRealizadosByUsuario(id: Long, esChofer: Boolean): List<ViajePerfilDTO> {
+    fun getViajesRealizadosByUsuario(id: Long, esChofer: Boolean): List<ViajeCardDTO> {
         return if (esChofer) {
             val conductor = getConductorById(id)
-            conductor.viajesRealizados().map { it.toViajePerfilDTO(conductor) }
+            conductor.viajesRealizados().map { it.toViajeCardDTO(conductor) }
         } else {
-            getViajeroById(id).viajesRealizados().map { it.toViajePerfilDTO(getConductorById(it.idConductor)) }
+            getViajeroById(id).viajesRealizados().map { it.toViajeCardDTO(getConductorById(it.idConductor)) }
         }
     }
 
-    fun getViajesPendientesByUsuario(id: Long, esChofer: Boolean): List<ViajePerfilDTO> {
+    fun getViajesPendientesByUsuario(id: Long, esChofer: Boolean): List<ViajeCardDTO> {
         if (esChofer) throw Exception("Inaccesible")
-        return getViajeroById(id).viajesPendientes().map { it.toViajePerfilDTO(getConductorById(it.idConductor)) }
+        return getViajeroById(id).viajesPendientes().map { it.toViajeCardDTO(getConductorById(it.idConductor)) }
     }
 
 

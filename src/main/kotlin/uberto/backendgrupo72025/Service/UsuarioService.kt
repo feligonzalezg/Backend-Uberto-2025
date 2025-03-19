@@ -110,4 +110,15 @@ class UsuarioService(
         viajeroRepository.update(viajero)
     }
 
+    fun getViajesConductorFiltrados(id: Long, filtroDTO: FiltroDTO): List<ViajeCardDTO> {
+        val conductor = getConductorById(id)
+        val viajesPendientes = conductor.viajesPendientes()
+        return viajesPendientes.filter {
+            (filtroDTO.usernameViajero.isBlank() || getViajeroById(it.idViajero).username.contains(filtroDTO.usernameViajero, ignoreCase = true)) &&
+                    (filtroDTO.origen.isBlank() || it.origen.contains(filtroDTO.origen, ignoreCase = true)) &&
+                    (filtroDTO.destino.isBlank() || it.destino.contains(filtroDTO.destino, ignoreCase = true)) &&
+                    (filtroDTO.cantidadDePasajeros == 0 || it.cantidadDePasajeros == filtroDTO.cantidadDePasajeros)
+        }.map { it.toViajeCardDTO(conductor) }
+    }
+
 }

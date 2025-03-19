@@ -6,6 +6,7 @@ import java.time.temporal.ChronoUnit
 
 class Viaje(
 //    var id: Long? = 0,
+    val idViajero: Long,
     val idConductor: Long,
     val origen: String,
     val destino: String,

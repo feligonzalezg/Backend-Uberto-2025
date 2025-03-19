@@ -18,6 +18,7 @@ data class ViajeDTO(
 )
 
 fun ViajeDTO.toViaje() = Viaje(
+    idViajero = idViajero,
     idConductor = idConductor,
     origen = origen,
     destino =  destino,

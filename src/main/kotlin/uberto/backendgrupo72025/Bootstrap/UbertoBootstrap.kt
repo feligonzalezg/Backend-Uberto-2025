@@ -176,6 +176,7 @@ class UbertoBootstrap(
 
 
     val viaje1 = Viaje(
+        idViajero = viajero1.id,
         idConductor = conductor1.id,
         origen = "Salta",
         destino = "Tucumán",
@@ -186,10 +187,11 @@ class UbertoBootstrap(
     fun crearViaje() {
         val conductorGuardado = conductorRepository.findById(conductor1.id)
         val viaje1 = Viaje(
+            idViajero = viajero1.id,
             idConductor = conductorGuardado.id,
             origen = "Salta",
             destino = "Tucumán",
-            fechaInicio = LocalDateTime.now().minusDays(1),
+            fechaInicio = LocalDateTime.now().plusDays(1),
             cantidadDePasajeros = 1,
             duracion = 10
         )

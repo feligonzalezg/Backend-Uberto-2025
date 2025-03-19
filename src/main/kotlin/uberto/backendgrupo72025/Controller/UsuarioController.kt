@@ -32,6 +32,11 @@ class UsuarioController(@Autowired val userService: UsuarioService) {
     @Operation(summary = "Devuelve los choferes disponibles")
     fun getChoferesDisponiles(@RequestBody busquedaDTO: BusquedaDTO) = userService.getChoferesDisponibles(busquedaDTO)
 
+    @PostMapping("/filtrar/{id}")
+    @Operation(summary = "Devuelve los viajes pendientes filtrados para el home chofer")
+    fun getViajesFiltrados(@PathVariable id: Long,
+                           @RequestBody filtroDTO: FiltroDTO) = userService.getViajesConductorFiltrados(id, filtroDTO)
+
     @GetMapping("/comentario/{id}")
     @Operation(summary = "Devuelve los comentarios por usuario")
     fun getComentariosPorUsuario(

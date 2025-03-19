@@ -4,6 +4,7 @@ import uberto.backendgrupo72025.Domain.Viajero
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import uberto.backendgrupo72025.DTO.*
+import uberto.backendgrupo72025.Domain.UnauthorizedException
 import uberto.backendgrupo72025.Repository.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -28,7 +29,7 @@ class UsuarioService(
         if (usuario.isNotEmpty()) {
             return usuario.first().toDTO1()
         } else {
-            throw RuntimeException("Los datos ingresados son incorrectos")
+            throw UnauthorizedException("Los datos ingresados son incorrectos")
         }
     }
 
@@ -95,12 +96,13 @@ class UsuarioService(
         return getViajeroById(id).viajesPendientes().map { it.toViajeCardDTO(getConductorById(it.idConductor)) }
     }
 
-    fun agregarAmigo(idViajero: Long, idAmigo: Long) {
+    fun agregarAmigo(idViajero: Long, idAmigo: Long): AmigoDTO {
         val viajero = getViajeroById(idViajero)
         val amigo = getViajeroById(idAmigo)
 
         viajero.agregarAmigo(amigo)
         viajeroRepository.update(viajero)
+        return amigo.toAmigoDTO()
     }
 
     fun eliminarAmigo(idViajero: Long, idAmigo: Long) {
@@ -122,4 +124,12 @@ class UsuarioService(
         }.map { it.toViajeCardDTO(conductor) }
     }
 
+    fun getViajerosParaAgregarAmigo(id: Long, query: String): List<AmigoDTO> {
+        val amigos = getViajeroById(id).amigos
+        return getViajeros().filter { !amigos.contains(it) &&
+                            (it.nombre.contains(query, ignoreCase = true) ||
+                            it.apellido.contains(query, ignoreCase = true) ||
+                            it.username.contains(query, ignoreCase = true))
+        }.map { it.toAmigoDTO() }
+    }
 }

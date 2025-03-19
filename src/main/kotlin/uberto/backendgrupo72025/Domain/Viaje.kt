@@ -13,7 +13,7 @@ class Viaje(
     val fechaInicio: LocalDateTime,
     val cantidadDePasajeros: Int,
     val duracion: Int,
-    var importe: Double = 0.0
+    var importe: Double = 0.0,
 ): ItemRepo {
     override var id: Long = -1
 

@@ -88,6 +88,11 @@ class UsuarioController(@Autowired val userService: UsuarioService) {
         @PathVariable userId: Long,
         @PathVariable friendId: Long
     ) = userService.agregarAmigo(userId, friendId)
+
+    @PostMapping("/calificar/{id}")
+    @Operation(summary = "Calificar un viaje realizado")
+    fun calificarViaje(@PathVariable id: Long,
+                       @RequestBody calificacion: CalificacionDTO) = userService.calificarViaje(id, calificacion)
 }
 
 

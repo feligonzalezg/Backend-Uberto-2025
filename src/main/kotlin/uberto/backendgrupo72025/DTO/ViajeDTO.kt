@@ -7,8 +7,10 @@ import java.time.format.DateTimeFormatter
 
 
 data class ViajeDTO(
+    val id: Long,
     val idViajero: Long,
     val idConductor: Long,
+    var nombre: String,
     val origen: String,
     val destino: String,
     val fechaInicio: String,
@@ -28,28 +30,43 @@ fun ViajeDTO.toViaje() = Viaje(
     importe = importe
 )
 
+fun Viaje.toViajeDTO(nombre: String) = ViajeDTO(
+    id = id,
+    idViajero = idViajero,
+    idConductor = idConductor,
+    nombre = nombre,
+    origen = origen,
+    destino =  destino,
+    fechaInicio = fechaInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+    cantidadDePasajeros = cantidadDePasajeros,
+    duracion = duracion,
+    importe = importe
+)
+
 //data class ViajesDTO(
 //    val viajesRealizados: List<ViajePerfilDTO>
 //    val viajesPendientes: List<ViajePerfilDTO>,
 //)
-
-data class ViajeCardDTO(
-    val id: Long,
-    val conductor: String,
-    val origen: String,
-    val destino: String,
-    val fechaInicio: String,
-    val cantidadDePasajeros: Int,
-    val importe: Double
-)
-
-fun Viaje.toViajeCardDTO(conductor: Conductor) = ViajeCardDTO(
-    id = id,
-    conductor = "${conductor.nombre} ${conductor.apellido}",
-    origen = origen,
-    destino = destino,
-    fechaInicio = fechaInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
-    cantidadDePasajeros = cantidadDePasajeros,
-    importe = importe
-)
+//
+//data class ViajeCardDTO(
+//    val id: Long,
+//    val conductor: String,
+//    val viajero: String,
+//    val origen: String,
+//    val destino: String,
+//    val fechaInicio: String,
+//    val cantidadDePasajeros: Int,
+//    val importe: Double
+//)
+//
+//fun Viaje.toViajeCardDTO(conductor: Conductor) = ViajeCardDTO(
+//    id = id,
+//    conductor = "${conductor.nombre} ${conductor.apellido}",
+//    viajero = "${conductor.nombre} ${conductor.apellido}",
+//    origen = origen,
+//    destino = destino,
+//    fechaInicio = fechaInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+//    cantidadDePasajeros = cantidadDePasajeros,
+//    importe = importe
+//)
 

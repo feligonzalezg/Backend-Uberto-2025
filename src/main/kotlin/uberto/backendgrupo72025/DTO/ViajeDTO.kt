@@ -11,7 +11,7 @@ data class ViajeDTO(
     val idConductor: Long,
     val origen: String,
     val destino: String,
-    val fechaInicio: LocalDateTime,
+    val fechaInicio: String,
     val cantidadDePasajeros: Int,
     val duracion: Int,
     val importe: Double,
@@ -22,7 +22,7 @@ fun ViajeDTO.toViaje() = Viaje(
     idConductor = idConductor,
     origen = origen,
     destino =  destino,
-    fechaInicio = fechaInicio,
+    fechaInicio = LocalDateTime.parse(fechaInicio, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
     cantidadDePasajeros = cantidadDePasajeros,
     duracion = duracion,
     importe = importe

@@ -191,7 +191,7 @@ class UbertoBootstrap(
             idConductor = conductorGuardado.id,
             origen = "Salta",
             destino = "Tucumán",
-            fechaInicio = LocalDateTime.now().plusDays(1),
+            fechaInicio = LocalDateTime.of(2025, 3,20,10,0,0),
             cantidadDePasajeros = 1,
             duracion = 10
         )

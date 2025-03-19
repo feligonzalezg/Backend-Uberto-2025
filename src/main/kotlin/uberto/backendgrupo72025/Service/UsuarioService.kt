@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import uberto.backendgrupo72025.DTO.*
 import uberto.backendgrupo72025.Repository.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 @Service
@@ -51,9 +53,8 @@ class UsuarioService(
 
 
     fun getChoferesDisponibles(busquedaDTO: BusquedaDTO) =
-        getConductores().filter { it.disponible(busquedaDTO.fecha, busquedaDTO.duracion) }
+        getConductores().filter { it.disponible(LocalDateTime.parse(busquedaDTO.fecha, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), busquedaDTO.duracion) }
             .map { it.toConductorDTO(busquedaDTO.cantidadDePasajeros, busquedaDTO.duracion) }
-
 
     @Transactional
     fun contratarViaje(viajeDTO: ViajeDTO) {

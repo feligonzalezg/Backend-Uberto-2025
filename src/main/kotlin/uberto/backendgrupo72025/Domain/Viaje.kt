@@ -26,8 +26,8 @@ class Viaje(
     }
 
     fun seSolapan(fechaNueva: LocalDateTime, duracion: Int): Boolean {
-        return fechaInicio > fechaFin(fechaNueva, duracion) &&
-                fechaNueva > fechaFin()
+        val nuevaFechaFin = fechaFin(fechaNueva, duracion)
+        return fechaNueva.isBefore(fechaFin()) && nuevaFechaFin.isAfter(fechaInicio)
     }
 
 }

@@ -64,8 +64,8 @@ class UsuarioService(
         val viaje = viajeService.crearViaje(viajeDTO)
         viajero.contratarViaje(viaje)
         conductor.agregarViaje(viaje)
-        viajeroRepository.save(viajero)
-        conductorRepository.save(conductor)
+        viajeroRepository.update(viajero)
+        conductorRepository.update(conductor)
     }
 
     fun validarPuedeRealizarseViaje(viajero: Viajero, costoDelViaje: Double) {

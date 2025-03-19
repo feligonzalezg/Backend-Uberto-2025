@@ -13,7 +13,7 @@ class Conductor(
     comentarios: MutableList<Comentario> = mutableListOf(),
     esChofer: Boolean,
     val vehiculo: Vehiculo,
-    val precioBaseDelViaje: Double
+    var precioBaseDelViaje: Double
 ) : Usuario(nombre, apellido, edad, username, contrasenia, viajes, telefono, comentarios, esChofer) {
 
 

@@ -94,4 +94,20 @@ class UsuarioService(
         return getViajeroById(id).viajesPendientes().map { it.toViajeCardDTO(getConductorById(it.idConductor)) }
     }
 
+    fun agregarAmigo(idViajero: Long, idAmigo: Long) {
+        val viajero = getViajeroById(idViajero)
+        val amigo = getViajeroById(idAmigo)
+
+        viajero.agregarAmigo(amigo)
+        viajeroRepository.update(viajero)
+    }
+
+    fun eliminarAmigo(idViajero: Long, idAmigo: Long) {
+        val viajero = getViajeroById(idViajero)
+        val amigo = getViajeroById(idAmigo)
+
+        viajero.eliminarAmigo(amigo)
+        viajeroRepository.update(viajero)
+    }
+
 }

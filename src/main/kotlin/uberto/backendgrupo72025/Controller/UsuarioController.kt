@@ -64,4 +64,19 @@ class UsuarioController(@Autowired val userService: UsuarioService) {
                                       @RequestParam esChofer: Boolean
     ) = userService.getViajesPendientesByUsuario(id, esChofer)
 
+    @DeleteMapping("/eliminarAmigo/{userId}/{friendId}")
+    @Operation(summary = "Elimina a un amigo de la lista de amigos del viajero")
+    fun eliminarAmigo(
+        @PathVariable userId: Long,
+        @PathVariable friendId: Long
+    ) = userService.eliminarAmigo(userId, friendId)
+
+    @PutMapping("/agregarAmigo/{userId}/{friendId}")
+    @Operation(summary = "agrega a un amigo de la lista de amigos del viajero")
+    fun agregarAmigo(
+        @PathVariable userId: Long,
+        @PathVariable friendId: Long
+    ) = userService.agregarAmigo(userId, friendId)
 }
+
+

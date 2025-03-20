@@ -3,8 +3,6 @@ package uberto.backendgrupo72025.Domain
 import uberto.backendgrupo72025.Repository.ItemRepo
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
-import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
 
 class Viaje(
 //    var id: Long? = 0,
@@ -19,21 +17,17 @@ class Viaje(
 ): ItemRepo {
     override var id: Long = -1
 
-    var calificado: Boolean = false
+    var tieneComentario: Boolean = false
 
-    fun fechaFin() = fechaInicio.plus(duracion.toLong(), ChronoUnit.MINUTES)
+    fun fechaFin(fechaInicio: LocalDateTime, duracion: Int) = fechaInicio.plus(duracion.toLong(), ChronoUnit.MINUTES)
 
-    fun fechaFin(fecha: LocalDateTime, duracion: Int) = fecha.plus(duracion.toLong(), ChronoUnit.MINUTES)
-
-    fun estaPendiente(): Boolean {
-        return fechaFin() > LocalDateTime.now()
-    }
+    fun estaPendiente() = fechaFin(fechaInicio, duracion).isAfter(LocalDateTime.now())
 
     fun seSolapan(fechaNueva: LocalDateTime, duracion: Int): Boolean {
         val nuevaFechaFin = fechaFin(fechaNueva, duracion)
-        return fechaNueva.isBefore(fechaFin()) && nuevaFechaFin.isAfter(fechaInicio)
+        return fechaNueva.isBefore(fechaFin(fechaInicio, duracion)) && nuevaFechaFin.isAfter(fechaInicio)
     }
 
-    fun puedeCalificar() = estaPendiente() && !calificado
+    fun puedeCalificar() = !estaPendiente() && !tieneComentario
 
 }

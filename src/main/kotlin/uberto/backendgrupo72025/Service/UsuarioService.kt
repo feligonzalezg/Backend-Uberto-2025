@@ -139,18 +139,19 @@ class UsuarioService(
     }
 
     @Transactional
-    fun calificarViaje(id: Long, calificacion: CalificacionDTO) {
+    fun calificarViaje(id: Long, calificacion: CalificacionDTO): ComentarioDTO {
         val viaje = viajeService.getViajeById(calificacion.idViaje)
         val viajero = getViajeroById(id)
         val conductor = getConductorById(viaje.idConductor)
         validarPuedeCalificar(viajero, viaje)
         val comentario = comentarioService.calificar(calificacion, viaje)
-        viaje.calificado = true
+        viaje.tieneComentario = true
         viajeService.updateViaje(viaje)
         viajero.agregarComentario(comentario)
         conductor.agregarComentario(comentario)
         viajeroRepository.update(viajero)
         conductorRepository.update(conductor)
+        return comentario.toComentarioDTO(conductor.nombreYApellido())
     }
 
     fun validarPuedeCalificar(usuario: Viajero, viaje: Viaje) {
@@ -172,7 +173,7 @@ class UsuarioService(
         val comentario = comentarioService.getComentarioById(idComentario)
         val conductor = getConductorById(comentario.viaje.idConductor)
         validarEliminarComentario(viajero, comentario)
-        comentario.viaje.calificado = false
+        comentario.viaje.tieneComentario = false
         viajero.eliminarComentario(comentario)
         conductor.eliminarComentario(comentario)
         viajeService.updateViaje(comentario.viaje)

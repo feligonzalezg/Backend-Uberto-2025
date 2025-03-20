@@ -159,21 +159,21 @@ class UbertoBootstrap(
     // comentarios
     val comentario1 = Comentario(
         viaje = viaje1,
-        puntaje = 5,
+        estrellas = 5,
         mensaje = "Excelente viaje, muy cómodo y puntual. ¡Totalmente recomendado!",
         fecha = LocalDate.of(2025, 3, 10)
     )
 
     val comentario2 = Comentario(
         viaje = viaje1,
-        puntaje = 4,
+        estrellas = 4,
         mensaje = "Buen viaje, aunque el servicio de comida podría mejorar.",
         fecha = LocalDate.of(2025, 3, 12)
     )
 
      val comentario3 = Comentario(
         viaje = viaje1,
-        puntaje = 3,
+        estrellas = 3,
         mensaje = "Viaje aceptable, pero el tiempo de espera fue demasiado largo.",
         fecha = LocalDate.of(2025, 3, 14)
     )

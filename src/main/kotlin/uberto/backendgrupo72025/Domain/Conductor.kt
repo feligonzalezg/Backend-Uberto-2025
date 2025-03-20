@@ -33,7 +33,7 @@ class Conductor(
 
     fun cantidadComentarios() = comentarios.size
 
-    fun puntajeTotal() = comentarios.sumOf { it.puntaje }
+    fun puntajeTotal() = comentarios.sumOf { it.estrellas }
 
     fun calificacion() = if (cantidadComentarios()>0) puntajeTotal().toDouble() / cantidadComentarios().toDouble() else 0.0
 

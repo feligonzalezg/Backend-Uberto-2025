@@ -135,8 +135,7 @@ class UsuarioService(
     fun getViajerosParaAgregarAmigo(id: Long, query: String): List<AmigoDTO> {
         val amigos = getViajeroById(id).amigos
         return getViajeros().filter { !amigos.contains(it) &&
-                            (it.nombre.contains(query, ignoreCase = true) ||
-                            it.apellido.contains(query, ignoreCase = true) ||
+                            (it.nombreYApellido().contains(query, ignoreCase = true) ||
                             it.username.contains(query, ignoreCase = true))
         }.map { it.toAmigoDTO() }
     }
@@ -164,6 +163,6 @@ class UsuarioService(
     }
 
     fun validarNoCalificado(usuario: Viajero, viaje: Viaje) {
-        if (!usuario.viajes.contains(viaje)) throw BadRequestException("No se puede calificar el mismo viaje más de una vez.")
+        if (usuario.comentarios.any { it.viaje.id == viaje.id }) throw BadRequestException("No se puede calificar el mismo viaje más de una vez.")
     }
 }

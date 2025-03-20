@@ -7,13 +7,18 @@ data class ConductorDTO(
     val patente: String,
     val movil: String,
     val calificacion: Double,
-    val importe: Double
+    val importe: Double,
+    val marca: String,
+    val modelo: Int
 )
+
 
 fun Conductor.toConductorDTO(cantidadDePasajeros: Int, duracion: Int) =  ConductorDTO(
     nombreYApellido = "$nombre $apellido",
     patente = vehiculo.patente,
     movil = "${vehiculo.marca} | ${vehiculo.modelo}",
     calificacion = calificacion(),
-    importe = importeViaje(cantidadDePasajeros = 0, duracion = 0)
+    importe = importeViaje(cantidadDePasajeros = 0, duracion = 0),
+    marca = vehiculo.marca,
+    modelo = vehiculo.anio,
 )

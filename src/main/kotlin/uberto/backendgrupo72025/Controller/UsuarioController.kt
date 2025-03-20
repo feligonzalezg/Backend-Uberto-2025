@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import uberto.backendgrupo72025.DTO.*
+import uberto.backendgrupo72025.DTO.ConductorDTO
 
 import uberto.backendgrupo72025.Service.UsuarioService
 
@@ -76,11 +77,19 @@ class UsuarioController(@Autowired val userService: UsuarioService) {
         @PathVariable friendId: Long
     ) = userService.eliminarAmigo(userId, friendId)
 
+
+    @PutMapping("/actualizarChofer/{id}")
+    @Operation(summary = "Actualiza los datos del chofer")
+    fun actualizarChofer(@PathVariable id: Long, @RequestBody choferDTO: ConductorDTO) =
+        userService.actualizarChofer(id, choferDTO)
+
+
     @GetMapping("/buscarAmigos/{id}")
     @Operation(summary = "Busca los usuarios para agregar como amigos")
     fun buscarAmigos(
         @PathVariable id: Long,
         @RequestParam query: String) = userService.getViajerosParaAgregarAmigo(id, query)
+
 
     @PutMapping("/agregarAmigo/{userId}/{friendId}")
     @Operation(summary = "agrega a un amigo de la lista de amigos del viajero")

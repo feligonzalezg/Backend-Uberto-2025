@@ -3,6 +3,7 @@ package uberto.backendgrupo72025.Service
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import uberto.backendgrupo72025.DTO.*
+import uberto.backendgrupo72025.Domain.Conductor
 import uberto.backendgrupo72025.Domain.*
 import uberto.backendgrupo72025.Repository.*
 import java.time.LocalDateTime
@@ -42,6 +43,23 @@ class UsuarioService(
 
     //chofer
     fun getConductorById(id: Long) = conductorRepository.findById(id)
+
+    fun actualizarChofer(id: Long, choferDTO: ConductorDTO): Conductor {
+        val chofer = getConductorById(id)
+
+        val (nombre, apellido) = choferDTO.nombreYApellido.split(" ", limit = 2)
+
+        chofer.nombre = nombre
+        chofer.apellido = apellido
+        chofer.precioBaseDelViaje = choferDTO.importe
+        chofer.vehiculo.patente = choferDTO.patente
+        chofer.vehiculo.marca = choferDTO.marca
+        chofer.vehiculo.anio = choferDTO.modelo
+
+        conductorRepository.save(chofer)
+        return chofer
+    }
+
 
     fun getComentarios(id: Long, esChofer: Boolean): List<ComentarioDTO> {
         return if (esChofer) {

@@ -6,8 +6,8 @@ import java.time.LocalDateTime
 
 abstract class Usuario(
 //    var id: Long?= 0,
-    val nombre: String,
-    val apellido: String,
+    var nombre: String,
+    var apellido: String,
     var edad: Int,
     val username: String,
     val contrasenia: String,

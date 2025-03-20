@@ -77,10 +77,18 @@ class UsuarioController(@Autowired val userService: UsuarioService) {
         @PathVariable friendId: Long
     ) = userService.eliminarAmigo(userId, friendId)
 
+
     @PutMapping("/actualizarChofer/{id}")
     @Operation(summary = "Actualiza los datos del chofer")
     fun actualizarChofer(@PathVariable id: Long, @RequestBody choferDTO: ConductorDTO) =
         userService.actualizarChofer(id, choferDTO)
+
+
+    @GetMapping("/buscarAmigos/{id}")
+    @Operation(summary = "Busca los usuarios para agregar como amigos")
+    fun buscarAmigos(
+        @PathVariable id: Long,
+        @RequestParam query: String) = userService.getViajerosParaAgregarAmigo(id, query)
 
 
     @PutMapping("/agregarAmigo/{userId}/{friendId}")
@@ -89,6 +97,16 @@ class UsuarioController(@Autowired val userService: UsuarioService) {
         @PathVariable userId: Long,
         @PathVariable friendId: Long
     ) = userService.agregarAmigo(userId, friendId)
+
+    @PostMapping("/calificar/{id}")
+    @Operation(summary = "Calificar un viaje realizado")
+    fun calificarViaje(@PathVariable id: Long,
+                       @RequestBody calificacion: CalificacionDTO) = userService.calificarViaje(id, calificacion)
+
+
+    @DeleteMapping("eliminarComentario/{id}/{idComentario}")
+    @Operation(summary = "Elimina un comentario realizado")
+    fun eliminarComentario(
+        @PathVariable id: Long,
+        @PathVariable idComentario: Long) = userService.eliminarComentario(id, idComentario)
 }
-
-

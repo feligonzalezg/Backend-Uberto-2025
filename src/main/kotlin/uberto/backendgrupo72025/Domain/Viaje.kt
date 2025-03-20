@@ -13,7 +13,8 @@ class Viaje(
     val fechaInicio: LocalDateTime,
     val cantidadDePasajeros: Int,
     val duracion: Int,
-    var importe: Double = 0.0
+    var importe: Double = 0.0,
+    var puedeCalificar: Boolean = false,
 ): ItemRepo {
     override var id: Long = -1
 
@@ -29,5 +30,7 @@ class Viaje(
         val nuevaFechaFin = fechaFin(fechaNueva, duracion)
         return fechaNueva.isBefore(fechaFin()) && nuevaFechaFin.isAfter(fechaInicio)
     }
+
+    fun puedeCalificar() = puedeCalificar
 
 }

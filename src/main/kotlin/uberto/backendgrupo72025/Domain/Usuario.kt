@@ -18,6 +18,8 @@ abstract class Usuario(
 ): ItemRepo {
     override var id: Long = -1
 
+    fun nombreYApellido() = "$nombre $apellido"
+
     //access
     fun accesoUsuario(user: UsuarioLoginDTO): Boolean {
         return user.usuario == username && user.contrasenia == contrasenia
@@ -69,11 +71,15 @@ abstract class Usuario(
 
 
     fun agregarComentario(comentario: Comentario) {
-        if (!comentarioValido(comentario)) throw Exception("No se puede calificar")
+//        if (!comentarioValido(comentario)) throw Exception("No se puede calificar")
         comentarios.add(comentario)
     }
 
-    private fun comentarioValido(comentario: Comentario): Boolean = !comentario.autor.esChofer
+    fun eliminarComentario(comentario: Comentario) {
+        comentarios.remove(comentario)
+    }
+//
+//    private fun comentarioValido(comentario: Comentario): Boolean = !comentario.autor.esChofer
 
     fun agregarViaje(viaje: Viaje) {
         viajes.add(viaje)

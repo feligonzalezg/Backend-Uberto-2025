@@ -31,7 +31,6 @@ class UbertoBootstrap(
         crearComentarios()
         crearChoferes()
         crearViaje()
-        agregarComentario()
     }
 
     val viajero2 = Viajero(
@@ -112,33 +111,6 @@ class UbertoBootstrap(
         vehiculoRepository.save(moto)
     }
 
-    // conductores
-    val comentario1 = Comentario(
-        autor = viajero1,
-        puntaje = 5,
-        mensaje = "Excelente viaje, muy cómodo y puntual. ¡Totalmente recomendado!",
-        fecha = LocalDate.of(2025, 3, 10)
-    )
-
-    val comentario2 = Comentario(
-        autor = viajero1,
-        puntaje = 4,
-        mensaje = "Buen viaje, aunque el servicio de comida podría mejorar.",
-        fecha = LocalDate.of(2025, 3, 12)
-    )
-
-     val comentario3 = Comentario(
-        autor = viajero2,
-        puntaje = 3,
-        mensaje = "Viaje aceptable, pero el tiempo de espera fue demasiado largo.",
-        fecha = LocalDate.of(2025, 3, 14)
-    )
-
-    fun crearComentarios(){
-        comentarioRepository.save(comentario1)
-        comentarioRepository.save(comentario2)
-        comentarioRepository.save(comentario3)
-    }
 
     val conductor1 = Conductor(
         nombre = "Juan",
@@ -162,7 +134,7 @@ class UbertoBootstrap(
         contrasenia = "secure5678",
         viajes = mutableListOf(),
         telefono = 987654321,
-        comentarios = mutableListOf(comentario1,comentario2),
+        comentarios = mutableListOf(),
         esChofer = true,
         autoSimple,
         precioBaseDelViaje = 450.0
@@ -184,6 +156,33 @@ class UbertoBootstrap(
         cantidadDePasajeros = 1,
         duracion = 10
     )
+    // comentarios
+    val comentario1 = Comentario(
+        viaje = viaje1,
+        puntaje = 5,
+        mensaje = "Excelente viaje, muy cómodo y puntual. ¡Totalmente recomendado!",
+        fecha = LocalDate.of(2025, 3, 10)
+    )
+
+    val comentario2 = Comentario(
+        viaje = viaje1,
+        puntaje = 4,
+        mensaje = "Buen viaje, aunque el servicio de comida podría mejorar.",
+        fecha = LocalDate.of(2025, 3, 12)
+    )
+
+     val comentario3 = Comentario(
+        viaje = viaje1,
+        puntaje = 3,
+        mensaje = "Viaje aceptable, pero el tiempo de espera fue demasiado largo.",
+        fecha = LocalDate.of(2025, 3, 14)
+    )
+
+    fun crearComentarios(){
+        comentarioRepository.save(comentario1)
+        comentarioRepository.save(comentario2)
+        comentarioRepository.save(comentario3)
+    }
     fun crearViaje() {
         val conductorGuardado = conductorRepository.findById(conductor1.id)
         val viaje1 = Viaje(
@@ -198,11 +197,6 @@ class UbertoBootstrap(
         viajeRepository.save(viaje1)
         conductorGuardado.agregarViaje(viaje1)
         conductorRepository.update(conductorGuardado)
-    }
-
-
-    fun agregarComentario(){
-        viajero1.agregarComentario(comentario1)
         viajeroRepository.update(viajero1)
     }
 

@@ -35,7 +35,7 @@ class Conductor(
 
     fun puntajeTotal() = comentarios.sumOf { it.puntaje }
 
-    fun calificacion() = puntajeTotal().toDouble() / cantidadComentarios().toDouble()
+    fun calificacion() = if (cantidadComentarios()>0) puntajeTotal().toDouble() / cantidadComentarios().toDouble() else 0.0
 
     fun disponible(fechaNueva: LocalDateTime, duracion: Int) = !viajes.any { it.seSolapan(fechaNueva, duracion) }
 

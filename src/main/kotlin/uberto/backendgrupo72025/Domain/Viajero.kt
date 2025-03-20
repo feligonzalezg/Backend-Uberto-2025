@@ -41,17 +41,17 @@ class Viajero(
     }
 
     fun validarAmigoExistente(viajero: Viajero) {
-        if (esAmigo(viajero)) throw RuntimeException("Ya es amigo")
+        if (esAmigo(viajero)) throw BadRequestException("Ya es amigo")
     }
 
     fun validarAmigoNoExistente(viajero: Viajero) {
-        if (!esAmigo(viajero)) throw RuntimeException("Amigo inexistente")
+        if (!esAmigo(viajero)) throw BadRequestException("Amigo inexistente")
     }
 
     fun esAmigo(viajero: Viajero) = amigos.contains(viajero)
 
     fun validarSaldoSuficiente(costoDelViaje: Double) {
-        if (!saldoSuficiente(costoDelViaje)) throw Exception("Saldo insuficiente.")
+        if (!saldoSuficiente(costoDelViaje)) throw BadRequestException("Saldo insuficiente.")
 
     }
     fun saldoSuficiente(costoDelViaje: Double) = saldo >= costoDelViaje

@@ -208,7 +208,6 @@ class UbertoBootstrap(
         val conductorGuardado = conductorRepository.findById(conductor1.id)
         val viajeroGuardado = viajeroRepository.findById(viajero1.id)
 
-        // Crear varios viajes con fechas pasadas
         val viajePasado1 = Viaje(
             idViajero = viajeroGuardado.id,
             idConductor = conductorGuardado.id,

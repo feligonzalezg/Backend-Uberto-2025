@@ -12,9 +12,15 @@ class ComentarioService(
     val comentarioRepository: ComentarioRepository,
 ) {
 
+    fun getComentarioById(idComentario: Long) = comentarioRepository.findById(idComentario)
+
     fun calificar(calificacion: CalificacionDTO, viaje: Viaje): Comentario {
         val comentario = calificacion.toComentario(viaje)
         comentarioRepository.save(comentario)
         return comentario
+    }
+
+    fun eliminarComentario(comentario: Comentario) {
+        comentarioRepository.delete(comentario)
     }
 }

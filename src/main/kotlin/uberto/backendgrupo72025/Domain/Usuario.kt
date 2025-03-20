@@ -74,6 +74,10 @@ abstract class Usuario(
 //        if (!comentarioValido(comentario)) throw Exception("No se puede calificar")
         comentarios.add(comentario)
     }
+
+    fun eliminarComentario(comentario: Comentario) {
+        comentarios.remove(comentario)
+    }
 //
 //    private fun comentarioValido(comentario: Comentario): Boolean = !comentario.autor.esChofer
 

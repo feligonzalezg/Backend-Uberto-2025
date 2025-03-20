@@ -95,4 +95,9 @@ class UsuarioController(@Autowired val userService: UsuarioService) {
                        @RequestBody calificacion: CalificacionDTO) = userService.calificarViaje(id, calificacion)
 
 
+    @DeleteMapping("eliminarComentario/{id}/{idComentario}")
+    @Operation(summary = "Elimina un comentario realizado")
+    fun eliminarComentario(
+        @PathVariable id: Long,
+        @PathVariable idComentario: Long) = userService.eliminarComentario(id, idComentario)
 }

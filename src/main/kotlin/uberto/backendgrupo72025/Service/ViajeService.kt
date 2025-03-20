@@ -21,5 +21,7 @@ class ViajeService(
 
     fun getViajeById(idViaje: Long) = viajeRepository.findById(idViaje)
 
-
+    fun updateViaje(viaje: Viaje) {
+        viajeRepository.update(viaje)
+    }
 }

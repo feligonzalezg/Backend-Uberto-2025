@@ -1,12 +1,9 @@
 package uberto.backendgrupo72025.Service
 
-import uberto.backendgrupo72025.Domain.Viajero
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import uberto.backendgrupo72025.DTO.*
-import uberto.backendgrupo72025.Domain.BadRequestException
-import uberto.backendgrupo72025.Domain.UnauthorizedException
-import uberto.backendgrupo72025.Domain.Viaje
+import uberto.backendgrupo72025.Domain.*
 import uberto.backendgrupo72025.Repository.*
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
@@ -17,7 +14,8 @@ class UsuarioService(
     val viajeroRepository: ViajeroRepository,
     val conductorRepository: ConductorRepository,
     val viajeService: ViajeService,
-    val comentarioService: ComentarioService
+    val comentarioService: ComentarioService,
+    private val comentarioRepository: ComentarioRepository
 ) {
 
     fun getConductores() = conductorRepository.findAll()
@@ -99,7 +97,7 @@ class UsuarioService(
     fun getNombreConductor(id: Long) = getConductorById(id).nombreYApellido()
 
     fun getViajesPendientesByUsuario(id: Long, esChofer: Boolean): List<ViajeDTO> {
-        if (esChofer) throw BadRequestException("Inaccesible por conductores")
+//        if (esChofer) throw BadRequestException("Inaccesible por conductores")
         return getViajeroById(id).viajesPendientes().map { it.toViajeDTO(getNombreConductor(it.idConductor)) }
     }
 
@@ -147,6 +145,8 @@ class UsuarioService(
         val conductor = getConductorById(viaje.idConductor)
         validarPuedeCalificar(viajero, viaje)
         val comentario = comentarioService.calificar(calificacion, viaje)
+        viaje.puedeCalificar = false
+        viajeService.updateViaje(viaje)
         viajero.agregarComentario(comentario)
         conductor.agregarComentario(comentario)
         viajeroRepository.update(viajero)
@@ -164,5 +164,24 @@ class UsuarioService(
 
     fun validarNoCalificado(usuario: Viajero, viaje: Viaje) {
         if (usuario.comentarios.any { it.viaje.id == viaje.id }) throw BadRequestException("No se puede calificar el mismo viaje más de una vez.")
+    }
+
+    @Transactional
+    fun eliminarComentario(id: Long, idComentario: Long) {
+        val viajero = getViajeroById(id)
+        val comentario = comentarioService.getComentarioById(idComentario)
+        val conductor = getConductorById(comentario.viaje.idConductor)
+        validarEliminarComentario(viajero, comentario)
+        comentario.viaje.puedeCalificar = true
+        viajero.eliminarComentario(comentario)
+        conductor.eliminarComentario(comentario)
+        viajeService.updateViaje(comentario.viaje)
+        comentarioService.eliminarComentario(comentario)
+        viajeroRepository.update(viajero)
+        conductorRepository.update(conductor)
+    }
+
+    fun validarEliminarComentario(viajero: Viajero, comentario: Comentario) {
+        if (viajero.id != comentario.viaje.idViajero) throw BadRequestException("No se puede eliminar un comentario realizado por otro usuario")
     }
 }

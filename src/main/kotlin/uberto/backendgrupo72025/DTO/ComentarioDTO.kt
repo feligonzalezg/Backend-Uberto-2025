@@ -6,6 +6,7 @@ import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 data class ComentarioDTO(
+    val id: Long,
     val idViaje: Long,
     val nombre: String,
     val puntaje: Int,
@@ -14,6 +15,7 @@ data class ComentarioDTO(
 )
 
 fun Comentario.toComentarioDTO(nombre: String) = ComentarioDTO(
+    id = id,
     idViaje = viaje.id,
     nombre = nombre,
     puntaje = puntaje,

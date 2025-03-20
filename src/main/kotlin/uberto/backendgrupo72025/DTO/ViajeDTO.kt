@@ -17,6 +17,7 @@ data class ViajeDTO(
     val cantidadDePasajeros: Int,
     val duracion: Int,
     val importe: Double,
+    val puedeCalificar: Boolean,
 )
 
 fun ViajeDTO.toViaje() = Viaje(
@@ -40,7 +41,8 @@ fun Viaje.toViajeDTO(nombre: String) = ViajeDTO(
     fechaInicio = fechaInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
     cantidadDePasajeros = cantidadDePasajeros,
     duracion = duracion,
-    importe = importe
+    importe = importe,
+    puedeCalificar = puedeCalificar()
 )
 
 //data class ViajesDTO(

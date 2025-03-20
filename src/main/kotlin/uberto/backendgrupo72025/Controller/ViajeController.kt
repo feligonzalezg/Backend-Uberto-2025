@@ -11,9 +11,9 @@ import uberto.backendgrupo72025.Service.ViajeService
 
 @RestController
 @CrossOrigin("*")
-class Viajeontroller (
+class Viajeontroller(
     @Autowired val viajeService: ViajeService,
-    @Autowired val usuarioService : UsuarioService
+    @Autowired val usuarioService: UsuarioService
 ) {
 
     @PostMapping("/crearViaje")
@@ -28,4 +28,9 @@ class Viajeontroller (
     fun buscarViaje() = viajeService.buscar()
 
 
+    @GetMapping("/total-facturado/{idConductor}")
+    @Operation(summary = "Obtener total facturado de todos los viajes finalizados de un conductor")
+    fun getTotalFacturado(@PathVariable idConductor: Long): Double {
+        return viajeService.getTotalFacturado(idConductor)
+    }
 }

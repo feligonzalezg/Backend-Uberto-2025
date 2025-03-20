@@ -20,10 +20,10 @@ import java.time.LocalDateTime
 class UbertoBootstrap(
     val conductorRepository: ConductorRepository,
     val viajeroRepository: ViajeroRepository,
-    val vehiculoRepository : VehiculoRepository,
-    val comentarioRepository : ComentarioRepository,
-    val viajeRepository : ViajeRepository
-): InitializingBean {
+    val vehiculoRepository: VehiculoRepository,
+    val comentarioRepository: ComentarioRepository,
+    val viajeRepository: ViajeRepository
+) : InitializingBean {
 
     override fun afterPropertiesSet() {
         crearUsuarios()
@@ -31,6 +31,7 @@ class UbertoBootstrap(
         crearComentarios()
         crearChoferes()
         crearViaje()
+        crearViajesRealizados()
     }
 
     val viajero2 = Viajero(
@@ -141,7 +142,7 @@ class UbertoBootstrap(
     )
 
 
-    fun crearChoferes(){
+    fun crearChoferes() {
         conductorRepository.save(conductor1)
         conductorRepository.save(conductor2)
     }
@@ -156,6 +157,7 @@ class UbertoBootstrap(
         cantidadDePasajeros = 1,
         duracion = 10
     )
+
     // comentarios
     val comentario1 = Comentario(
         viaje = viaje1,
@@ -171,18 +173,19 @@ class UbertoBootstrap(
         fecha = LocalDate.of(2025, 3, 12)
     )
 
-     val comentario3 = Comentario(
+    val comentario3 = Comentario(
         viaje = viaje1,
         puntaje = 3,
         mensaje = "Viaje aceptable, pero el tiempo de espera fue demasiado largo.",
         fecha = LocalDate.of(2025, 3, 14)
     )
 
-    fun crearComentarios(){
+    fun crearComentarios() {
         comentarioRepository.save(comentario1)
         comentarioRepository.save(comentario2)
         comentarioRepository.save(comentario3)
     }
+
     fun crearViaje() {
         val conductorGuardado = conductorRepository.findById(conductor1.id)
         val viaje1 = Viaje(
@@ -190,14 +193,70 @@ class UbertoBootstrap(
             idConductor = conductorGuardado.id,
             origen = "Salta",
             destino = "Tucumán",
-            fechaInicio = LocalDateTime.of(2025, 3,20,10,0,0),
+            fechaInicio = LocalDateTime.of(2025, 3, 20, 10, 0, 0),
             cantidadDePasajeros = 1,
-            duracion = 10
+            duracion = 10,
+            importe = conductorGuardado.importeViaje(1, 10)
         )
         viajeRepository.save(viaje1)
         conductorGuardado.agregarViaje(viaje1)
         conductorRepository.update(conductorGuardado)
         viajeroRepository.update(viajero1)
+    }
+
+    fun crearViajesRealizados() {
+        val conductorGuardado = conductorRepository.findById(conductor1.id)
+        val viajeroGuardado = viajeroRepository.findById(viajero1.id)
+
+        val viajePasado1 = Viaje(
+            idViajero = viajeroGuardado.id,
+            idConductor = conductorGuardado.id,
+            origen = "Córdoba",
+            destino = "Rosario",
+            fechaInicio = LocalDateTime.of(2025, 1, 15, 8, 30, 0),
+            cantidadDePasajeros = 1,
+            duracion = 12,
+            importe = conductorGuardado.importeViaje(1, 12)
+        )
+
+        val viajePasado2 = Viaje(
+            idViajero = viajeroGuardado.id,
+            idConductor = conductorGuardado.id,
+            origen = "Mendoza",
+            destino = "San Juan",
+            fechaInicio = LocalDateTime.of(2025, 2, 20, 14, 0, 0),
+            cantidadDePasajeros = 2,
+            duracion = 8,
+            importe = conductorGuardado.importeViaje(2, 8)  // Calcular el importe
+        )
+
+        val viajePasado3 = Viaje(
+            idViajero = viajeroGuardado.id,
+            idConductor = conductorGuardado.id,
+            origen = "Buenos Aires",
+            destino = "La Plata",
+            fechaInicio = LocalDateTime.of(2025, 2, 10, 9, 15, 0),
+            cantidadDePasajeros = 1,
+            duracion = 5,
+            importe = conductorGuardado.importeViaje(1, 5)
+        )
+
+
+        viajeRepository.save(viajePasado1)
+        viajeRepository.save(viajePasado2)
+        viajeRepository.save(viajePasado3)
+
+        conductorGuardado.agregarViaje(viajePasado1)
+        conductorGuardado.agregarViaje(viajePasado2)
+        conductorGuardado.agregarViaje(viajePasado3)
+
+        viajeroGuardado.agregarViaje(viajePasado1)
+        viajeroGuardado.agregarViaje(viajePasado2)
+        viajeroGuardado.agregarViaje(viajePasado3)
+
+
+        conductorRepository.update(conductorGuardado)
+        viajeroRepository.update(viajeroGuardado)
     }
 
 }

@@ -33,4 +33,6 @@ class Viaje(
 
     fun puedeCalificar() = puedeCalificar
 
+    fun viajeFinalizado()= fechaFin()< LocalDateTime.now()
+
 }

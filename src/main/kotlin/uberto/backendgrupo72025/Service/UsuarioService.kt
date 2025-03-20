@@ -145,7 +145,7 @@ class UsuarioService(
         val conductor = getConductorById(viaje.idConductor)
         validarPuedeCalificar(viajero, viaje)
         val comentario = comentarioService.calificar(calificacion, viaje)
-        viaje.puedeCalificar = false
+        viaje.calificado = true
         viajeService.updateViaje(viaje)
         viajero.agregarComentario(comentario)
         conductor.agregarComentario(comentario)
@@ -172,7 +172,7 @@ class UsuarioService(
         val comentario = comentarioService.getComentarioById(idComentario)
         val conductor = getConductorById(comentario.viaje.idConductor)
         validarEliminarComentario(viajero, comentario)
-        comentario.viaje.puedeCalificar = true
+        comentario.viaje.calificado = false
         viajero.eliminarComentario(comentario)
         conductor.eliminarComentario(comentario)
         viajeService.updateViaje(comentario.viaje)

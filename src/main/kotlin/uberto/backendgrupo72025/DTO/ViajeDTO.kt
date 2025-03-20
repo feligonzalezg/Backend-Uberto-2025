@@ -42,7 +42,7 @@ fun Viaje.toViajeDTO(nombre: String) = ViajeDTO(
     cantidadDePasajeros = cantidadDePasajeros,
     duracion = duracion,
     importe = importe,
-    puedeCalificar = puedeCalificar()
+    puedeCalificar = puedeCalificar(),
 )
 
 //data class ViajesDTO(

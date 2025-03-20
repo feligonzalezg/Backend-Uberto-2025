@@ -3,6 +3,8 @@ package uberto.backendgrupo72025.Domain
 import uberto.backendgrupo72025.Repository.ItemRepo
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 class Viaje(
 //    var id: Long? = 0,
@@ -14,9 +16,10 @@ class Viaje(
     val cantidadDePasajeros: Int,
     val duracion: Int,
     var importe: Double = 0.0,
-    var puedeCalificar: Boolean = false,
 ): ItemRepo {
     override var id: Long = -1
+
+    var calificado: Boolean = false
 
     fun fechaFin() = fechaInicio.plus(duracion.toLong(), ChronoUnit.MINUTES)
 
@@ -31,6 +34,6 @@ class Viaje(
         return fechaNueva.isBefore(fechaFin()) && nuevaFechaFin.isAfter(fechaInicio)
     }
 
-    fun puedeCalificar() = puedeCalificar
+    fun puedeCalificar() = estaPendiente() && !calificado
 
 }

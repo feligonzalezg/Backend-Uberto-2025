@@ -99,7 +99,7 @@ class UsuarioService(
     fun getNombreConductor(id: Long) = getConductorById(id).nombreYApellido()
 
     fun getViajesPendientesByUsuario(id: Long, esChofer: Boolean): List<ViajeDTO> {
-        if (esChofer) throw BadRequestException("Inaccesible por conductores")
+//        if (esChofer) throw BadRequestException("Inaccesible por conductores")
         return getViajeroById(id).viajesPendientes().map { it.toViajeDTO(getNombreConductor(it.idConductor)) }
     }
 

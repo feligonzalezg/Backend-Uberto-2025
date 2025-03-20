@@ -93,6 +93,6 @@ class UsuarioController(@Autowired val userService: UsuarioService) {
     @Operation(summary = "Calificar un viaje realizado")
     fun calificarViaje(@PathVariable id: Long,
                        @RequestBody calificacion: CalificacionDTO) = userService.calificarViaje(id, calificacion)
+
+
 }
-
-

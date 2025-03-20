@@ -14,24 +14,21 @@ class Viaje(
     val cantidadDePasajeros: Int,
     val duracion: Int,
     var importe: Double = 0.0,
-    var puedeCalificar: Boolean = false,
 ): ItemRepo {
     override var id: Long = -1
 
-    fun fechaFin() = fechaInicio.plus(duracion.toLong(), ChronoUnit.MINUTES)
+    var tieneComentario: Boolean = false
 
-    fun fechaFin(fecha: LocalDateTime, duracion: Int) = fecha.plus(duracion.toLong(), ChronoUnit.MINUTES)
+    fun fechaFin(fechaInicio: LocalDateTime, duracion: Int) = fechaInicio.plus(duracion.toLong(), ChronoUnit.MINUTES)
 
-    fun estaPendiente(): Boolean {
-        return fechaFin() > LocalDateTime.now()
-    }
+    fun estaPendiente() = fechaFin(fechaInicio, duracion).isAfter(LocalDateTime.now())
 
     fun seSolapan(fechaNueva: LocalDateTime, duracion: Int): Boolean {
         val nuevaFechaFin = fechaFin(fechaNueva, duracion)
-        return fechaNueva.isBefore(fechaFin()) && nuevaFechaFin.isAfter(fechaInicio)
+        return fechaNueva.isBefore(fechaFin(fechaInicio, duracion)) && nuevaFechaFin.isAfter(fechaInicio)
     }
 
-    fun puedeCalificar() = puedeCalificar
+    fun puedeCalificar() = !estaPendiente() && !tieneComentario
 
     fun viajeFinalizado()= fechaFin()< LocalDateTime.now()
 

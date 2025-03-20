@@ -8,7 +8,7 @@ import uberto.backendgrupo72025.Repository.ViajeRepository
 
 @Service
 class ViajeService(
-    val viajeRepository:ViajeRepository
+    val viajeRepository: ViajeRepository
 ) {
 
     fun crearViaje(viajeDTO: ViajeDTO): Viaje {
@@ -24,4 +24,13 @@ class ViajeService(
     fun updateViaje(viaje: Viaje) {
         viajeRepository.update(viaje)
     }
+
+
+    fun getTotalFacturado(idConductor: Long): Double {
+        return viajeRepository.findAll()
+            .filter { it.viajeFinalizado() && it.idConductor == idConductor }
+            .sumOf { it.importe }
+    }
+
+
 }

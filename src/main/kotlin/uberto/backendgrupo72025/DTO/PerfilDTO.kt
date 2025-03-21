@@ -1,8 +1,6 @@
 package uberto.backendgrupo72025.DTO
 
-import uberto.backendgrupo72025.Domain.Conductor
-import uberto.backendgrupo72025.Domain.Usuario
-import uberto.backendgrupo72025.Domain.Viajero
+import uberto.backendgrupo72025.Domain.*
 
 interface PerfilDTO {
     val id: Long
@@ -39,7 +37,9 @@ data class PerfilChoferDTO(
     val precioBase: Double,
     val dominio: String,
     val descripcion: String,
-    val modelo: String
+    val modelo: String,
+    val anio: Int,
+    val tipo: String,
 ): PerfilDTO
 
 fun Conductor.toPerfilDTO() = PerfilChoferDTO(
@@ -50,7 +50,9 @@ fun Conductor.toPerfilDTO() = PerfilChoferDTO(
     precioBase = precioBaseDelViaje,
     dominio = vehiculo.patente,
     descripcion = vehiculo.marca,
-    modelo = vehiculo.modelo
+    modelo = vehiculo.modelo,
+    anio = vehiculo.anio,
+    tipo = vehiculo.tipoVehiculo().javaClass.simpleName.toString(),
 )
 
 

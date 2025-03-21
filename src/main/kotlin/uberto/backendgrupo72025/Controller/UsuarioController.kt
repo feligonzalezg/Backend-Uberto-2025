@@ -78,10 +78,10 @@ class UsuarioController(@Autowired val userService: UsuarioService) {
     ) = userService.eliminarAmigo(userId, friendId)
 
 
-    @PutMapping("/actualizarChofer/{id}")
-    @Operation(summary = "Actualiza los datos del chofer")
-    fun actualizarChofer(@PathVariable id: Long, @RequestBody choferDTO: ConductorDTO) =
-        userService.actualizarChofer(id, choferDTO)
+    @PatchMapping("/actualizarUsuario/{id}")
+    @Operation(summary = "Actualiza los datos del usuario")
+    fun actualizarUsuario(@PathVariable id: Long, @RequestBody usuarioDTO: UsuarioDTO) =
+        userService.actualizarUsuario(id, usuarioDTO)
 
 
     @GetMapping("/buscarAmigos/{id}")

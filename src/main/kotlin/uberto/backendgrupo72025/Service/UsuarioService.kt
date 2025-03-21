@@ -3,7 +3,6 @@ package uberto.backendgrupo72025.Service
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import uberto.backendgrupo72025.DTO.*
-import uberto.backendgrupo72025.Domain.Conductor
 import uberto.backendgrupo72025.Domain.*
 import uberto.backendgrupo72025.Repository.*
 import java.time.LocalDateTime
@@ -16,7 +15,7 @@ class UsuarioService(
     val conductorRepository: ConductorRepository,
     val viajeService: ViajeService,
     val comentarioService: ComentarioService,
-    private val comentarioRepository: ComentarioRepository
+    val vehiculoService: VehiculoService,
 ) {
 
     fun getConductores() = conductorRepository.findAll()
@@ -35,30 +34,60 @@ class UsuarioService(
         }
     }
 
+    @Transactional
+    fun actualizarUsuario(id: Long, usuarioDTO: UsuarioDTO): PerfilDTO {
+        return if (usuarioDTO.esChofer) {
+            actualizarChofer(id, usuarioDTO.toPerfilChoferDTO())
+        } else {
+            actualizarViajero(id, usuarioDTO.toPerfilViajeroDTO()) //CAMBIAR EN ESTA LINEA CHOFER POR VIAJERO
+        }
+    }
+
+    fun validarSeRealizaronCambios(usuario: Usuario, usuarioDTO: PerfilDTO, param1: Number, param2: Number) {
+        if (!seRealizaronCambios(usuario, usuarioDTO, param1, param2)) {
+            throw BadRequestException("No se realizó ningún cambio.")
+        }
+    }
+
+    fun seRealizaronCambios(usuario: Usuario, usuarioDTO: PerfilDTO, param1: Number, param2: Number) =
+        usuario.nombre != usuarioDTO.nombre || usuario.apellido != usuarioDTO.apellido || param1 != param2
+
     // viajero
     fun getViajeroById(id: Long) = viajeroRepository.findById(id)
 
     fun getAmigos(id: Long) = getViajeroById(id).amigos
 
+    fun actualizarViajero(id: Long, viajeroDTO: PerfilViajeroDTO): PerfilViajeroDTO {
+        val viajero = getViajeroById(id)
+        validarSeRealizaronCambios(viajero, viajeroDTO, viajero.telefono,viajeroDTO.telefono)
+        viajero.nombre = viajeroDTO.nombre
+        viajero.apellido = viajeroDTO.apellido
+        viajero.telefono = viajeroDTO.telefono
+        viajeroRepository.update(viajero)
+        return viajero.toPerfilDTO()
+    }
 
     //chofer
     fun getConductorById(id: Long) = conductorRepository.findById(id)
 
-    fun actualizarChofer(id: Long, choferDTO: ConductorDTO): Conductor {
-        val chofer = getConductorById(id)
-
-        val (nombre, apellido) = choferDTO.nombreYApellido.split(" ", limit = 2)
-
-        chofer.nombre = nombre
-        chofer.apellido = apellido
-        chofer.precioBaseDelViaje = choferDTO.importe
-        chofer.vehiculo.patente = choferDTO.patente
-        chofer.vehiculo.marca = choferDTO.marca
-        chofer.vehiculo.anio = choferDTO.modelo
-
-        conductorRepository.save(chofer)
-        return chofer
+    fun actualizarChofer(id: Long, choferDTO: PerfilChoferDTO): PerfilChoferDTO {
+        val conductor = getConductorById(id)
+        validarSeRealizaronCambiosConductor(conductor, choferDTO)
+        val nuevoVehiculo = vehiculoService.actualizarVehiculo(conductor, choferDTO)
+        conductor.nombre = choferDTO.nombre
+        conductor.apellido = choferDTO.apellido
+        conductor.precioBaseDelViaje = choferDTO.precioBase
+        conductor.vehiculo = nuevoVehiculo
+        conductorRepository.update(conductor)
+        return conductor.toPerfilDTO()
     }
+
+    fun validarSeRealizaronCambiosConductor(conductor: Conductor, choferDTO: PerfilChoferDTO) {
+        if(!seRealizaronCambios(conductor, choferDTO, conductor.precioBaseDelViaje, choferDTO.precioBase) &&
+            !vehiculoService.validarCambioVehiculo(conductor, choferDTO))
+            throw BadRequestException("No se realizaron cambios.")
+    }
+
 
 
     fun getComentarios(id: Long, esChofer: Boolean): List<ComentarioDTO> {

@@ -1,13 +1,12 @@
 package uberto.backendgrupo72025.Domain
 
-import TipoVehiculo
 import uberto.backendgrupo72025.Repository.ItemRepo
 import java.time.LocalDate
 
 class Vehiculo(
 //    var id: Long? = 0,
     var marca: String,
-    val modelo : String,
+    var modelo : String,
     var patente : String,
     var anio: Int,
     val tipoVehiculo : TipoVehiculo,
@@ -17,6 +16,12 @@ class Vehiculo(
     fun antiguedad(): Int = LocalDate.now().year - anio
 
     fun calculoPlusPorTipoVehiculo(cantidadDePasajeros: Int, duracion: Int): Double = tipoVehiculo.calculoPlus(cantidadDePasajeros, duracion)
+
+    fun tipoVehiculo(): TipoVehiculo {
+        return if (this.tipoVehiculo is Auto) {
+            if(antiguedad()>10) Simple else Ejecutivo
+        } else Moto
+    }
 
     fun validar() {
         validarMarca()

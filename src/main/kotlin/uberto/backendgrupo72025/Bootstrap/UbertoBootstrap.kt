@@ -1,16 +1,10 @@
 package uberto.backendgrupo72025.Bootstrap
 //
 //
-import Ejecutivo
-import Moto
-import Simple
-import uberto.backendgrupo72025.Domain.Viajero
+
+import uberto.backendgrupo72025.Domain.*
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.stereotype.Component
-import uberto.backendgrupo72025.Domain.Comentario
-import uberto.backendgrupo72025.Domain.Viaje
-import uberto.backendgrupo72025.Domain.Conductor
-import uberto.backendgrupo72025.Domain.Vehiculo
 import uberto.backendgrupo72025.Repository.*
 import java.time.LocalDate
 import java.time.LocalDateTime

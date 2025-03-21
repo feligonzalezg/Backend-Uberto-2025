@@ -30,6 +30,6 @@ class Viaje(
 
     fun puedeCalificar() = !estaPendiente() && !tieneComentario
 
-    fun viajeFinalizado()= fechaFin()< LocalDateTime.now()
+    //  fun viajeFinalizado()= fechaFin()< LocalDateTime.now()
 
 }

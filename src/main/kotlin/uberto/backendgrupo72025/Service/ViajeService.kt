@@ -28,7 +28,7 @@ class ViajeService(
 
     fun getTotalFacturado(idConductor: Long): Double {
         return viajeRepository.findAll()
-            .filter { it.viajeFinalizado() && it.idConductor == idConductor }
+            .filter { !(it.estaPendiente())&& it.idConductor == idConductor }
             .sumOf { it.importe }
     }
 

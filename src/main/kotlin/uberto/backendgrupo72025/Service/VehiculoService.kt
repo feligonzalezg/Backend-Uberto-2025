@@ -24,8 +24,8 @@ class VehiculoService(
 
     fun obtenerTipoVehiculo(nombre: String): TipoVehiculo {
         return when (nombre.trim().lowercase()) {
-            "auto" -> Simple
-            "auto ejecutivo" -> Ejecutivo
+            "simple" -> Simple
+            "ejecutivo" -> Ejecutivo
             "moto" -> Moto
             else -> throw BadRequestException("Tipo de vehículo inválido: $nombre")
         }
@@ -37,5 +37,5 @@ class VehiculoService(
 
     fun validarCambioVehiculo(conductor: Conductor, choferDTO: PerfilChoferDTO): Boolean =
         conductor.vehiculo.patente != choferDTO.dominio || conductor.vehiculo.marca != choferDTO.descripcion ||
-        conductor.vehiculo.modelo != choferDTO.modelo || conductor.vehiculo.tipoVehiculo.javaClass.simpleName.toString() != choferDTO.tipo
+        conductor.vehiculo.modelo != choferDTO.modelo || conductor.vehiculo.tipoVehiculo.javaClass.simpleName.toString().lowercase() != choferDTO.tipo.lowercase()
 }

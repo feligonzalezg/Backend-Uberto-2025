@@ -5,7 +5,7 @@ import uberto.backendgrupo72025.Domain.Viaje
 import java.time.format.DateTimeFormatter
 
 data class ComentarioDTO(
-    val id: Long,
+    val idComentario: Long,
     val idViaje: Long,
     val nombre: String,
     val estrellas: Int,
@@ -14,7 +14,7 @@ data class ComentarioDTO(
 )
 
 fun Comentario.toComentarioDTO(nombre: String) = ComentarioDTO(
-    id = id,
+    idComentario = id,
     idViaje = viaje.id,
     nombre = nombre,
     estrellas = estrellas,

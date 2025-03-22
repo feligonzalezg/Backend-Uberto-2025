@@ -11,7 +11,7 @@ import uberto.backendgrupo72025.Service.ViajeService
 
 @RestController
 @CrossOrigin("*")
-class Viajeontroller(
+class ViajeController(
     @Autowired val viajeService: ViajeService,
     @Autowired val usuarioService: UsuarioService
 ) {

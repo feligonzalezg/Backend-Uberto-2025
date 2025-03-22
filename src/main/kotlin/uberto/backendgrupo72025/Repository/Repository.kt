@@ -1,5 +1,7 @@
 package uberto.backendgrupo72025.Repository
 
+import uberto.backendgrupo72025.Domain.NotFoundException
+
 abstract class Repository<T : ItemRepo> {
     abstract val items: MutableSet<T>
 
@@ -21,7 +23,7 @@ abstract class Repository<T : ItemRepo> {
 
     fun update(item: T) {
         if (!itemExists(item)) {
-            throw Exception("No hay un item con ese ID en el repositorio.")
+            throw NotFoundException("No hay un item con ese ID en el repositorio.")
         }
 
         items.removeIf { it.id == item.id }
@@ -30,7 +32,7 @@ abstract class Repository<T : ItemRepo> {
 
     fun delete(item: T) {
         if (!itemExists(item)) {
-            throw Exception("No hay un item con ese ID en el repositorio.")
+            throw NotFoundException("No hay un item con ese ID en el repositorio.")
         }
         items.removeIf { it.id == item.id }
     }
@@ -39,7 +41,7 @@ abstract class Repository<T : ItemRepo> {
 
         val item = items.find { it.id == id }
         if (item == null && entityType == "") {
-            throw RuntimeException("El id buscado no existe")
+            throw NotFoundException("El id buscado no existe")
         }
         if (item == null) {
             throw RuntimeException(entityType)

@@ -59,7 +59,7 @@ class UsuarioService(
 
     fun actualizarViajero(id: Long, viajeroDTO: PerfilViajeroDTO): PerfilViajeroDTO {
         val viajero = getViajeroById(id)
-        validarSeRealizaronCambios(viajero, viajeroDTO, viajero.telefono,viajeroDTO.telefono)
+        validarSeRealizaronCambios(viajero, viajeroDTO, viajero.telefono, viajeroDTO.telefono)
         viajero.nombre = viajeroDTO.nombre
         viajero.apellido = viajeroDTO.apellido
         viajero.telefono = viajeroDTO.telefono
@@ -83,11 +83,11 @@ class UsuarioService(
     }
 
     fun validarSeRealizaronCambiosConductor(conductor: Conductor, choferDTO: PerfilChoferDTO) {
-        if(!seRealizaronCambios(conductor, choferDTO, conductor.precioBaseDelViaje, choferDTO.precioBase) &&
-            !vehiculoService.validarCambioVehiculo(conductor, choferDTO))
+        if (!seRealizaronCambios(conductor, choferDTO, conductor.precioBaseDelViaje, choferDTO.precioBase) &&
+            !vehiculoService.validarCambioVehiculo(conductor, choferDTO)
+        )
             throw BadRequestException("No se realizaron cambios.")
     }
-
 
 
     fun getComentarios(id: Long, esChofer: Boolean): List<ComentarioDTO> {
@@ -102,7 +102,14 @@ class UsuarioService(
 
 
     fun getChoferesDisponibles(busquedaDTO: BusquedaDTO) =
-        getConductores().filter { it.disponible(LocalDateTime.parse(busquedaDTO.fecha, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")), busquedaDTO.duracion) }
+        getConductores().filter {
+            it.disponible(
+                LocalDateTime.parse(
+                    busquedaDTO.fecha,
+                    DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")
+                ), busquedaDTO.duracion
+            )
+        }
             .map { it.toConductorDTO(busquedaDTO.cantidadDePasajeros, busquedaDTO.duracion) }
 
     @Transactional
@@ -170,7 +177,10 @@ class UsuarioService(
         val conductor = getConductorById(id)
         val viajesPendientes = conductor.viajesPendientes()
         return viajesPendientes.filter {
-            (filtroDTO.usernameViajero.isBlank() || getViajeroById(it.idViajero).username.contains(filtroDTO.usernameViajero, ignoreCase = true)) &&
+            (filtroDTO.usernameViajero.isBlank() || getViajeroById(it.idViajero).username.contains(
+                filtroDTO.usernameViajero,
+                ignoreCase = true
+            )) &&
                     (filtroDTO.origen.isBlank() || it.origen.contains(filtroDTO.origen, ignoreCase = true)) &&
                     (filtroDTO.destino.isBlank() || it.destino.contains(filtroDTO.destino, ignoreCase = true)) &&
                     (filtroDTO.cantidadDePasajeros == 0 || it.cantidadDePasajeros == filtroDTO.cantidadDePasajeros)
@@ -179,8 +189,9 @@ class UsuarioService(
 
     fun getViajerosParaAgregarAmigo(id: Long, query: String): List<AmigoDTO> {
         val amigos = getViajeroById(id).amigos
-        return getViajeros().filter { !amigos.contains(it) &&
-                            (it.nombreYApellido().contains(query, ignoreCase = true) ||
+        return getViajeros().filter {
+            !amigos.contains(it) &&
+                    (it.nombreYApellido().contains(query, ignoreCase = true) ||
                             it.username.contains(query, ignoreCase = true))
         }.map { it.toAmigoDTO() }
     }
@@ -231,5 +242,21 @@ class UsuarioService(
 
     fun validarEliminarComentario(viajero: Viajero, comentario: Comentario) {
         if (viajero.id != comentario.viaje.idViajero) throw BadRequestException("No se puede eliminar un comentario realizado por otro usuario")
+    }
+
+    fun cargarSaldo(id: Long, esChofer: Boolean, monto: Double): String {
+        if (monto <= 0 || monto != monto.toLong().toDouble()) {
+            throw RuntimeException("El monto debe ser un número entero positivo.")
+        }
+        val usuario = viajeroRepository.findById(id) ?: throw RuntimeException("Usuario no encontrado")
+
+        if (esChofer) {
+            throw RuntimeException("Los choferes no pueden cargar saldo")
+        }
+
+        usuario.saldo = (usuario.saldo ?: 0.0) + monto
+        viajeroRepository.update(usuario)
+
+        return "Saldo cargado exitosamente"
     }
 }

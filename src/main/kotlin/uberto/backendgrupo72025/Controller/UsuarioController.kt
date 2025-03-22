@@ -35,8 +35,10 @@ class UsuarioController(@Autowired val userService: UsuarioService) {
 
     @PostMapping("/filtrar/{id}")
     @Operation(summary = "Devuelve los viajes pendientes filtrados para el home chofer")
-    fun getViajesFiltrados(@PathVariable id: Long,
-                           @RequestBody filtroDTO: FiltroDTO) = userService.getViajesConductorFiltrados(id, filtroDTO)
+    fun getViajesFiltrados(
+        @PathVariable id: Long,
+        @RequestBody filtroDTO: FiltroDTO
+    ) = userService.getViajesConductorFiltrados(id, filtroDTO)
 
     @GetMapping("/comentario/{id}")
     @Operation(summary = "Devuelve los comentarios por usuario")
@@ -66,8 +68,9 @@ class UsuarioController(@Autowired val userService: UsuarioService) {
 
     @GetMapping("/viajesPendientes/{id}")
     @Operation(summary = "Devuelve los viajes Pendientes")
-    fun getViajesPendientesPorUsuario(@PathVariable id: Long,
-                                      @RequestParam esChofer: Boolean
+    fun getViajesPendientesPorUsuario(
+        @PathVariable id: Long,
+        @RequestParam esChofer: Boolean
     ) = userService.getViajesPendientesByUsuario(id, esChofer)
 
     @DeleteMapping("/eliminarAmigo/{userId}/{friendId}")
@@ -88,7 +91,8 @@ class UsuarioController(@Autowired val userService: UsuarioService) {
     @Operation(summary = "Busca los usuarios para agregar como amigos")
     fun buscarAmigos(
         @PathVariable id: Long,
-        @RequestParam query: String) = userService.getViajerosParaAgregarAmigo(id, query)
+        @RequestParam query: String
+    ) = userService.getViajerosParaAgregarAmigo(id, query)
 
 
     @PutMapping("/agregarAmigo/{userId}/{friendId}")
@@ -100,13 +104,24 @@ class UsuarioController(@Autowired val userService: UsuarioService) {
 
     @PostMapping("/calificar/{id}")
     @Operation(summary = "Calificar un viaje realizado")
-    fun calificarViaje(@PathVariable id: Long,
-                       @RequestBody calificacion: CalificacionDTO) = userService.calificarViaje(id, calificacion)
+    fun calificarViaje(
+        @PathVariable id: Long,
+        @RequestBody calificacion: CalificacionDTO
+    ) = userService.calificarViaje(id, calificacion)
 
 
     @DeleteMapping("eliminarComentario/{id}/{idComentario}")
     @Operation(summary = "Elimina un comentario realizado")
     fun eliminarComentario(
         @PathVariable id: Long,
-        @PathVariable idComentario: Long) = userService.eliminarComentario(id, idComentario)
+        @PathVariable idComentario: Long
+    ) = userService.eliminarComentario(id, idComentario)
+
+    @PostMapping("/cargarSaldo/{id}")
+    @Operation(summary = "Carga saldo a un usuario")
+    fun cargarSaldo(
+        @PathVariable id: Long,
+        @RequestParam esChofer: Boolean,
+        @RequestParam monto: Double
+    ) = userService.cargarSaldo(id, esChofer, monto)
 }

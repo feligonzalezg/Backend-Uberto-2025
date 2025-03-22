@@ -232,4 +232,14 @@ class UsuarioService(
     fun validarEliminarComentario(viajero: Viajero, comentario: Comentario) {
         if (viajero.id != comentario.viaje.idViajero) throw BadRequestException("No se puede eliminar un comentario realizado por otro usuario")
     }
+    fun cargarSaldo(id: Long, esChofer: Boolean, monto: Double): String {
+        val usuario = viajeroRepository.findById(id)
+        if (!esChofer) {
+            usuario.saldo = (usuario.saldo ?: 0.0) + monto
+            viajeroRepository.update(usuario)
+            return "Saldo cargado exitosamente"
+        } else {
+            throw RuntimeException("Los choferes no pueden cargar saldo")
+        }
+    }
 }

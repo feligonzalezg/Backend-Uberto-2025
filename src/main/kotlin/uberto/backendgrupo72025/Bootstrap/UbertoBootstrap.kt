@@ -34,9 +34,7 @@ class UbertoBootstrap(
         edad = 34,
         username = "mariag",
         contrasenia = "secure456",
-        viajes = mutableListOf(),
         telefono = 987654321,
-        comentarios = mutableListOf(), // Lista vacía por ahora
         esChofer = false,
         saldo = 2300.75,
         amigos = mutableListOf(), // Lista vacía por ahora
@@ -48,12 +46,10 @@ class UbertoBootstrap(
         username = "juanp",
         contrasenia = "pass123",
         edad = 28,
-        viajes = mutableListOf(),
         telefono = 123456789,
-        comentarios = mutableListOf(), // Lista vacía por ahora
         esChofer = false,
         saldo = 1500.50,
-        amigos = mutableListOf(viajero2), // Lista vacía por ahora
+        amigos = mutableListOf(), // Lista vacía por ahora
     )
 
     val viajero3 = Viajero(
@@ -62,9 +58,7 @@ class UbertoBootstrap(
         edad = 23,
         username = "carlosl",
         contrasenia = "mypwd789",
-        viajes = mutableListOf(),
         telefono = 456789123,
-        comentarios = mutableListOf(), // Lista vacía por ahora
         esChofer = false,
         saldo = 800.25,
         amigos = mutableListOf(), // Lista vacía por ahora
@@ -76,9 +70,7 @@ class UbertoBootstrap(
         edad = 41,
         username = "anam",
         contrasenia = "password1",
-        viajes = mutableListOf(),
         telefono = 321654987,
-        comentarios = mutableListOf(), // Lista vacía por ahora
         esChofer = false,
         saldo = 3500.00,
         amigos = mutableListOf(), // Lista vacía por ahora
@@ -113,9 +105,7 @@ class UbertoBootstrap(
         edad = 35,
         username = "juanp123",
         contrasenia = "pass1234",
-        viajes = mutableListOf(), // Lista vacía por ahora
         telefono = 123456789,
-        comentarios = mutableListOf(), // Lista vacía por ahora
         esChofer = true,
         autoEjecutivo,
         precioBaseDelViaje = 500.0
@@ -127,9 +117,7 @@ class UbertoBootstrap(
         edad = 28,
         username = "mariagomez",
         contrasenia = "secure5678",
-        viajes = mutableListOf(),
         telefono = 987654321,
-        comentarios = mutableListOf(),
         esChofer = true,
         autoSimple,
         precioBaseDelViaje = 450.0
@@ -143,8 +131,8 @@ class UbertoBootstrap(
 
 
     val viaje1 = Viaje(
-        idViajero = viajero1.id,
-        idConductor = conductor1.id,
+        viajero = viajero1,
+        conductor = conductor1,
         origen = "Salta",
         destino = "Tucumán",
         fechaInicio = LocalDateTime.now(),
@@ -181,76 +169,57 @@ class UbertoBootstrap(
     }
 
     fun crearViaje() {
-        val conductorGuardado = conductorRepository.findById(conductor1.id)
         val viaje1 = Viaje(
-            idViajero = viajero1.id,
-            idConductor = conductorGuardado.id,
+            viajero = viajero1,
+            conductor = conductor1,
             origen = "Salta",
             destino = "Tucumán",
             fechaInicio = LocalDateTime.of(2025, 3, 20, 10, 0, 0),
             cantidadDePasajeros = 1,
-            duracion = 10,
-            importe = conductorGuardado.importeViaje(1, 10)
+            duracion = 10
         )
         viajeRepository.save(viaje1)
-        conductorGuardado.agregarViaje(viaje1)
-        conductorRepository.update(conductorGuardado)
         viajeroRepository.update(viajero1)
     }
 
     fun crearViajesRealizados() {
-        val conductorGuardado = conductorRepository.findById(conductor1.id)
-        val viajeroGuardado = viajeroRepository.findById(viajero1.id)
 
         val viajePasado1 = Viaje(
-            idViajero = viajeroGuardado.id,
-            idConductor = conductorGuardado.id,
+            viajero = viajero1,
+            conductor = conductor2,
             origen = "Córdoba",
             destino = "Rosario",
             fechaInicio = LocalDateTime.of(2025, 1, 15, 8, 30, 0),
             cantidadDePasajeros = 1,
             duracion = 12,
-            importe = conductorGuardado.importeViaje(1, 12)
+            importe = conductor2.importeViaje(1, 12)
         )
 
         val viajePasado2 = Viaje(
-            idViajero = viajeroGuardado.id,
-            idConductor = conductorGuardado.id,
+            viajero = viajero1,
+            conductor = conductor1,
             origen = "Mendoza",
             destino = "San Juan",
             fechaInicio = LocalDateTime.of(2025, 2, 20, 14, 0, 0),
             cantidadDePasajeros = 2,
             duracion = 8,
-            importe = conductorGuardado.importeViaje(2, 8)  // Calcular el importe
+            importe = conductor1.importeViaje(2, 8)  // Calcular el importe
         )
 
         val viajePasado3 = Viaje(
-            idViajero = viajeroGuardado.id,
-            idConductor = conductorGuardado.id,
+            viajero = viajero1,
+            conductor = conductor2,
             origen = "Buenos Aires",
             destino = "La Plata",
             fechaInicio = LocalDateTime.of(2025, 2, 10, 9, 15, 0),
             cantidadDePasajeros = 1,
             duracion = 5,
-            importe = conductorGuardado.importeViaje(1, 5)
+            importe = conductor2.importeViaje(1, 5)
         )
-
 
         viajeRepository.save(viajePasado1)
         viajeRepository.save(viajePasado2)
         viajeRepository.save(viajePasado3)
-
-        conductorGuardado.agregarViaje(viajePasado1)
-        conductorGuardado.agregarViaje(viajePasado2)
-        conductorGuardado.agregarViaje(viajePasado3)
-
-        viajeroGuardado.agregarViaje(viajePasado1)
-        viajeroGuardado.agregarViaje(viajePasado2)
-        viajeroGuardado.agregarViaje(viajePasado3)
-
-
-        conductorRepository.update(conductorGuardado)
-        viajeroRepository.update(viajeroGuardado)
     }
 
 }

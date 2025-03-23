@@ -8,13 +8,11 @@ class Viajero(
     edad: Int,
     username: String,
     contrasenia: String,
-    viajes: MutableList<Viaje> = mutableListOf(),
     telefono: Int,
-    comentarios: MutableList<Comentario> = mutableListOf(),
     esChofer: Boolean,
     var saldo: Double,
     val amigos: MutableList<Viajero> = mutableListOf()
-) : Usuario(nombre, apellido, edad, username, contrasenia, viajes, telefono, comentarios, esChofer) {
+) : Usuario(nombre, apellido, edad, username, contrasenia, telefono, esChofer) {
 
 
     override fun validacionesPorUsuario() {
@@ -58,7 +56,6 @@ class Viajero(
 
     fun contratarViaje(viaje: Viaje) {
         descontarSaldo(viaje.importe)
-        agregarViaje(viaje)
     }
 
     fun descontarSaldo(costoDelViaje: Double) { saldo -= costoDelViaje }

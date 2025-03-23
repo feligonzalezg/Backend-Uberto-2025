@@ -11,9 +11,7 @@ abstract class Usuario(
     var edad: Int,
     val username: String,
     val contrasenia: String,
-    val viajes: MutableList<Viaje> = mutableListOf(),
     var telefono: Int,
-    val comentarios: MutableList<Comentario> = mutableListOf(),
     val esChofer : Boolean = false
 ): ItemRepo {
     override var id: Long = -1
@@ -67,26 +65,4 @@ abstract class Usuario(
         validarTelefono()
         validacionesPorUsuario()
     }
-
-
-
-    fun agregarComentario(comentario: Comentario) {
-//        if (!comentarioValido(comentario)) throw Exception("No se puede calificar")
-        comentarios.add(comentario)
-    }
-
-    fun eliminarComentario(comentario: Comentario) {
-        comentarios.remove(comentario)
-    }
-//
-//    private fun comentarioValido(comentario: Comentario): Boolean = !comentario.autor.esChofer
-
-    fun agregarViaje(viaje: Viaje) {
-        viajes.add(viaje)
-    }
-
-    fun viajesRealizados() = viajes.filter { !it.estaPendiente() }
-
-    fun viajesPendientes() = viajes.filter { it.estaPendiente() }
-
 }

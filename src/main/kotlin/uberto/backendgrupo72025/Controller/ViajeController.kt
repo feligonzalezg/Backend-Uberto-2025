@@ -3,8 +3,9 @@ package uberto.backendgrupo72025.Controller
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
+import uberto.backendgrupo72025.DTO.BusquedaDTO
+import uberto.backendgrupo72025.DTO.FiltroDTO
 import uberto.backendgrupo72025.DTO.ViajeDTO
-import uberto.backendgrupo72025.DTO.toViaje
 import uberto.backendgrupo72025.Service.UsuarioService
 import uberto.backendgrupo72025.Service.ViajeService
 
@@ -16,17 +17,30 @@ class ViajeController(
     @Autowired val usuarioService: UsuarioService
 ) {
 
-    @PostMapping("/crearViaje")
-    @Operation(summary = "crear viaje")
-    fun crearViaje(@RequestBody viajeDTO: ViajeDTO) {
-        //viajero.contratarViaje()
-        viajeService.crearViaje(viajeDTO)
-    }
-
     @GetMapping("/perfil/viajes")
     @Operation(summary = "crear viaje")
-    fun buscarViaje() = viajeService.buscar()
+    fun getAllViajes() = viajeService.getAllViajes()
 
+    @PostMapping("/filtrar/{id}")
+    @Operation(summary = "Devuelve los viajes pendientes filtrados para el home chofer")
+    fun getViajesFiltrados(
+        @PathVariable id: Long,
+        @RequestBody filtroDTO: FiltroDTO
+    ) = viajeService.getViajesConductorFiltrados(id, filtroDTO)
+
+    @GetMapping("/viajesRealizados/{idUsuario}")
+    @Operation(summary = "Devuelve los viajes realizados")
+    fun getViajesRealizadosPorUsuario(
+        @PathVariable idUsuario: Long,
+        @RequestParam esChofer: Boolean
+    ) = viajeService.getViajesRealizadosByUsuario(idUsuario, esChofer)
+
+    @GetMapping("/viajesPendientes/{idUsuario}")
+    @Operation(summary = "Devuelve los viajes Pendientes")
+    fun getViajesPendientesPorUsuario(
+        @PathVariable idUsuario: Long,
+        @RequestParam esChofer: Boolean
+    ) = viajeService.getViajesPendientesByUsuario(idUsuario, esChofer)
 
     @GetMapping("/total-facturado/{idConductor}")
     @Operation(summary = "Obtener total facturado de todos los viajes finalizados de un conductor")

@@ -2,6 +2,7 @@ package uberto.backendgrupo72025.DTO
 
 import uberto.backendgrupo72025.Domain.Conductor
 import uberto.backendgrupo72025.Domain.Viaje
+import uberto.backendgrupo72025.Domain.Viajero
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -21,9 +22,9 @@ data class ViajeDTO(
     val fechaFin: String,
 )
 
-fun ViajeDTO.toViaje() = Viaje(
-    idViajero = idViajero,
-    idConductor = idConductor,
+fun ViajeDTO.toViaje(viajero: Viajero, conductor: Conductor) = Viaje(
+    viajero = viajero,
+    conductor = conductor,
     origen = origen,
     destino =  destino,
     fechaInicio = LocalDateTime.parse(fechaInicio, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
@@ -34,8 +35,8 @@ fun ViajeDTO.toViaje() = Viaje(
 
 fun Viaje.toViajeDTO(nombre: String) = ViajeDTO(
     id = id,
-    idViajero = idViajero,
-    idConductor = idConductor,
+    idViajero = viajero.id,
+    idConductor = conductor.id,
     nombre = nombre,
     origen = origen,
     destino =  destino,
@@ -46,31 +47,3 @@ fun Viaje.toViajeDTO(nombre: String) = ViajeDTO(
     puedeCalificar = puedeCalificar(),
     fechaFin = fechaFin(fechaInicio, duracion).format(DateTimeFormatter.ofPattern("HH:mm")),
 )
-
-//data class ViajesDTO(
-//    val viajesRealizados: List<ViajePerfilDTO>
-//    val viajesPendientes: List<ViajePerfilDTO>,
-//)
-//
-//data class ViajeCardDTO(
-//    val id: Long,
-//    val conductor: String,
-//    val viajero: String,
-//    val origen: String,
-//    val destino: String,
-//    val fechaInicio: String,
-//    val cantidadDePasajeros: Int,
-//    val importe: Double
-//)
-//
-//fun Viaje.toViajeCardDTO(conductor: Conductor) = ViajeCardDTO(
-//    id = id,
-//    conductor = "${conductor.nombre} ${conductor.apellido}",
-//    viajero = "${conductor.nombre} ${conductor.apellido}",
-//    origen = origen,
-//    destino = destino,
-//    fechaInicio = fechaInicio.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
-//    cantidadDePasajeros = cantidadDePasajeros,
-//    importe = importe
-//)
-

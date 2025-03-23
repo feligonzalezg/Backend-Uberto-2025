@@ -6,8 +6,8 @@ import java.time.temporal.ChronoUnit
 
 class Viaje(
 //    var id: Long? = 0,
-    val idViajero: Long,
-    val idConductor: Long,
+    val viajero: Viajero,
+    val conductor: Conductor,
     val origen: String,
     val destino: String,
     val fechaInicio: LocalDateTime,
@@ -21,15 +21,15 @@ class Viaje(
 
     fun fechaFin(fechaInicio: LocalDateTime, duracion: Int) = fechaInicio.plus(duracion.toLong(), ChronoUnit.MINUTES)
 
-    fun estaPendiente() = fechaFin(fechaInicio, duracion).isAfter(LocalDateTime.now())
+    fun viajePendiente() = fechaFin(fechaInicio, duracion).isAfter(LocalDateTime.now())
+
+    fun viajeFinalizado()= !viajePendiente()
 
     fun seSolapan(fechaNueva: LocalDateTime, duracion: Int): Boolean {
         val nuevaFechaFin = fechaFin(fechaNueva, duracion)
         return fechaNueva.isBefore(fechaFin(fechaInicio, duracion)) && nuevaFechaFin.isAfter(fechaInicio)
     }
 
-    fun puedeCalificar() = !estaPendiente() && !tieneComentario
-
-    //  fun viajeFinalizado()= fechaFin()< LocalDateTime.now()
+    fun puedeCalificar() = !viajePendiente() && !tieneComentario
 
 }

@@ -14,7 +14,6 @@ data class ConductorDTO(
     val modelo: Int
 )
 
-
 fun Conductor.toConductorDTO(cantidadDePasajeros: Int, duracion: Int, calificacion: Double) = ConductorDTO(
         idConductor = id,
         nombreYApellido = "$nombre $apellido",

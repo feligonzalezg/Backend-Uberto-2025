@@ -2,10 +2,12 @@ package uberto.backendgrupo72025.Controller
 
 import io.swagger.v3.oas.annotations.Operation
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import uberto.backendgrupo72025.DTO.BusquedaDTO
 import uberto.backendgrupo72025.DTO.FiltroDTO
 import uberto.backendgrupo72025.DTO.ViajeDTO
+import uberto.backendgrupo72025.DTO.ViajesCompletadosDTO
 import uberto.backendgrupo72025.Service.UsuarioService
 import uberto.backendgrupo72025.Service.ViajeService
 

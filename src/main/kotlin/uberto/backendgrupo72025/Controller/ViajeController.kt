@@ -49,11 +49,4 @@ class ViajeController(
     fun getTotalFacturado(@PathVariable idConductor: Long): Double {
         return viajeService.getTotalFacturado(idConductor)
     }
-
-    @GetMapping("/viajes-completados/{idConductor}")
-    fun getViajesCompletados(@PathVariable idConductor: Long): ResponseEntity<ViajesCompletadosDTO> {
-        val resultado = viajeService.getViajesCompletados(idConductor)
-        return ResponseEntity.ok(resultado)
-    }
-
 }

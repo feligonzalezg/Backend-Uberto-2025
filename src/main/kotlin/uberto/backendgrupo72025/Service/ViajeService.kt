@@ -37,12 +37,16 @@ class ViajeService(
         viajeRepository.update(viaje)
     }
 
-    fun getViajesRealizadosByUsuario(idUsuario: Long, esChofer: Boolean): List<ViajeDTO> {
-        return if (esChofer) {
-            getViajesRealizados(getViajesByConductorId(idUsuario)).map { it.toViajeDTO(it.viajero.nombreYApellido()) }
+    fun getViajesRealizadosByUsuario(idUsuario: Long, esChofer: Boolean): ViajesCompletadosDTO {
+        lateinit var viajesRealizados: List<ViajeDTO>
+        var totalFacturado = 0.0
+         if (esChofer) {
+             viajesRealizados = getViajesRealizados(getViajesByConductorId(idUsuario)).map { it.toViajeDTO(it.viajero.nombreYApellido()) }
+             totalFacturado = viajesRealizados.sumOf { it.importe }
         } else {
-            getViajesRealizados(getViajesByViajeroId(idUsuario)).map { it.toViajeDTO(it.conductor.nombreYApellido()) }
+             viajesRealizados = getViajesRealizados(getViajesByViajeroId(idUsuario)).map { it.toViajeDTO(it.conductor.nombreYApellido()) }
         }
+        return ViajesCompletadosDTO(viajesRealizados, totalFacturado)
     }
 
     fun getViajesPendientesByUsuario(idUsuario: Long, esChofer: Boolean): List<ViajeDTO> {
@@ -68,14 +72,4 @@ class ViajeService(
             .filter { it.viajeFinalizado() && it.conductor.id == idConductor }
             .sumOf { it.importe }
     }
-
-    fun getViajesCompletados(idConductor: Long): ViajesCompletadosDTO {
-        val viajesRealizados = getViajesRealizados(getViajesByConductorId(idConductor))
-            .map { it.toViajeDTO(it.viajero.nombreYApellido()) }
-
-        val totalFacturado = viajesRealizados.sumOf { it.importe }
-
-        return ViajesCompletadosDTO(viajesRealizados, totalFacturado)
-    }
-
 }

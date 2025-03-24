@@ -68,4 +68,14 @@ class ViajeService(
             .filter { it.viajeFinalizado() && it.conductor.id == idConductor }
             .sumOf { it.importe }
     }
+
+    fun getViajesCompletados(idConductor: Long): ViajesCompletadosDTO {
+        val viajesRealizados = getViajesRealizados(getViajesByConductorId(idConductor))
+            .map { it.toViajeDTO(it.viajero.nombreYApellido()) }
+
+        val totalFacturado = viajesRealizados.sumOf { it.importe }
+
+        return ViajesCompletadosDTO(viajesRealizados, totalFacturado)
+    }
+
 }

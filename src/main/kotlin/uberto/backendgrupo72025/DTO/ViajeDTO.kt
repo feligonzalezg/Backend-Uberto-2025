@@ -21,6 +21,11 @@ data class ViajeDTO(
     val puedeCalificar: Boolean,
     val fechaFin: String,
 )
+data class ViajesCompletadosDTO(
+    val viajesRealizados: List<ViajeDTO>,
+    val totalFacturado: Double
+)
+
 
 fun ViajeDTO.toViaje(viajero: Viajero, conductor: Conductor) = Viaje(
     viajero = viajero,

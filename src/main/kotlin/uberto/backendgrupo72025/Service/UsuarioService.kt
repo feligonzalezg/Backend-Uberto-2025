@@ -130,11 +130,11 @@ class UsuarioService(
 
     fun cargarSaldo(id: Long, esChofer: Boolean, monto: Double): String {
         if (monto <= 0 || monto != monto.toLong().toDouble()) {
-            throw RuntimeException("El monto debe ser un número entero positivo.")
+            throw BadRequestException("El monto debe ser un número entero positivo.")
         }
         val usuario = viajeroRepository.findById(id)
         if (esChofer) {
-            throw RuntimeException("Los choferes no pueden cargar saldo")
+            throw BadRequestException("Los choferes no pueden cargar saldo")
         }
         usuario.agregarSaldo(monto)
         viajeroRepository.update(usuario)

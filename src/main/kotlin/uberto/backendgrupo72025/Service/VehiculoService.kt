@@ -31,10 +31,12 @@ class VehiculoService(
     }
 
     fun actualizarVehiculo(conductor: Conductor, choferDTO: PerfilChoferDTO): Vehiculo {
-        return createVehiculo(choferDTO.dominio, choferDTO.descripcion, choferDTO.modelo, choferDTO.anio, choferDTO.tipo)
+        return createVehiculo(choferDTO.dominio, choferDTO.marca, choferDTO.modelo, choferDTO.anio, choferDTO.tipo)
     }
 
     fun validarCambioVehiculo(conductor: Conductor, choferDTO: PerfilChoferDTO): Boolean =
-        conductor.vehiculo.dominio != choferDTO.dominio || conductor.vehiculo.marca != choferDTO.descripcion ||
-        conductor.vehiculo.modelo != choferDTO.modelo || conductor.vehiculo.tipoVehiculo.javaClass.simpleName.toString().lowercase() != choferDTO.tipo.lowercase()
+        conductor.vehiculo.dominio != choferDTO.dominio ||
+        conductor.vehiculo.marca != choferDTO.marca ||
+        conductor.vehiculo.modelo != choferDTO.modelo || conductor.vehiculo.tipoVehiculo.javaClass.simpleName.toString().lowercase() != choferDTO.tipo.lowercase() ||
+        conductor.vehiculo.anio != choferDTO.anio
 }

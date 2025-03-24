@@ -7,7 +7,7 @@ class Vehiculo(
 //    var id: Long? = 0,
     var marca: String,
     var modelo : String,
-    var patente : String,
+    var dominio: String,
     var anio: Int,
     val tipoVehiculo : TipoVehiculo,
 ) : ItemRepo {
@@ -26,7 +26,7 @@ class Vehiculo(
     fun validar() {
         validarMarca()
         validarModelo()
-        validarPatente()
+        validarDominio()
         validarAnio()
         tipoVehiculo.validaLaCondicion(this)
     }
@@ -41,9 +41,9 @@ class Vehiculo(
         if (!esValidoModelo()) throw RuntimeException("El modelo del vehículo esta vacio")
     }
 
-    fun esValidoPatente() = patente.isNotEmpty()
-    fun validarPatente() {
-        if (!esValidoPatente()) throw RuntimeException("La patente del vehículo esta vacia")
+    fun esValidoDominio() = dominio.isNotEmpty()
+    fun validarDominio() {
+        if (!esValidoDominio()) throw RuntimeException("El dominio del vehículo esta vacia")
     }
 
     fun esValidoAnio() = anio >= 1867

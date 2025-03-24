@@ -6,21 +6,21 @@ import uberto.backendgrupo72025.Service.ComentarioService
 data class ConductorDTO(
     val idConductor: Long,
     val nombreYApellido: String,
-    val patente: String,
-    val movil: String,
+    val dominio: String,
+    val modelo: String,
     val calificacion: Double,
     val importe: Double,
     val marca: String,
-    val modelo: Int
+    val anio: Int
 )
 
 fun Conductor.toConductorDTO(cantidadDePasajeros: Int, duracion: Int, calificacion: Double) = ConductorDTO(
         idConductor = id,
-        nombreYApellido = "$nombre $apellido",
-        patente = vehiculo.patente,
-        movil = "${vehiculo.marca} | ${vehiculo.modelo}",
+        nombreYApellido = nombreYApellido(),
+        dominio = vehiculo.dominio,
+        marca = vehiculo.marca,
+        modelo = vehiculo.modelo,
+        anio = vehiculo.anio,
         calificacion = calificacion,
         importe = importeViaje(cantidadDePasajeros, duracion),
-        marca = vehiculo.marca,
-        modelo = vehiculo.anio,
     )

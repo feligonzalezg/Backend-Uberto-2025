@@ -48,7 +48,7 @@ fun Conductor.toPerfilDTO() = PerfilChoferDTO(
     apellido = apellido,
     esChofer = esChofer,
     precioBase = precioBaseDelViaje,
-    dominio = vehiculo.patente,
+    dominio = vehiculo.dominio,
     descripcion = vehiculo.marca,
     modelo = vehiculo.modelo,
     anio = vehiculo.anio,
@@ -63,7 +63,7 @@ data class AmigoDTO(
 )
 
 fun Usuario.toAmigoDTO() = AmigoDTO(
-    nombreYApellido = "$nombre $apellido",
+    nombreYApellido = nombreYApellido(),
     username = username,
     id = id
 )

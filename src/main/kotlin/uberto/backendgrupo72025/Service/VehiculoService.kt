@@ -2,7 +2,6 @@ package uberto.backendgrupo72025.Service
 
 
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import uberto.backendgrupo72025.DTO.PerfilChoferDTO
 import uberto.backendgrupo72025.Domain.*
 import uberto.backendgrupo72025.Repository.VehiculoRepository
@@ -36,6 +35,6 @@ class VehiculoService(
     }
 
     fun validarCambioVehiculo(conductor: Conductor, choferDTO: PerfilChoferDTO): Boolean =
-        conductor.vehiculo.patente != choferDTO.dominio || conductor.vehiculo.marca != choferDTO.descripcion ||
+        conductor.vehiculo.dominio != choferDTO.dominio || conductor.vehiculo.marca != choferDTO.descripcion ||
         conductor.vehiculo.modelo != choferDTO.modelo || conductor.vehiculo.tipoVehiculo.javaClass.simpleName.toString().lowercase() != choferDTO.tipo.lowercase()
 }

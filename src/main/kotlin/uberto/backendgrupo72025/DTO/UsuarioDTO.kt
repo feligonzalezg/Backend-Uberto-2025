@@ -1,6 +1,5 @@
 package uberto.backendgrupo72025.DTO
 
-
 data class UsuarioDTO(
     val id: Long,
     val nombre: String,
@@ -15,6 +14,7 @@ data class UsuarioDTO(
     val modelo: String?,
     val anio: Int?,
     val tipo: String?,
+    val foto:String
 )
 
 fun UsuarioDTO.toPerfilViajeroDTO() = PerfilViajeroDTO(
@@ -24,7 +24,8 @@ fun UsuarioDTO.toPerfilViajeroDTO() = PerfilViajeroDTO(
     telefono = telefono!!,
     esChofer = esChofer,
     saldo = saldo!!,
-    amigos = amigos!!
+    amigos = amigos!!,
+    foto = foto
 )
 
 fun UsuarioDTO.toPerfilChoferDTO() = PerfilChoferDTO(
@@ -38,4 +39,5 @@ fun UsuarioDTO.toPerfilChoferDTO() = PerfilChoferDTO(
     modelo = modelo!!,
     anio = anio!!,
     tipo = tipo!!,
+    foto = foto
 )

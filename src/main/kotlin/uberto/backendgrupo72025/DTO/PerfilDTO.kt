@@ -7,6 +7,7 @@ interface PerfilDTO {
     val nombre: String
     val apellido: String
     val esChofer: Boolean
+    val foto: String
 }
 
 data class PerfilViajeroDTO(
@@ -14,6 +15,7 @@ data class PerfilViajeroDTO(
     override val nombre: String,
     override val apellido: String,
     override val esChofer: Boolean,
+    override val foto : String,
     val telefono: Int,
     val saldo: Double,
     val amigos: List<AmigoDTO>
@@ -26,7 +28,8 @@ fun Viajero.toPerfilDTO() = PerfilViajeroDTO(
     esChofer = esChofer,
     telefono = telefono,
     saldo = saldo,
-    amigos = amigos.map { it.toAmigoDTO() }
+    amigos = amigos.map { it.toAmigoDTO() },
+    foto = foto
 )
 
 data class PerfilChoferDTO(
@@ -34,12 +37,13 @@ data class PerfilChoferDTO(
     override val nombre: String,
     override val apellido: String,
     override val esChofer: Boolean,
+    override val foto : String,
     val precioBase: Double,
     val dominio: String,
     val marca: String,
     val modelo: String,
     val anio: Int,
-    val tipo: String,
+    val tipo: String
 ): PerfilDTO
 
 fun Conductor.toPerfilDTO() = PerfilChoferDTO(
@@ -53,6 +57,7 @@ fun Conductor.toPerfilDTO() = PerfilChoferDTO(
     modelo = vehiculo.modelo,
     anio = vehiculo.anio,
     tipo = vehiculo.tipoVehiculo().javaClass.simpleName.toString(),
+    foto = foto
 )
 
 

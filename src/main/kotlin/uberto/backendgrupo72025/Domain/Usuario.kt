@@ -12,7 +12,8 @@ abstract class Usuario(
     val username: String,
     val contrasenia: String,
     var telefono: Int,
-    val esChofer : Boolean = false
+    val esChofer : Boolean = false,
+    val foto : String = "1"
 ): ItemRepo {
     override var id: Long = -1
 

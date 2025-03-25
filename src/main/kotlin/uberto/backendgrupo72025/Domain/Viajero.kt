@@ -10,9 +10,10 @@ class Viajero(
     contrasenia: String,
     telefono: Int,
     esChofer: Boolean,
+    foto : String,
     var saldo: Double,
     val amigos: MutableList<Viajero> = mutableListOf()
-) : Usuario(nombre, apellido, edad, username, contrasenia, telefono, esChofer) {
+) : Usuario(nombre, apellido, edad, username, contrasenia, telefono, esChofer,foto) {
 
 
     override fun validacionesPorUsuario() {

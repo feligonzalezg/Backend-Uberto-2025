@@ -37,7 +37,8 @@ class UbertoBootstrap(
         telefono = 987654321,
         esChofer = false,
         saldo = 2300.75,
-        amigos = mutableListOf(), // Lista vacía por ahora
+        amigos = mutableListOf(),
+        foto = ""
     )
 
     val viajero1 = Viajero(
@@ -49,7 +50,8 @@ class UbertoBootstrap(
         telefono = 123456789,
         esChofer = false,
         saldo = 1500.50,
-        amigos = mutableListOf(), // Lista vacía por ahora
+        amigos = mutableListOf(),
+        foto = ""
     )
 
     val viajero3 = Viajero(
@@ -61,7 +63,8 @@ class UbertoBootstrap(
         telefono = 456789123,
         esChofer = false,
         saldo = 800.25,
-        amigos = mutableListOf(), // Lista vacía por ahora
+        amigos = mutableListOf(),
+        foto = ""
     )
 
     val viajero4 = Viajero(
@@ -73,7 +76,8 @@ class UbertoBootstrap(
         telefono = 321654987,
         esChofer = false,
         saldo = 3500.00,
-        amigos = mutableListOf(), // Lista vacía por ahora
+        amigos = mutableListOf(),
+        foto = ""
     )
 
     fun crearUsuarios() {
@@ -107,8 +111,10 @@ class UbertoBootstrap(
         contrasenia = "pass1234",
         telefono = 123456789,
         esChofer = true,
+        foto = "",
         autoEjecutivo,
         precioBaseDelViaje = 500.0
+
     )
 
     val conductor2 = Conductor(
@@ -119,6 +125,7 @@ class UbertoBootstrap(
         contrasenia = "secure5678",
         telefono = 987654321,
         esChofer = true,
+        foto = "",
         autoSimple,
         precioBaseDelViaje = 450.0
     )

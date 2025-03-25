@@ -20,7 +20,7 @@ data class ViajeDTO(
     val importe: Double,
     val puedeCalificar: Boolean,
     val fechaFin: String,
-    val foto : String
+    val foto : String?
 )
 data class ViajesCompletadosDTO(
     val viajesRealizados: List<ViajeDTO>,

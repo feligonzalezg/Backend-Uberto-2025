@@ -140,9 +140,10 @@ class UsuarioService(
     }
 
     fun getViajerosParaAgregarAmigo(id: Long, query: String): List<AmigoDTO> {
-        val amigos = getViajeroById(id).amigos
+        val usuario = getViajeroById(id)
+        val amigos = usuario.amigos
         return getViajeros().filter {
-            !amigos.contains(it) &&
+            it.id!=id && !amigos.contains(it) &&
                     (it.nombreYApellido().contains(query, ignoreCase = true) ||
                             it.username.contains(query, ignoreCase = true))
         }.map { it.toAmigoDTO() }

@@ -28,7 +28,7 @@ object Simple: Auto() {
 }
 
 object Ejecutivo: Auto() {
-    override var mensaje: String = "No cumple con los requisitos de la antiguedad, el vehiculo debe tener menor a 10 años"
+    override var mensaje: String = "No cumple con los requisitos de la antiguedad, ya que debe ser de menos de 10 años"
     override fun calculoPlus(cantidadDePasajeros: Int, duracion: Int): Double = costoPorCantidadDePasajeros(cantidadDePasajeros)
 
     override fun esValidaLaCondicion(vehiculo: Vehiculo) = vehiculo.antiguedad() <= 10

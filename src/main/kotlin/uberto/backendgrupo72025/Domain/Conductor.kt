@@ -10,9 +10,10 @@ class Conductor(
     contrasenia: String,
     telefono: Int,
     esChofer: Boolean,
+    foto : String,
     var vehiculo: Vehiculo,
     var precioBaseDelViaje: Double
-) : Usuario(nombre, apellido, edad, username, contrasenia, telefono, esChofer) {
+) : Usuario(nombre, apellido, edad, username, contrasenia, telefono, esChofer,foto) {
 
     override fun validacionesPorUsuario() {
         validarVehiculo()

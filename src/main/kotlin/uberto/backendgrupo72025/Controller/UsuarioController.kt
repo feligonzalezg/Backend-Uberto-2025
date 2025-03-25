@@ -75,4 +75,9 @@ class UsuarioController(@Autowired val userService: UsuarioService) {
         @RequestParam esChofer: Boolean,
         @RequestParam monto: Double
     ) = userService.cargarSaldo(id, esChofer, monto)
+
+    @PatchMapping("/actualizarImagen/{id}")
+    @Operation(summary = "Actualiza los datos del usuario")
+    fun actualizarImagen(@PathVariable id: Long, @RequestParam esChofer: Boolean, @RequestParam imagen: String) =
+        userService.actualizarImagen(id, imagen, esChofer)
 }

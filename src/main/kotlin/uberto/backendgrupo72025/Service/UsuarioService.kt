@@ -24,9 +24,13 @@ class UsuarioService(
 
     fun getUsuarios() = getConductores() + getViajeros()
 
-    fun updateViajero(viajero: Viajero) { viajeroRepository.update(viajero) }
+    fun updateViajero(viajero: Viajero) {
+        viajeroRepository.update(viajero)
+    }
 
-    fun updateConductor(conductor: Conductor) { conductorRepository.update(conductor) }
+    fun updateConductor(conductor: Conductor) {
+        conductorRepository.update(conductor)
+    }
 
     fun getUsuarioLogin(user: UsuarioLoginDTO): LoginDTO {
         val usuario = getUsuarios().filter { it.accesoUsuario(user) }
@@ -44,6 +48,21 @@ class UsuarioService(
         } else {
             actualizarViajero(id, usuarioDTO.toPerfilViajeroDTO())
         }
+    }
+
+    @Transactional
+    fun actualizarImagen(id: Long, imagen: String, esChofer: Boolean): String {
+        lateinit var usuario: Usuario
+        if (esChofer) {
+            usuario = getConductorById(id)
+            usuario.foto = imagen
+            conductorRepository.update(usuario)
+        } else {
+            usuario = getViajeroById(id)
+            usuario.foto = imagen
+            viajeroRepository.update(usuario)
+        }
+        return usuario.foto
     }
 
     fun validarSeRealizaronCambios(usuario: Usuario, usuarioDTO: PerfilDTO, param1: Number, param2: Number) {
@@ -85,6 +104,7 @@ class UsuarioService(
         return conductor.toPerfilDTO()
     }
 
+
     fun validarSeRealizaronCambiosConductor(conductor: Conductor, choferDTO: PerfilChoferDTO) {
         if (!seRealizaronCambios(conductor, choferDTO, conductor.precioBaseDelViaje, choferDTO.precioBase) &&
             !vehiculoService.validarCambioVehiculo(conductor, choferDTO)
@@ -120,9 +140,10 @@ class UsuarioService(
     }
 
     fun getViajerosParaAgregarAmigo(id: Long, query: String): List<AmigoDTO> {
-        val amigos = getViajeroById(id).amigos
+        val usuario = getViajeroById(id)
+        val amigos = usuario.amigos
         return getViajeros().filter {
-            !amigos.contains(it) &&
+            it.id!=id && !amigos.contains(it) &&
                     (it.nombreYApellido().contains(query, ignoreCase = true) ||
                             it.username.contains(query, ignoreCase = true))
         }.map { it.toAmigoDTO() }
@@ -142,10 +163,12 @@ class UsuarioService(
     }
 
     fun getChoferesDisponibles(busquedaDTO: BusquedaDTO): List<ConductorDTO> {
-        return getConductores().filter { conductorDisponible(
-            it.id,
-            LocalDateTime.parse(busquedaDTO.fecha, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
-            busquedaDTO.duracion)
+        return getConductores().filter {
+            conductorDisponible(
+                it.id,
+                LocalDateTime.parse(busquedaDTO.fecha, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+                busquedaDTO.duracion
+            )
         }.map {
             val calificacionByConductor = comentarioService.getCalificacionByConductor(it.id)
             it.toConductorDTO(busquedaDTO.cantidadDePasajeros, busquedaDTO.duracion, calificacionByConductor)
@@ -160,7 +183,7 @@ class UsuarioService(
         val viajero = getViajeroById(viajeDTO.idViajero)
         val conductor = getConductorById(viajeDTO.idConductor)
         validarPuedeRealizarseViaje(viajero, conductor.id, viajeDTO)
-        val viaje = viajeService.crearViaje(viajeDTO, viajero,  conductor)
+        val viaje = viajeService.crearViaje(viajeDTO, viajero, conductor)
         viajero.contratarViaje(viaje)
         updateViajero(viajero)
     }
@@ -169,7 +192,8 @@ class UsuarioService(
         conductorDisponible(
             idConductor,
             LocalDateTime.parse(viajeDTO.fechaInicio, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
-            viajeDTO.duracion)
+            viajeDTO.duracion
+        )
         viajero.validarSaldoSuficiente(viajeDTO.importe)
     }
 }

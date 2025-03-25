@@ -20,6 +20,7 @@ data class ViajeDTO(
     val importe: Double,
     val puedeCalificar: Boolean,
     val fechaFin: String,
+    val foto : String?
 )
 data class ViajesCompletadosDTO(
     val viajesRealizados: List<ViajeDTO>,
@@ -38,7 +39,7 @@ fun ViajeDTO.toViaje(viajero: Viajero, conductor: Conductor) = Viaje(
     importe = importe
 )
 
-fun Viaje.toViajeDTO(nombre: String) = ViajeDTO(
+fun Viaje.toViajeDTO(nombre: String, foto : String) = ViajeDTO(
     id = id,
     idViajero = viajero.id,
     idConductor = conductor.id,
@@ -51,4 +52,5 @@ fun Viaje.toViajeDTO(nombre: String) = ViajeDTO(
     importe = importe,
     puedeCalificar = puedeCalificar(),
     fechaFin = fechaFin(fechaInicio, duracion).format(DateTimeFormatter.ofPattern("HH:mm")),
+    foto = foto
 )

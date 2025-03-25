@@ -72,3 +72,4 @@ fun Usuario.toAmigoDTO() = AmigoDTO(
     username = username,
     id = id
 )
+

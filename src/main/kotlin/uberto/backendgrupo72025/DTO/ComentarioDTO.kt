@@ -10,16 +10,18 @@ data class ComentarioDTO(
     val nombre: String,
     val estrellas: Int,
     val mensaje: String,
-    val fecha: String
+    val fecha: String,
+    val foto : String
 )
 
-fun Comentario.toComentarioDTO(nombre: String) = ComentarioDTO(
+fun Comentario.toComentarioDTO(nombre: String, foto : String) = ComentarioDTO(
     idComentario = id,
     idViaje = viaje.id,
     nombre = nombre,
     estrellas = estrellas,
     mensaje = mensaje,
-    fecha = fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+    fecha = fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+    foto = foto
 )
 
 data class CalificacionDTO(

@@ -41,19 +41,19 @@ class ViajeService(
         lateinit var viajesRealizados: List<ViajeDTO>
         var totalFacturado = 0.0
          if (esChofer) {
-             viajesRealizados = getViajesRealizados(getViajesByConductorId(idUsuario)).map { it.toViajeDTO(it.viajero.nombreYApellido()) }
+             viajesRealizados = getViajesRealizados(getViajesByConductorId(idUsuario)).map { it.toViajeDTO(it.viajero.nombreYApellido(),it.viajero.foto) }
              totalFacturado = viajesRealizados.sumOf { it.importe }
         } else {
-             viajesRealizados = getViajesRealizados(getViajesByViajeroId(idUsuario)).map { it.toViajeDTO(it.conductor.nombreYApellido()) }
+             viajesRealizados = getViajesRealizados(getViajesByViajeroId(idUsuario)).map { it.toViajeDTO(it.conductor.nombreYApellido(), it.conductor.foto) }
         }
         return ViajesCompletadosDTO(viajesRealizados, totalFacturado)
     }
 
     fun getViajesPendientesByUsuario(idUsuario: Long, esChofer: Boolean): List<ViajeDTO> {
         return if (esChofer) {
-            getViajesPendientes(getViajesByConductorId(idUsuario)).map { it.toViajeDTO(it.viajero.nombreYApellido()) }
+            getViajesPendientes(getViajesByConductorId(idUsuario)).map { it.toViajeDTO(it.viajero.nombreYApellido(), it.viajero.foto) }
         } else {
-            getViajesPendientes(getViajesByViajeroId(idUsuario)).map { it.toViajeDTO(it.conductor.nombreYApellido()) }
+            getViajesPendientes(getViajesByViajeroId(idUsuario)).map { it.toViajeDTO(it.conductor.nombreYApellido(),it.conductor.foto) }
         }
     }
 
@@ -64,7 +64,7 @@ class ViajeService(
                     (filtroDTO.origen.isBlank() || it.origen.contains(filtroDTO.origen, ignoreCase = true)) &&
                     (filtroDTO.destino.isBlank() || it.destino.contains(filtroDTO.destino, ignoreCase = true)) &&
                     (filtroDTO.cantidadDePasajeros == 0 || it.cantidadDePasajeros == filtroDTO.cantidadDePasajeros)
-        }.map { it.toViajeDTO(it.viajero.nombreYApellido()) }
+        }.map { it.toViajeDTO(it.viajero.nombreYApellido(), it.viajero.foto) }
     }
 
     fun getTotalFacturado(idConductor: Long): Double {

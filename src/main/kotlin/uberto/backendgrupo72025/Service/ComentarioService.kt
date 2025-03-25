@@ -25,9 +25,9 @@ class ComentarioService(
 
     fun getComentarios(idUsuario: Long, esChofer: Boolean): List<ComentarioDTO> {
         return if (esChofer) {
-            getComentariosByConductorId(idUsuario).map { it.toComentarioDTO(it.viaje.viajero.nombreYApellido()) }
+            getComentariosByConductorId(idUsuario).map { it.toComentarioDTO(it.viaje.viajero.nombreYApellido(), it.viaje.viajero.foto) }
         } else {
-            getComentariosByViajeroId(idUsuario).map { it.toComentarioDTO(it.viaje.conductor.nombreYApellido()) }
+            getComentariosByViajeroId(idUsuario).map { it.toComentarioDTO(it.viaje.conductor.nombreYApellido(), it.viaje.conductor.foto) }
         }
     }
 
@@ -44,7 +44,7 @@ class ComentarioService(
         val comentario = calificar(calificacion, viaje)
         viaje.tieneComentario = true
         viajeService.updateViaje(viaje)
-        return comentario.toComentarioDTO(viaje.conductor.nombreYApellido())
+        return comentario.toComentarioDTO(viaje.conductor.nombreYApellido(), viaje.conductor.foto)
     }
 
     fun validarPuedeCalificar(idUsuario: Long, viaje: Viaje) {

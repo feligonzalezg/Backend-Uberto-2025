@@ -11,8 +11,7 @@ import uberto.backendgrupo72025.Repository.ComentarioRepository
 
 @Service
 class ComentarioService(
-    val comentarioRepository: ComentarioRepository,
-    val viajeService: ViajeService
+    val comentarioRepository: ComentarioRepository
 ) {
 
     fun getAll() = comentarioRepository.findAll()
@@ -31,20 +30,11 @@ class ComentarioService(
         }
     }
 
-    fun calificar(calificacion: CalificacionDTO, viaje: Viaje): Comentario {
+    fun calificar(calificacion: CalificacionDTO, viaje: Viaje, idUsuario: Long): Comentario {
+        validarPuedeCalificar(idUsuario, viaje)
         val comentario = calificacion.toComentario(viaje)
         comentarioRepository.save(comentario)
         return comentario
-    }
-
-    @Transactional
-    fun calificarViaje(idUsuario: Long, calificacion: CalificacionDTO): ComentarioDTO {
-        val viaje = viajeService.getViajeById(calificacion.idViaje)
-        validarPuedeCalificar(idUsuario, viaje)
-        val comentario = calificar(calificacion, viaje)
-        viaje.tieneComentario = true
-        viajeService.updateViaje(viaje)
-        return comentario.toComentarioDTO(viaje.conductor.nombreYApellido(), viaje.conductor.foto)
     }
 
     fun validarPuedeCalificar(idUsuario: Long, viaje: Viaje) {
@@ -64,8 +54,6 @@ class ComentarioService(
     fun eliminarComentario(idViajero: Long, idComentario: Long) {
         val comentario = getComentarioById(idComentario)
         validarEliminarComentario(idViajero, comentario)
-        comentario.viaje.tieneComentario = false
-        viajeService.updateViaje(comentario.viaje)
         comentarioRepository.delete(comentario)
     }
 
@@ -83,4 +71,6 @@ class ComentarioService(
     fun cantidadComentariosByConductor(idConductor: Long) = getComentariosByConductorId(idConductor).size
 
     fun puntajeTotal(idConductor: Long) = getComentariosByConductorId(idConductor).sumOf { it.estrellas }
+
+    fun viajeCalificado(idViaje: Long) = getAll().any { it.viaje.id  == idViaje }
 }

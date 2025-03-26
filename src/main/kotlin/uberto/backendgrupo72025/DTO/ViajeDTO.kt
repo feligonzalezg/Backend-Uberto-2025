@@ -39,7 +39,7 @@ fun ViajeDTO.toViaje(viajero: Viajero, conductor: Conductor) = Viaje(
     importe = importe
 )
 
-fun Viaje.toViajeDTO(nombre: String, foto : String) = ViajeDTO(
+fun Viaje.toViajeDTO(nombre: String, foto : String, puedeCalificar: Boolean) = ViajeDTO(
     id = id,
     idViajero = viajero.id,
     idConductor = conductor.id,
@@ -50,7 +50,7 @@ fun Viaje.toViajeDTO(nombre: String, foto : String) = ViajeDTO(
     cantidadDePasajeros = cantidadDePasajeros,
     duracion = duracion,
     importe = importe,
-    puedeCalificar = puedeCalificar(),
+    puedeCalificar = puedeCalificar,
     fechaFin = fechaFin(fechaInicio, duracion).format(DateTimeFormatter.ofPattern("HH:mm")),
     foto = foto
 )

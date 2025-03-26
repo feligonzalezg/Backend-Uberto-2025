@@ -7,12 +7,11 @@ import uberto.backendgrupo72025.Domain.Conductor
 import uberto.backendgrupo72025.Domain.Viaje
 import uberto.backendgrupo72025.Domain.Viajero
 import uberto.backendgrupo72025.Repository.ViajeRepository
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 @Service
 class ViajeService(
-    val viajeRepository: ViajeRepository
+    val viajeRepository: ViajeRepository,
+    val comentarioService: ComentarioService
 ) {
 
     fun getAllViajes() = viajeRepository.findAll()
@@ -41,19 +40,21 @@ class ViajeService(
         lateinit var viajesRealizados: List<ViajeDTO>
         var totalFacturado = 0.0
          if (esChofer) {
-             viajesRealizados = getViajesRealizados(getViajesByConductorId(idUsuario)).map { it.toViajeDTO(it.viajero.nombreYApellido(),it.viajero.foto) }
+             viajesRealizados = getViajesRealizados(getViajesByConductorId(idUsuario)).map { it.toViajeDTO(it.viajero.nombreYApellido(),it.viajero.foto, viajeCalificable(it)) }
              totalFacturado = viajesRealizados.sumOf { it.importe }
         } else {
-             viajesRealizados = getViajesRealizados(getViajesByViajeroId(idUsuario)).map { it.toViajeDTO(it.conductor.nombreYApellido(), it.conductor.foto) }
+             viajesRealizados = getViajesRealizados(getViajesByViajeroId(idUsuario)).map { it.toViajeDTO(it.conductor.nombreYApellido(), it.conductor.foto, viajeCalificable(it)) }
         }
         return ViajesCompletadosDTO(viajesRealizados, totalFacturado)
     }
 
+    fun viajeCalificable(viaje: Viaje) = !viaje.viajePendiente() && !comentarioService.viajeCalificado(viaje.id)
+
     fun getViajesPendientesByUsuario(idUsuario: Long, esChofer: Boolean): List<ViajeDTO> {
         return if (esChofer) {
-            getViajesPendientes(getViajesByConductorId(idUsuario)).map { it.toViajeDTO(it.viajero.nombreYApellido(), it.viajero.foto) }
+            getViajesPendientes(getViajesByConductorId(idUsuario)).map { it.toViajeDTO(it.viajero.nombreYApellido(), it.viajero.foto, viajeCalificable(it)) }
         } else {
-            getViajesPendientes(getViajesByViajeroId(idUsuario)).map { it.toViajeDTO(it.conductor.nombreYApellido(),it.conductor.foto) }
+            getViajesPendientes(getViajesByViajeroId(idUsuario)).map { it.toViajeDTO(it.conductor.nombreYApellido(),it.conductor.foto, viajeCalificable(it)) }
         }
     }
 
@@ -64,12 +65,19 @@ class ViajeService(
                     (filtroDTO.origen.isBlank() || it.origen.contains(filtroDTO.origen, ignoreCase = true)) &&
                     (filtroDTO.destino.isBlank() || it.destino.contains(filtroDTO.destino, ignoreCase = true)) &&
                     (filtroDTO.cantidadDePasajeros == 0 || it.cantidadDePasajeros == filtroDTO.cantidadDePasajeros)
-        }.map { it.toViajeDTO(it.viajero.nombreYApellido(), it.viajero.foto) }
+        }.map { it.toViajeDTO(it.viajero.nombreYApellido(), it.viajero.foto, viajeCalificable(it)) }
     }
 
     fun getTotalFacturado(idConductor: Long): Double {
         return viajeRepository.findAll()
             .filter { it.viajeFinalizado() && it.conductor.id == idConductor }
             .sumOf { it.importe }
+    }
+
+    @Transactional
+    fun calificarViaje(idUsuario: Long, calificacion: CalificacionDTO): ComentarioDTO {
+        val viaje = getViajeById(calificacion.idViaje)
+        val comentario = comentarioService.calificar(calificacion, viaje, idUsuario)
+        return comentario.toComentarioDTO(viaje.conductor.nombreYApellido(), viaje.conductor.foto)
     }
 }

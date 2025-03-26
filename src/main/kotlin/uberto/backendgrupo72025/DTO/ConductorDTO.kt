@@ -2,6 +2,7 @@ package uberto.backendgrupo72025.DTO
 
 import uberto.backendgrupo72025.Domain.Conductor
 import uberto.backendgrupo72025.Service.ComentarioService
+import kotlin.math.roundToInt
 
 data class ConductorDTO(
     val idConductor: Long,
@@ -22,7 +23,7 @@ fun Conductor.toConductorDTO(cantidadDePasajeros: Int, duracion: Int, calificaci
         marca = vehiculo.marca,
         modelo = vehiculo.modelo,
         anio = vehiculo.anio,
-        calificacion = calificacion,
+        calificacion = ((calificacion* 10.0).roundToInt() / 10.0),
         importe = importeViaje(cantidadDePasajeros, duracion),
         foto = foto
     )

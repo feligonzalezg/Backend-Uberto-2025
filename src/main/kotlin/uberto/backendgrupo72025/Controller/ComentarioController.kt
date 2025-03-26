@@ -5,11 +5,13 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import uberto.backendgrupo72025.DTO.CalificacionDTO
 import uberto.backendgrupo72025.Service.ComentarioService
+import uberto.backendgrupo72025.Service.ViajeService
 
 @RestController
 @CrossOrigin("*")
 class ComentarioController(
-    @Autowired val comentarioService: ComentarioService
+    @Autowired val comentarioService: ComentarioService,
+    @Autowired val viajeService: ViajeService
 ) {
 
     @GetMapping("/comentarios")
@@ -23,13 +25,6 @@ class ComentarioController(
         @RequestParam esChofer: Boolean
     ) = comentarioService.getComentarios(id, esChofer)
 
-    @PostMapping("/calificar/{idUsuario}")
-    @Operation(summary = "Calificar un viaje realizado")
-    fun calificarViaje(
-        @PathVariable idUsuario: Long,
-        @RequestBody calificacion: CalificacionDTO
-    ) = comentarioService.calificarViaje(idUsuario, calificacion)
-
     @DeleteMapping("eliminarComentario/{idUsuario}/{idComentario}")
     @Operation(summary = "Elimina un comentario realizado")
     fun eliminarComentario(
@@ -40,4 +35,11 @@ class ComentarioController(
     @GetMapping("/puntaje/{id}")
     @Operation(summary = "Devuelve devuelve el puntaje por chofer")
     fun getPuntajePorChofer(@PathVariable id: Long) = comentarioService.getCalificacionByConductor(id)
+
+    @PostMapping("/calificar/{idUsuario}")
+    @Operation(summary = "Calificar un viaje realizado")
+    fun calificarViaje(
+        @PathVariable idUsuario: Long,
+        @RequestBody calificacion: CalificacionDTO
+    ) = viajeService.calificarViaje(idUsuario, calificacion)
 }

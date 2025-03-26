@@ -17,8 +17,6 @@ class Viaje(
 ): ItemRepo {
     override var id: Long = -1
 
-    var tieneComentario: Boolean = false
-
     fun fechaFin(fechaInicio: LocalDateTime, duracion: Int) = fechaInicio.plus(duracion.toLong(), ChronoUnit.MINUTES)
 
     fun viajePendiente() = fechaFin(fechaInicio, duracion).isAfter(LocalDateTime.now())
@@ -29,7 +27,4 @@ class Viaje(
         val nuevaFechaFin = fechaFin(fechaNueva, duracion)
         return fechaNueva.isBefore(fechaFin(fechaInicio, duracion)) && nuevaFechaFin.isAfter(fechaInicio)
     }
-
-    fun puedeCalificar() = !viajePendiente() && !tieneComentario
-
 }

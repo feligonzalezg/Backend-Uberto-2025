@@ -105,14 +105,12 @@ class UsuarioService(
         return conductor.toPerfilDTO()
     }
 
-
     fun validarSeRealizaronCambiosConductor(conductor: Conductor, choferDTO: PerfilChoferDTO) {
         if (!seRealizaronCambios(conductor, choferDTO, conductor.precioBaseDelViaje, choferDTO.precioBase) &&
             !vehiculoService.validarCambioVehiculo(conductor, choferDTO)
         )
             throw BadRequestException("No se realizaron cambios.")
     }
-
 
     fun getUsuarioPerfil(id: Long, esChofer: Boolean): PerfilDTO {
         return if (esChofer) {

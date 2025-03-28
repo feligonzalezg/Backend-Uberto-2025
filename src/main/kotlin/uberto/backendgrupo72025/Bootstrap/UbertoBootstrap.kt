@@ -24,7 +24,7 @@ class UbertoBootstrap(
         crearComentarios()
     }
 
-    // Crear 4 viajeros
+    // VIAJEROS
     val viajero1 = Viajero("Juan", "Pérez", 28, "juanp", "pass123", 123456789, false, "", 1500.50, mutableListOf())
     val viajero2 = Viajero("María", "González", 34, "mariag", "secure456", 987654321, false, "", 2300.75, mutableListOf())
     val viajero3 = Viajero("Carlos", "López", 23, "carlosl", "mypwd789", 456789123, false, "", 800.25, mutableListOf())
@@ -34,7 +34,7 @@ class UbertoBootstrap(
         listOf(viajero1, viajero2, viajero3, viajero4).forEach { viajeroRepository.save(it) }
     }
 
-    // Crear 3 vehículos de distintos tipos
+    // VEHICULOS
     final val vehiculoSimple = Vehiculo("Toyota", "Corolla", "ABC123", 2018)
     final val vehiculoEjecutivo = Vehiculo("Ford", "Focus", "DEF456", 2020)
     final val vehiculoMoto = Vehiculo("Yamaha", "FZ25", "MNO345", 2022)
@@ -43,7 +43,7 @@ class UbertoBootstrap(
         listOf(vehiculoSimple, vehiculoEjecutivo, vehiculoMoto).forEach { vehiculoRepository.save(it) }
     }
 
-    // Crear 3 conductores, cada uno con un tipo de vehículo
+    // CONDUCTORES
     val conductor1 = Simple("Luis", "Fernández", 35, "luisf", "pass1234", 111222333, true, "", vehiculoSimple, 400.0)
     val conductor2 = Ejecutivo("Elena", "Ramírez", 29, "elenaR", "secure789", 444555666, true, "", vehiculoEjecutivo, 600.0)
     val conductor3 = Moto("Pedro", "Sánchez", 40, "pedros", "mypass567", 777888999, true, "", vehiculoMoto, 300.0)
@@ -58,7 +58,7 @@ class UbertoBootstrap(
         val viajeros = listOf(viajero1, viajero2, viajero3, viajero4)
 
         for (conductor in conductores) {
-            repeat(8) { // 8 viajes por chofer
+            repeat(8) {
                 val viajero = viajeros.random()
                 val fechaInicio = if (it % 2 == 0) LocalDateTime.now().minusDays(it.toLong()) else LocalDateTime.now().plusDays(it.toLong())
 
@@ -79,6 +79,7 @@ class UbertoBootstrap(
         viajes.forEach { viajeRepository.save(it) }
     }
 
+    //COMENTARIOS
     fun crearComentarios() {
         val viajesRealizados = viajeRepository.findAll().filter { it.fechaInicio.isBefore(LocalDateTime.now()) }
         val comentarios = mutableListOf<Comentario>()

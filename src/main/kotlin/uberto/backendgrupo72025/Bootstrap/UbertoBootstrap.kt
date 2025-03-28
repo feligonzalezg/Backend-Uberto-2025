@@ -52,6 +52,7 @@ class UbertoBootstrap(
         listOf(conductor1, conductor2, conductor3).forEach { conductorRepository.save(it) }
     }
 
+    // VIAJES
     fun crearViajes() {
         val viajes = mutableListOf<Viaje>()
         val conductores = listOf(conductor1, conductor2, conductor3)
@@ -79,7 +80,7 @@ class UbertoBootstrap(
         viajes.forEach { viajeRepository.save(it) }
     }
 
-    //COMENTARIOS
+    // COMENTARIOS
     fun crearComentarios() {
         val viajesRealizados = viajeRepository.findAll().filter { it.fechaInicio.isBefore(LocalDateTime.now()) }
         val comentarios = mutableListOf<Comentario>()

@@ -100,6 +100,7 @@ class UsuarioService(
         conductor.apellido = choferDTO.apellido
         conductor.precioBaseDelViaje = choferDTO.precioBase
         conductor.vehiculo = nuevoVehiculo
+        conductor.validar()
         conductorRepository.update(conductor)
         return conductor.toPerfilDTO()
     }

@@ -29,8 +29,11 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web-services")
 	implementation("org.springdoc:springdoc-openapi-starter-common:2.2.0")
 	implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
-
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	implementation ("jakarta.persistence:jakarta.persistence-api:3.1.0")
+	runtimeOnly("org.postgresql:postgresql")
+	implementation("org.postgresql:postgresql:42.7.2")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")

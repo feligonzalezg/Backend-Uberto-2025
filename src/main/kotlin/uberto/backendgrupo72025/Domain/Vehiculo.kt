@@ -9,26 +9,16 @@ class Vehiculo(
     var modelo : String,
     var dominio: String,
     var anio: Int,
-    val tipoVehiculo : TipoVehiculo,
 ) : ItemRepo {
     override var id: Long = -1
 
     fun antiguedad(): Int = LocalDate.now().year - anio
-
-    fun calculoPlusPorTipoVehiculo(cantidadDePasajeros: Int, duracion: Int): Double = tipoVehiculo.calculoPlus(cantidadDePasajeros, duracion)
-
-    fun tipoVehiculo(): TipoVehiculo {
-        return if (this.tipoVehiculo is Auto) {
-            if(antiguedad()>10) Simple else Ejecutivo
-        } else Moto
-    }
 
     fun validar() {
         validarMarca()
         validarModelo()
         validarDominio()
         validarAnio()
-        tipoVehiculo.validaLaCondicion(this)
     }
 
     fun esValidoMarca() = marca.isNotEmpty()

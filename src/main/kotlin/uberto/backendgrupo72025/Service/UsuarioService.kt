@@ -100,10 +100,10 @@ class UsuarioService(
         conductor.apellido = choferDTO.apellido
         conductor.precioBaseDelViaje = choferDTO.precioBase
         conductor.vehiculo = nuevoVehiculo
+        conductor.validar()
         conductorRepository.update(conductor)
         return conductor.toPerfilDTO()
     }
-
 
     fun validarSeRealizaronCambiosConductor(conductor: Conductor, choferDTO: PerfilChoferDTO) {
         if (!seRealizaronCambios(conductor, choferDTO, conductor.precioBaseDelViaje, choferDTO.precioBase) &&
@@ -111,7 +111,6 @@ class UsuarioService(
         )
             throw BadRequestException("No se realizaron cambios.")
     }
-
 
     fun getUsuarioPerfil(id: Long, esChofer: Boolean): PerfilDTO {
         return if (esChofer) {

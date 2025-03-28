@@ -43,7 +43,6 @@ data class PerfilChoferDTO(
     val marca: String,
     val modelo: String,
     val anio: Int,
-    val tipo: String
 ): PerfilDTO
 
 fun Conductor.toPerfilDTO() = PerfilChoferDTO(
@@ -56,7 +55,6 @@ fun Conductor.toPerfilDTO() = PerfilChoferDTO(
     marca = vehiculo.marca,
     modelo = vehiculo.modelo,
     anio = vehiculo.anio,
-    tipo = vehiculo.tipoVehiculo().javaClass.simpleName.toString(),
     foto = foto
 )
 

@@ -13,7 +13,6 @@ data class UsuarioDTO(
     val marca: String?,
     val modelo: String?,
     val anio: Int?,
-    val tipo: String?,
     val foto:String
 )
 
@@ -38,6 +37,5 @@ fun UsuarioDTO.toPerfilChoferDTO() = PerfilChoferDTO(
     marca = marca!!,
     modelo = modelo!!,
     anio = anio!!,
-    tipo = tipo!!,
     foto = foto
 )

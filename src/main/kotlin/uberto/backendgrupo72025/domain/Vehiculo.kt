@@ -5,10 +5,10 @@ import java.time.LocalDate
 
 class Vehiculo(
 //    var id: Long = 0,
-    var marca: String,
-    var modelo : String,
-    var dominio: String,
-    var anio: Int,
+    var marca: String = "",
+    var modelo : String = "",
+    var dominio: String = "",
+    var anio: Int = 0,
 ) : ItemRepo {
     override var id: Long = -1
 

@@ -33,7 +33,7 @@ class ViajeService(
     }
 
     fun updateViaje(viaje: Viaje) {
-        viajeRepository.update(viaje)
+        viajeRepository.save(viaje)
     }
 
     fun getViajesRealizadosByUsuario(idUsuario: Long, esChofer: Boolean): ViajesCompletadosDTO {
@@ -74,10 +74,10 @@ class ViajeService(
             .sumOf { it.importe }
     }
 
-    @Transactional
-    fun calificarViaje(idUsuario: Long, calificacion: CalificacionDTO): ComentarioDTO {
-        val viaje = getViajeById(calificacion.idViaje)
-        val comentario = comentarioService.calificar(calificacion, viaje, idUsuario)
-        return comentario.toComentarioDTO(viaje.conductor.nombreYApellido(), viaje.conductor.foto)
-    }
+//    @Transactional
+//    fun calificarViaje(idUsuario: Long, calificacion: CalificacionDTO): ComentarioDTO {
+//        val viaje = getViajeById(calificacion.idViaje)
+//        val comentario = comentarioService.calificar(calificacion, viaje, idUsuario)
+//        return comentario.toComentarioDTO(viaje.conductor.nombreYApellido(), viaje.conductor.foto)
+//    }
 }

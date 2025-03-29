@@ -13,7 +13,7 @@ class Vehiculo(
     var marca: String = "",
     @Column
     var modelo : String = "",
-    @Column
+    @Column(unique = true)
     var dominio: String = "",
     @Column
     var anio: Int = 0,

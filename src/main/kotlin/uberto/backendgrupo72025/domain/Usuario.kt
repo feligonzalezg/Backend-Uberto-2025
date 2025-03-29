@@ -27,7 +27,7 @@ abstract class Usuario(
     var apellido: String="",
     @Column
     var edad: Int= 0,
-    @Column
+    @Column(unique = true)
     val username: String="",
     @Column
     val contrasenia: String="",

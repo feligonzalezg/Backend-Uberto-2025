@@ -71,3 +71,4 @@ class Viajero(
 
     fun descontarSaldo(costoDelViaje: Double) { saldo -= costoDelViaje }
 }
+

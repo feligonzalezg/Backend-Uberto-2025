@@ -16,7 +16,7 @@ import uberto.backendgrupo72025.dto.UsuarioLoginDTO
     JsonSubTypes.Type(value = Moto::class, name = "M")
 )
 @Inheritance(strategy= InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "tipo_instalacion", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "tipo_de_usuario", discriminatorType = DiscriminatorType.STRING)
 abstract class Usuario(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

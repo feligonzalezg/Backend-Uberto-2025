@@ -1,21 +1,38 @@
 package uberto.backendgrupo72025.domain
 
+import jakarta.persistence.*
 import uberto.backendgrupo72025.repository.ItemRepo
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
+@Entity
+@Table(name = "viaje")
 class Viaje(
-//    var id: Long = 0,
-    val viajero: Viajero,
-    val conductor: Conductor,
-    val origen: String,
-    val destino: String,
-    val fechaInicio: LocalDateTime,
-    val cantidadDePasajeros: Int,
-    val duracion: Int,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long = 0,
+
+    @ManyToOne(fetch = FetchType.LAZY )
+    @JoinColumn(name = "viajero_id")
+    val viajero: Viajero = Viajero(),
+
+    @ManyToOne(fetch = FetchType.LAZY )
+    @JoinColumn(name = "conductor_id")
+    val conductor: Conductor = Conductor(),
+    @Column
+    val origen: String = "",
+    @Column
+    val destino: String = "",
+    @Column
+    val fechaInicio: LocalDateTime = LocalDateTime.now(),
+    @Column
+    val cantidadDePasajeros: Int = 0,
+    @Column
+    val duracion: Int = 0,
+    @Column
     var importe: Double = 0.0,
-): ItemRepo {
-    override var id: Long = -1
+) {
+
 
     fun fechaFin(fechaInicio: LocalDateTime, duracion: Int) = fechaInicio.plus(duracion.toLong(), ChronoUnit.MINUTES)
 

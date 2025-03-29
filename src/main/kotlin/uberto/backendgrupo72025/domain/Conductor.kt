@@ -10,8 +10,8 @@ abstract class Conductor(
     telefono: Int,
     esChofer: Boolean,
     foto : String,
-    var vehiculo: Vehiculo,
-    var precioBaseDelViaje: Double
+    var vehiculo: Vehiculo = Vehiculo(),
+    var precioBaseDelViaje: Double = 0.0
 ) : Usuario(nombre, apellido, edad, username, contrasenia, telefono, esChofer,foto) {
 
     open var mensaje = ""

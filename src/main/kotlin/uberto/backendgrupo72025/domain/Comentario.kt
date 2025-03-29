@@ -9,7 +9,7 @@ class Comentario(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0,
-    @OneToOne  // Consultar por el borrar y el mismo genere vacios registro pero solo muestra 1
+    @OneToOne(fetch = FetchType.LAZY)
     val viaje: Viaje = Viaje(),
     @Column()
     var estrellas: Int = 0,

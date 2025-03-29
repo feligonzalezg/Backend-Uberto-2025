@@ -22,6 +22,8 @@ class Simple(
     override fun calculoPlus(cantidadDePasajeros: Int, duracion: Int): Double = 1000.toDouble()
 }
 
+@Entity
+@DiscriminatorValue(value = "E")
 class Ejecutivo(
     id: Long = 0,
     nombre: String="",
@@ -45,6 +47,8 @@ class Ejecutivo(
     private fun costoPorCantidadDePasajeros(cantidadDePasajeros: Int):Double = if (cantidadDePasajeros == 1) 2000.toDouble() else 1500.toDouble()
 }
 
+@Entity
+@DiscriminatorValue(value = "M")
 class Moto(
     id: Long = 0,
     nombre: String="",

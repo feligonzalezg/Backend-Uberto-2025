@@ -1,20 +1,43 @@
 package uberto.backendgrupo72025.domain
 
+import com.fasterxml.jackson.annotation.JsonSubTypes
+import com.fasterxml.jackson.annotation.JsonTypeInfo
+import jakarta.persistence.*
 import uberto.backendgrupo72025.dto.UsuarioLoginDTO
-import uberto.backendgrupo72025.repository.ItemRepo
 
+@Entity
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include =
+    JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes(
+    JsonSubTypes.Type(value = Viajero::class, name = "V"),
+    JsonSubTypes.Type(value = Conductor::class, name = "C"),
+    JsonSubTypes.Type(value = Simple::class, name = "S"),
+    JsonSubTypes.Type(value = Ejecutivo::class, name = "E"),
+    JsonSubTypes.Type(value = Moto::class, name = "M")
+)
+@Inheritance(strategy= InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo_instalacion", discriminatorType = DiscriminatorType.STRING)
 abstract class Usuario(
-//    var id: Long= 0,
-    var nombre: String,
-    var apellido: String,
-    var edad: Int,
-    val username: String,
-    val contrasenia: String,
-    var telefono: Int,
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long= 0,
+    @Column
+    var nombre: String="",
+    @Column
+    var apellido: String="",
+    @Column
+    var edad: Int= 0,
+    @Column
+    val username: String="",
+    @Column
+    val contrasenia: String="",
+    @Column
+    var telefono: Int= 0,
+    @Column
     val esChofer : Boolean = false,
+    @Column
     var foto : String = "1"
-): ItemRepo {
-    override var id: Long = -1
+) {
 
     fun nombreYApellido() = "$nombre $apellido"
 

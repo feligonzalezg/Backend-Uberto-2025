@@ -9,7 +9,6 @@ class Vehiculo(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0,
-
     @Column
     var marca: String = "",
     @Column

@@ -1,35 +1,40 @@
 package uberto.backendgrupo72025.domain
 
+import jakarta.persistence.DiscriminatorValue
+import jakarta.persistence.Entity
+
+@Entity
+@DiscriminatorValue(value = "S")
 class Simple(
-//  id: Long = 0
-    nombre: String,
-    apellido: String,
-    edad: Int,
-    username: String,
-    contrasenia: String,
-    telefono: Int,
-    esChofer: Boolean,
-    foto: String,
-    vehiculo: Vehiculo,
-    precioBaseDelViaje: Double
-) : Conductor(nombre, apellido, edad, username, contrasenia, telefono, esChofer, foto, vehiculo, precioBaseDelViaje) {
+    id: Long = 0,
+    nombre: String="",
+    apellido: String="",
+    edad: Int=0,
+    username: String="",
+    contrasenia: String="",
+    telefono: Int=0,
+    esChofer: Boolean=true,
+    foto: String="",
+    vehiculo: Vehiculo=Vehiculo(),
+    precioBaseDelViaje: Double =0.0
+) : Conductor(id,nombre, apellido, edad, username, contrasenia, telefono, esChofer, foto, vehiculo, precioBaseDelViaje) {
 
     override fun calculoPlus(cantidadDePasajeros: Int, duracion: Int): Double = 1000.toDouble()
 }
 
 class Ejecutivo(
-//  id: Long = 0
-    nombre: String,
-    apellido: String,
-    edad: Int,
-    username: String,
-    contrasenia: String,
-    telefono: Int,
-    esChofer: Boolean,
-    foto: String,
-    vehiculo: Vehiculo,
-    precioBaseDelViaje: Double
-) : Conductor(nombre, apellido, edad, username, contrasenia, telefono, esChofer, foto, vehiculo, precioBaseDelViaje) {
+    id: Long = 0,
+    nombre: String="",
+    apellido: String="",
+    edad: Int=0,
+    username: String="",
+    contrasenia: String="",
+    telefono: Int=0,
+    esChofer: Boolean=true,
+    foto: String="",
+    vehiculo: Vehiculo=Vehiculo(),
+    precioBaseDelViaje: Double =0.0
+) : Conductor(id,nombre, apellido, edad, username, contrasenia, telefono, esChofer, foto, vehiculo, precioBaseDelViaje) {
 
     override var mensaje: String = "No cumple con los requisitos de la antiguedad, ya que debe ser de menos de 10 años"
 
@@ -41,18 +46,18 @@ class Ejecutivo(
 }
 
 class Moto(
-//  id: Long = 0
-    nombre: String,
-    apellido: String,
-    edad: Int,
-    username: String,
-    contrasenia: String,
-    telefono: Int,
-    esChofer: Boolean,
-    foto: String,
-    vehiculo: Vehiculo,
-    precioBaseDelViaje: Double
-) : Conductor(nombre, apellido, edad, username, contrasenia, telefono, esChofer, foto, vehiculo, precioBaseDelViaje) {
+    id: Long = 0,
+    nombre: String="",
+    apellido: String="",
+    edad: Int=0,
+    username: String="",
+    contrasenia: String="",
+    telefono: Int=0,
+    esChofer: Boolean=true,
+    foto: String="",
+    vehiculo: Vehiculo=Vehiculo(),
+    precioBaseDelViaje: Double =0.0
+) : Conductor(id,nombre, apellido, edad, username, contrasenia, telefono, esChofer, foto, vehiculo, precioBaseDelViaje) {
 
     override fun calculoPlus(cantidadDePasajeros: Int, duracion: Int): Double = costoPorDuracion(duracion)
 

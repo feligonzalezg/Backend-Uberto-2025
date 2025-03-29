@@ -1,24 +1,11 @@
 package uberto.backendgrupo72025.repository
 
-import org.springframework.stereotype.Component
+import org.springframework.data.repository.CrudRepository
 import uberto.backendgrupo72025.domain.Viajero
-import uberto.backendgrupo72025.domain.Conductor
+import org.springframework.stereotype.Repository
 
-
-@Component
-class ViajeroRepository: Repository<Viajero>() {
-    override val items: MutableSet<Viajero> = mutableSetOf()
-
-    override var nameEntityRepo: String = "Viajero"
-
+@Repository
+interface ViajeroRepository  : CrudRepository<Viajero, Long> {
 
 }
 
-@Component
-class ConductorRepository: Repository<Conductor>() {
-    override val items: MutableSet<Conductor> = mutableSetOf()
-
-    override var nameEntityRepo: String = "Conductor"
-
-
-}

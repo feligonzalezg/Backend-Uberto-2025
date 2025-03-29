@@ -50,12 +50,12 @@ class ComentarioService(
         if (getComentariosByViajeroId(idUsuario).any { it.viaje.id == viaje.id }) throw BadRequestException("No se puede calificar el mismo viaje más de una vez.")
     }
 
-    @Transactional
-    fun eliminarComentario(idViajero: Long, idComentario: Long) {
-        val comentario = getComentarioById(idComentario)
-        validarEliminarComentario(idViajero, comentario)
-        comentarioRepository.delete(comentario)
-    }
+//    @Transactional
+//    fun eliminarComentario(idViajero: Long, idComentario: Long) {
+//        val comentario = getComentarioById(idComentario)
+//        validarEliminarComentario(idViajero, comentario)
+//        comentarioRepository.delete(comentario)
+//    }
 
     fun validarEliminarComentario(idViajero: Long, comentario: Comentario) {
         if (idViajero != comentario.viaje.viajero.id) throw BadRequestException("No se puede eliminar un comentario realizado por otro usuario")

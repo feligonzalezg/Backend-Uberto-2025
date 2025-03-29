@@ -1,18 +1,24 @@
 package uberto.backendgrupo72025.domain
 
+import jakarta.persistence.*
+
+@Entity
+@DiscriminatorValue(value = "C")
 abstract class Conductor(
-//  id: Long = 0
-    nombre: String,
-    apellido: String,
-    edad: Int,
-    username: String,
-    contrasenia: String,
-    telefono: Int,
-    esChofer: Boolean,
-    foto : String,
+    id: Long = 0,
+    nombre: String="",
+    apellido: String="",
+    edad: Int=0,
+    username: String="",
+    contrasenia: String="",
+    telefono: Int=0,
+    esChofer: Boolean=true,
+    foto : String="",
+    @OneToOne
     var vehiculo: Vehiculo = Vehiculo(),
+    @Column
     var precioBaseDelViaje: Double = 0.0
-) : Usuario(nombre, apellido, edad, username, contrasenia, telefono, esChofer,foto) {
+) : Usuario(id,nombre, apellido, edad, username, contrasenia, telefono, esChofer,foto) {
 
     open var mensaje = ""
 

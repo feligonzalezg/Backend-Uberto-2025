@@ -1,18 +1,24 @@
 package uberto.backendgrupo72025.domain
 
+import jakarta.persistence.*
+
+@Entity
+@DiscriminatorValue(value = "V")
 class Viajero(
-//  id: Long = 0
-    nombre: String,
-    apellido: String,
-    edad: Int,
-    username: String,
-    contrasenia: String,
-    telefono: Int,
-    esChofer: Boolean,
-    foto : String,
-    var saldo: Double,
+    id: Long = 0,
+    nombre: String="",
+    apellido: String="",
+    edad: Int=0,
+    username: String="",
+    contrasenia: String="",
+    telefono: Int=0,
+    esChofer: Boolean=false,
+    foto : String="",
+    @Column
+    var saldo: Double=0.0,
+    @ManyToMany
     val amigos: MutableList<Viajero> = mutableListOf()
-) : Usuario(nombre, apellido, edad, username, contrasenia, telefono, esChofer,foto) {
+) : Usuario(id,nombre, apellido, edad, username, contrasenia, telefono, esChofer,foto) {
 
 
     override fun validacionesPorUsuario() {

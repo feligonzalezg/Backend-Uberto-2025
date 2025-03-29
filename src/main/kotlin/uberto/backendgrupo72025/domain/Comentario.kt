@@ -1,8 +1,6 @@
 package uberto.backendgrupo72025.domain
 
 import jakarta.persistence.*
-import uberto.backendgrupo72025.repository.ItemRepo
-
 import java.time.LocalDate
 
 @Entity

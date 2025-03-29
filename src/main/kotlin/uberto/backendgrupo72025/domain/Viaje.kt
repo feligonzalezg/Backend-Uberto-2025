@@ -1,7 +1,6 @@
 package uberto.backendgrupo72025.domain
 
 import jakarta.persistence.*
-import uberto.backendgrupo72025.repository.ItemRepo
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
@@ -18,7 +17,7 @@ class Viaje(
 
     @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name = "conductor_id")
-    val conductor: Conductor = Conductor(),
+    val conductor: Conductor = Simple(),
     @Column
     val origen: String = "",
     @Column

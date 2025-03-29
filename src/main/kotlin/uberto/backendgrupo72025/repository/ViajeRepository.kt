@@ -4,11 +4,11 @@ import org.springframework.stereotype.Component
 import uberto.backendgrupo72025.domain.Viaje
 
 
-@Component
-class ViajeRepository: Repository<Viaje>() {
-    override val items: MutableSet<Viaje> = mutableSetOf()
+import org.springframework.data.repository.CrudRepository
+import org.springframework.stereotype.Repository
+import uberto.backendgrupo72025.domain.Vehiculo
 
-    override var nameEntityRepo: String = "Viaje"
-
+@Repository
+interface ViajeRepository  : CrudRepository<Viaje, Long> {
 
 }

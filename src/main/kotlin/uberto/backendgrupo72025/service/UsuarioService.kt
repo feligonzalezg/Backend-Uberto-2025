@@ -17,8 +17,6 @@ class UsuarioService(
     val comentarioService: ComentarioService
 ) {
 
-    fun getUsuarios() = usuarioRepository.findAll()
-
     fun getUsuarioById(idUsuario: Long) = usuarioRepository.findById(idUsuario).get()
 
     fun getViajeroById(id: Long) = usuarioRepository.findById(id).get() as Viajero
@@ -29,12 +27,11 @@ class UsuarioService(
         usuarioRepository.findByUsernameAndContrasenia(user.usuario, user.contrasenia)
             ?: throw UnauthorizedException("Los datos ingresados son incorrectos")
 
-    @Transactional
-    fun actualizarUsuario(id: Long, usuarioDTO: UsuarioDTO): PerfilDTO {
-        return if (usuarioDTO.esChofer) {
-            actualizarChofer(id, usuarioDTO.toPerfilChoferDTO())
+    fun getUsuarioPerfil(id: Long, esChofer: Boolean): PerfilDTO {
+        return if (esChofer) {
+            getConductorById(id).toPerfilDTO()
         } else {
-            actualizarViajero(id, usuarioDTO.toPerfilViajeroDTO())
+            usuarioRepository.findByIdWithAmigos(id).toPerfilDTO()
         }
     }
 
@@ -55,9 +52,6 @@ class UsuarioService(
     fun seRealizaronCambios(usuario: Usuario, usuarioDTO: PerfilDTO, param1: Number, param2: Number) =
         usuario.nombre != usuarioDTO.nombre || usuario.apellido != usuarioDTO.apellido || param1 != param2
 
-    // VIAJERO
-
-    fun getAmigos(id: Long) = getViajeroById(id).amigos
 
     fun actualizarViajero(id: Long, viajeroDTO: PerfilViajeroDTO): PerfilViajeroDTO {
         val viajero = getViajeroById(id)
@@ -83,19 +77,20 @@ class UsuarioService(
         return conductor.toPerfilDTO()
     }
 
+    @Transactional
+    fun actualizarUsuario(id: Long, usuarioDTO: UsuarioDTO): PerfilDTO {
+        return if (usuarioDTO.esChofer) {
+            actualizarChofer(id, usuarioDTO.toPerfilChoferDTO())
+        } else {
+            actualizarViajero(id, usuarioDTO.toPerfilViajeroDTO())
+        }
+    }
+
     fun validarSeRealizaronCambiosConductor(conductor: Conductor, choferDTO: PerfilChoferDTO) {
         if (!seRealizaronCambios(conductor, choferDTO, conductor.precioBaseDelViaje, choferDTO.precioBase) &&
             !vehiculoService.validarCambioVehiculo(conductor, choferDTO)
         )
             throw BadRequestException("No se realizaron cambios.")
-    }
-
-    fun getUsuarioPerfil(id: Long, esChofer: Boolean): PerfilDTO {
-        return if (esChofer) {
-            getConductorById(id).toPerfilDTO()
-        } else {
-            usuarioRepository.findByIdWithAmigos(id).toPerfilDTO()
-        }
     }
 
     @Transactional
@@ -136,12 +131,12 @@ class UsuarioService(
         validarEsChofer(esChofer)
     }
 
-    fun cargarSaldo(id: Long, esChofer: Boolean, monto: Double): String {
+    @Transactional
+    fun cargarSaldo(id: Long, esChofer: Boolean, monto: Double) {
         val usuario = getViajeroById(id)
         validarCargaDeSaldo(monto, esChofer)
         usuario.agregarSaldo(monto)
         usuarioRepository.save(usuario)
-        return "Saldo cargado exitosamente"
     }
 
     fun getChoferesDisponibles(busquedaDTO: BusquedaDTO): List<ConductorDTO> {

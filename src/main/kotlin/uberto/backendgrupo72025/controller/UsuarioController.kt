@@ -12,12 +12,6 @@ import uberto.backendgrupo72025.service.UsuarioService
 @CrossOrigin("*")
 class UsuarioController(@Autowired val userService: UsuarioService) {
 
-
-
-    @GetMapping("/users")//test
-    @Operation(summary = "Devuelve todos los usuarios")
-    fun usuarios() = userService.getUsuarios()
-
     @PostMapping("/usuarioLogin")
     @Operation(summary = "Devuelve un usuario que coincida user y pass")
     fun postUsuarioLoggin(@RequestBody user: UsuarioLoginDTO) = userService.getUsuarioLogin(user)
@@ -36,10 +30,6 @@ class UsuarioController(@Autowired val userService: UsuarioService) {
     @PostMapping("/home/buscar")
     @Operation(summary = "Devuelve los choferes disponibles")
     fun getChoferesDisponiles(@RequestBody busquedaDTO: BusquedaDTO) = userService.getChoferesDisponibles(busquedaDTO)
-
-    @GetMapping("/amigos/{id}")
-    @Operation(summary = "Devuelve devuelve la lista de amigues")
-    fun getAmigos(@PathVariable id: Long) = userService.getAmigos(id)
 
     @DeleteMapping("/eliminarAmigo/{userId}/{friendId}")
     @Operation(summary = "Elimina a un amigo de la lista de amigos del viajero")

@@ -1,21 +1,22 @@
 package uberto.backendgrupo72025.domain
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import jakarta.persistence.*
 import java.time.LocalDate
 
 @Entity
-@Table(name = "comentarios")
+@Table(name = "comentario")
 class Comentario(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0,
     @OneToOne(fetch = FetchType.LAZY)
     val viaje: Viaje = Viaje(),
-    @Column()
+    @Column
     var estrellas: Int = 0,
     @Column
     var mensaje: String = "",
-    @Column()
+    @Column
     var fecha : LocalDate = LocalDate.now(),
     @Column
     var active: Boolean = true

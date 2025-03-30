@@ -16,15 +16,9 @@ class ViajeService(
 
     fun getAllViajes() = viajeRepository.findAll()
 
-    fun getViajeById(idViaje: Long) = viajeRepository.findById(idViaje)
+    fun getViajeById(idViaje: Long) = viajeRepository.findById(idViaje).get()
 
-    fun getViajesByViajeroId(idViajero: Long) = getAllViajes().filter { it.viajero.id == idViajero }
-
-    fun getViajesByConductorId(idConductor: Long) = getAllViajes().filter { it.conductor.id == idConductor }
-
-    fun getViajesPendientes(viajes: List<Viaje>) = viajes.filter { it.viajePendiente() }
-
-    fun getViajesRealizados(viajes: List<Viaje>) = viajes.filter { it.viajeFinalizado() }
+    fun getViajesByUsuarioId(idUsuario: Long) = viajeRepository.findByViajeroIdOrConductorId(idUsuario)
 
     fun crearViaje(viajeDTO: ViajeDTO, viajero: Viajero, conductor: Conductor): Viaje {
         val viaje = viajeDTO.toViaje(viajero, conductor)
@@ -33,46 +27,40 @@ class ViajeService(
     }
 
     fun getViajesRealizadosByUsuario(idUsuario: Long, esChofer: Boolean): ViajesCompletadosDTO {
-        lateinit var viajesRealizados: List<ViajeDTO>
+        lateinit var viajesRealizadosDTO: List<ViajeDTO>
+        val viajesRealizados = viajeRepository.findViajesRealizadosByUsuarioId(idUsuario)
         var totalFacturado = 0.0
          if (esChofer) {
-             viajesRealizados = getViajesRealizados(getViajesByConductorId(idUsuario)).map { it.toViajeDTO(it.viajero.nombreYApellido(),it.viajero.foto, viajeCalificable(it)) }
-             totalFacturado = viajesRealizados.sumOf { it.importe }
+             viajesRealizadosDTO = viajesRealizados.map { it.toViajeDTO(it.viajero.nombreYApellido(),it.viajero.foto, viajeCalificable(it)) }
+             totalFacturado = getTotalFacturado(idUsuario)
         } else {
-             viajesRealizados = getViajesRealizados(getViajesByViajeroId(idUsuario)).map { it.toViajeDTO(it.conductor.nombreYApellido(), it.conductor.foto, viajeCalificable(it)) }
+             viajesRealizadosDTO = viajesRealizados.map { it.toViajeDTO(it.conductor.nombreYApellido(), it.conductor.foto, viajeCalificable(it)) }
         }
-        return ViajesCompletadosDTO(viajesRealizados, totalFacturado)
+        return ViajesCompletadosDTO(viajesRealizadosDTO, totalFacturado)
     }
+
+    fun getTotalFacturado(idUsuario: Long) = viajeRepository.sumTotalFacturadoByChoferId(idUsuario)
 
     fun viajeCalificable(viaje: Viaje) = !viaje.viajePendiente() && !comentarioService.viajeCalificado(viaje.id)
 
     fun getViajesPendientesByUsuario(idUsuario: Long, esChofer: Boolean): List<ViajeDTO> {
+        val viajesPendientes = viajeRepository.findViajesPendientesByUsuarioId(idUsuario)
         return if (esChofer) {
-            getViajesPendientes(getViajesByConductorId(idUsuario)).map { it.toViajeDTO(it.viajero.nombreYApellido(), it.viajero.foto, viajeCalificable(it)) }
+            viajesPendientes.map { it.toViajeDTO(it.viajero.nombreYApellido(), it.viajero.foto, viajeCalificable(it)) }
         } else {
-            getViajesPendientes(getViajesByViajeroId(idUsuario)).map { it.toViajeDTO(it.conductor.nombreYApellido(),it.conductor.foto, viajeCalificable(it)) }
+            viajesPendientes.map { it.toViajeDTO(it.conductor.nombreYApellido(),it.conductor.foto, viajeCalificable(it)) }
         }
     }
 
     fun getViajesConductorFiltrados(idConductor: Long, filtroDTO: FiltroDTO): List<ViajeDTO> {
-        val viajesPendientes = getViajesPendientes(getViajesByConductorId(idConductor))
-        return viajesPendientes.filter {
-            (filtroDTO.usernameViajero.isBlank() || it.viajero.username.contains(filtroDTO.usernameViajero, ignoreCase = true)) &&
-                    (filtroDTO.origen.isBlank() || it.origen.contains(filtroDTO.origen, ignoreCase = true)) &&
-                    (filtroDTO.destino.isBlank() || it.destino.contains(filtroDTO.destino, ignoreCase = true)) &&
-                    (filtroDTO.cantidadDePasajeros == 0 || it.cantidadDePasajeros == filtroDTO.cantidadDePasajeros)
-        }.map { it.toViajeDTO(it.viajero.nombreYApellido(), it.viajero.foto, viajeCalificable(it)) }
-    }
-
-    fun getTotalFacturado(idConductor: Long): Double {
-        return viajeRepository.findAll()
-            .filter { it.viajeFinalizado() && it.conductor.id == idConductor }
-            .sumOf { it.importe }
+      return viajeRepository.findViajesFiltradosByConductorId(idConductor,
+          filtroDTO.usernameViajero, filtroDTO.origen, filtroDTO.destino, filtroDTO.cantidadDePasajeros)
+            .map { it.toViajeDTO(it.viajero.nombreYApellido(), it.viajero.foto, viajeCalificable(it)) }
     }
 
     @Transactional
     fun calificarViaje(idUsuario: Long, calificacion: CalificacionDTO): ComentarioDTO {
-        val viaje = getViajeById(calificacion.idViaje).get()
+        val viaje = getViajeById(calificacion.idViaje)
         val comentario = comentarioService.calificar(calificacion, viaje, idUsuario)
         return comentario.toComentarioDTO(viaje.conductor.nombreYApellido(), viaje.conductor.foto)
     }

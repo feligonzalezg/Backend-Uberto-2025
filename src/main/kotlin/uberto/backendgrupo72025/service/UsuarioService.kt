@@ -12,27 +12,20 @@ import java.time.format.DateTimeFormatter
 @Service
 class UsuarioService(
     val vehiculoService: VehiculoService,
+    val usuarioRepository: UsuarioRepository,
     val viajeService: ViajeService,
-    val comentarioService: ComentarioService,
-    val usuarioRepository: UsuarioRepository
 ) {
 
     fun getUsuarios() = usuarioRepository.findAll()
 
-    fun getUsuarioById(idUsuario: Long) = usuarioRepository.findById(idUsuario)
+    fun getUsuarioById(idUsuario: Long) = usuarioRepository.findById(idUsuario).get()
 
     fun getViajeroById(id: Long) = usuarioRepository.findById(id).get() as Viajero
 
     fun getConductorById(id: Long) = usuarioRepository.findById(id).get() as Conductor
 
-    fun getUsuarioLogin(user: UsuarioLoginDTO): LoginDTO {
-        val usuario = getUsuarios().filter { it.accesoUsuario(user) }
-        if (usuario.isNotEmpty()) {
-            return usuario.first().toDTO1()
-        } else {
-            throw UnauthorizedException("Los datos ingresados son incorrectos")
-        }
-    }
+    fun getUsuarioLogin(user: UsuarioLoginDTO) = usuarioRepository.findByUsernameAndContrasenia(user.usuario, user.contrasenia)
+        ?: throw UnauthorizedException("Los datos ingresados son incorrectos")
 
     @Transactional
     fun actualizarUsuario(id: Long, usuarioDTO: UsuarioDTO): PerfilDTO {
@@ -45,16 +38,9 @@ class UsuarioService(
 
     @Transactional
     fun actualizarImagen(id: Long, imagen: String, esChofer: Boolean): String {
-        lateinit var usuario: Usuario
-        if (esChofer) {
-            usuario = getConductorById(id)
-            usuario.foto = imagen
-            usuarioRepository.save(usuario)
-        } else {
-            usuario = getViajeroById(id)
-            usuario.foto = imagen
-            usuarioRepository.save(usuario)
-        }
+        val usuario = getUsuarioById(id)
+        usuario.foto = imagen
+        usuarioRepository.save(usuario)
         return usuario.foto
     }
 
@@ -88,6 +74,7 @@ class UsuarioService(
         conductor.nombre = choferDTO.nombre
         conductor.apellido = choferDTO.apellido
         conductor.precioBaseDelViaje = choferDTO.precioBase
+        conductor.vehiculo.active = false
         conductor.vehiculo = nuevoVehiculo
         conductor.validar()
         usuarioRepository.save(conductor)
@@ -105,7 +92,7 @@ class UsuarioService(
         return if (esChofer) {
             getConductorById(id).toPerfilDTO()
         } else {
-            getViajeroById(id).toPerfilDTO()
+            usuarioRepository.findByIdWithAmigos(id).toPerfilDTO()
         }
     }
 
@@ -126,15 +113,9 @@ class UsuarioService(
         usuarioRepository.save(viajero)
     }
 
-//    fun getViajerosParaAgregarAmigo(id: Long, query: String): List<AmigoDTO> {
-//        val usuario = getViajeroById(id)
-//        val amigos = usuario.amigos
-//        return getViajeros().filter {
-//            it.id!=id && !amigos.contains(it) &&
-//                    (it.nombreYApellido().contains(query, ignoreCase = true) ||
-//                            it.username.contains(query, ignoreCase = true))
-//        }.map { it.toAmigoDTO() }
-//    }
+    fun getViajerosParaAgregarAmigo(id: Long, query: String) =
+        usuarioRepository.buscarViajerosNoAmigos(id, query).map { it.toAmigoDTO() }
+
 
     fun cargarSaldo(id: Long, esChofer: Boolean, monto: Double): String {
         if (monto <= 0 || monto != monto.toLong().toDouble()) {
@@ -148,7 +129,7 @@ class UsuarioService(
         usuarioRepository.save(usuario)
         return "Saldo cargado exitosamente"
     }
-
+//
 //    fun getChoferesDisponibles(busquedaDTO: BusquedaDTO): List<ConductorDTO> {
 //        return getConductores().filter {
 //            conductorDisponible(
@@ -161,9 +142,9 @@ class UsuarioService(
 //            it.toConductorDTO(busquedaDTO.cantidadDePasajeros, busquedaDTO.duracion, calificacionByConductor)
 //        }
 //    }
-
+//
     fun conductorDisponible(idConductor: Long, fechaNueva: LocalDateTime, duracion: Int) =
-        !viajeService.getViajesByConductorId(idConductor).any { it.seSolapan(fechaNueva, duracion) }
+        !viajeService.getViajesByUsuarioId(idConductor).any { it.seSolapan(fechaNueva, duracion) }
 
     @Transactional
     fun contratarViaje(viajeDTO: ViajeDTO) {

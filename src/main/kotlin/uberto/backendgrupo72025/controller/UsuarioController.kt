@@ -53,13 +53,13 @@ class UsuarioController(@Autowired val userService: UsuarioService) {
     fun actualizarUsuario(@PathVariable id: Long, @RequestBody usuarioDTO: UsuarioDTO) =
         userService.actualizarUsuario(id, usuarioDTO)
 
-//    @GetMapping("/buscarAmigos/{id}")
-//    @Operation(summary = "Busca los usuarios para agregar como amigos")
-//    fun buscarAmigos(
-//        @PathVariable id: Long,
-//        @RequestParam query: String
-//    ) = userService.getViajerosParaAgregarAmigo(id, query)
-//
+    @GetMapping("/buscarAmigos/{id}")
+    @Operation(summary = "Busca los usuarios para agregar como amigos")
+    fun buscarAmigos(
+        @PathVariable id: Long,
+        @RequestParam query: String
+    ) = userService.getViajerosParaAgregarAmigo(id, query)
+
     @PutMapping("/agregarAmigo/{userId}/{friendId}")
     @Operation(summary = "agrega a un amigo de la lista de amigos del viajero")
     fun agregarAmigo(

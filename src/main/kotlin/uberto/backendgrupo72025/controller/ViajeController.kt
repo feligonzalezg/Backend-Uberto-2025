@@ -38,9 +38,5 @@ class ViajeController(
         @RequestParam esChofer: Boolean
     ) = viajeService.getViajesPendientesByUsuario(idUsuario, esChofer)
 
-    @GetMapping("/total-facturado/{idConductor}")
-    @Operation(summary = "Obtener total facturado de todos los viajes finalizados de un conductor")
-    fun getTotalFacturado(@PathVariable idConductor: Long): Double {
-        return viajeService.getTotalFacturado(idConductor)
-    }
+
 }

@@ -16,7 +16,7 @@ class ComentarioService(
 
     fun getAll() = comentarioRepository.findAll()
 
-    fun getComentarioById(idComentario: Long) = comentarioRepository.findById(idComentario)
+    fun getComentarioById(idComentario: Long) = comentarioRepository.findById(idComentario).get()
 
     fun getComentarios(idUsuario: Long, esChofer: Boolean): List<ComentarioDTO> {
         return if (esChofer) {
@@ -43,12 +43,14 @@ class ComentarioService(
     }
 
     fun validarNoCalificado(idUsuario: Long, viaje: Viaje) {
-        //if (getComentariosByViajeroId(idUsuario).any { it.viaje.id == viaje.id }) throw BadRequestException("No se puede calificar el mismo viaje más de una vez.")
+        if (viajeCalificado(viaje.id)) throw BadRequestException("No se puede calificar el mismo viaje más de una vez.")
     }
+
+    fun viajeCalificado(idViaje : Long) = comentarioRepository.existsByViajeIdAndActive(idViaje, true)
 
     @Transactional
     fun eliminarComentario(idViajero: Long, idComentario: Long) {
-        val comentario = getComentarioById(idComentario).get()
+        val comentario = getComentarioById(idComentario)
         validarEliminarComentario(idViajero, comentario)
         comentario.active = false
         comentarioRepository.save(comentario)
@@ -58,16 +60,6 @@ class ComentarioService(
         if (idViajero != comentario.viaje.viajero.id) throw BadRequestException("No se puede eliminar un comentario realizado por otro usuario")
     }
 
-    fun getCalificacionByConductor(idConductor: Long): Double {
-        val cantidadComentarios = cantidadComentariosByConductor(idConductor)
-        return if (cantidadComentarios > 0)
-            puntajeTotal(idConductor) / cantidadComentarios.toDouble()
-        else 0.0
-    }
+    fun getCalificacionByConductor(idConductor: Long) = comentarioRepository.promedioEstrellasByConductor(idConductor)
 
-    fun cantidadComentariosByConductor(idConductor: Long) = comentarioRepository.countByViajeConductorId(idConductor)
-
-    fun puntajeTotal(idConductor: Long) = comentarioRepository.sumEstrellasByViajeConductorId(idConductor)
-
-    fun viajeCalificado(idViaje: Long) = getAll().any { it.viaje.id  == idViaje }
 }

@@ -4,7 +4,7 @@ import jakarta.persistence.*
 import java.time.LocalDate
 
 @Entity
-@Table(name = "vehiculos")
+@Table(name = "vehiculo")
 class Vehiculo(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,7 +17,8 @@ class Vehiculo(
     var dominio: String = "",
     @Column
     var anio: Int = 0,
-
+    @Column
+    var active: Boolean = true
 ) {
 
     fun antiguedad(): Int = LocalDate.now().year - anio

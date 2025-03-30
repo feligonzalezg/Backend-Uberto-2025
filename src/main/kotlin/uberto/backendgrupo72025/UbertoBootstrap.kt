@@ -143,6 +143,7 @@ class UbertoBootstrap(
                 val viajero = viajeros.random()
                 val fechaInicio = if (it % 2 == 0) LocalDateTime.now().minusDays(it.toLong()) else LocalDateTime.now()
                     .plusDays(it.toLong())
+                val duracion = (5..20).random()
 
                 viajes.add(
                     Viaje(
@@ -151,8 +152,9 @@ class UbertoBootstrap(
                         origen = "Ciudad ${it + 1}",
                         destino = "Destino ${it + 1}",
                         fechaInicio = fechaInicio,
+                        fechaFin = fechaInicio.plusMinutes(duracion.toLong()),
                         cantidadDePasajeros = (1..3).random(),
-                        duracion = (5..20).random(),
+                        duracion = duracion,
                         importe = conductor.importeViaje((1..3).random(), (5..20).random())
                     )
                 )

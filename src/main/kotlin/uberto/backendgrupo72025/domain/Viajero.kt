@@ -16,7 +16,7 @@ class Viajero(
     foto : String="",
     @Column
     var saldo: Double=0.0,
-    @ManyToMany()
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "amistades",
         joinColumns = [JoinColumn(name = "viajero_id")],

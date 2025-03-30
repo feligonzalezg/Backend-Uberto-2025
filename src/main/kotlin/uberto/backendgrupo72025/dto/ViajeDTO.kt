@@ -5,6 +5,7 @@ import uberto.backendgrupo72025.domain.Viaje
 import uberto.backendgrupo72025.domain.Viajero
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoUnit
 
 
 data class ViajeDTO(
@@ -34,6 +35,7 @@ fun ViajeDTO.toViaje(viajero: Viajero, conductor: Conductor) = Viaje(
     origen = origen,
     destino =  destino,
     fechaInicio = LocalDateTime.parse(fechaInicio, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+    fechaFin = LocalDateTime.parse(fechaInicio, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")).plusMinutes(duracion.toLong()),
     cantidadDePasajeros = cantidadDePasajeros,
     duracion = duracion,
     importe = importe
@@ -51,6 +53,6 @@ fun Viaje.toViajeDTO(nombre: String, foto : String, puedeCalificar: Boolean) = V
     duracion = duracion,
     importe = importe,
     puedeCalificar = puedeCalificar,
-    fechaFin = fechaFin(fechaInicio, duracion).format(DateTimeFormatter.ofPattern("HH:mm")),
+    fechaFin = fechaFin.format(DateTimeFormatter.ofPattern("HH:mm")),
     foto = foto
 )

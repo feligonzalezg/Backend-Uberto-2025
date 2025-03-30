@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 import uberto.backendgrupo72025.domain.*
+import java.time.LocalDateTime
 
 @Repository
 interface ViajeroRepository  : CrudRepository<Viajero, Long> {
@@ -36,33 +37,18 @@ interface UsuarioRepository   : CrudRepository<Usuario, Long> {
     @Query("SELECT v FROM Viajero v LEFT JOIN FETCH v.amigos WHERE v.id = :id")
     fun findByIdWithAmigos(id: Long): Viajero
 
-
-
-//    @Query("select v from Viajero v where v.id = :id")
-//    fun findViajeroById(id: Long): Viajero
-//
-//    @Query("select c from Conductor c where c.id = :id")
-//    fun findConductorById(id: Long): Conductor
-//    @Query("select v.saldo from Viajero v where v.id= :id")
-//    fun getSaldo(id: Long): Double
-
-//    @Query("select v.vehiculo from Conductor v where v.id= :id")
-//    fun getSaldo(id: Long): Vehiculo
-
-//    @Query("""
-//        SELECT c FROM Conductor c
-//        WHERE NOT EXISTS (
-//            SELECT v FROM Viaje v
-//            WHERE v.conductor = c
-//            AND (
-//                (v.fechaInicio <= :nuevaFechaFin AND viejaFechaFin >= :fechaInicio)
-//                OR (v.fechaInicio <= :fechaFinCalculada AND v.fechaFin >= :fechaInicio)
-//            )
-//        )
-//        AND c.vehiculo.capacidad >= :cantidadPasajeros
-//        AND c.esChofer = true
-//    """)
-//    fun findConductoresDisponibles(fechaInicio: String, nuevaFechaFin: String, viejaFechaFin: String, cantidadPasajeros: Int): List<Conductor>
-
+    @Query("""
+    SELECT c 
+    FROM Conductor c
+    WHERE NOT EXISTS (
+        SELECT 1 FROM Viaje v
+        WHERE v.conductor.id = c.id
+        AND (
+            (v.fechaInicio < :nuevaFechaFin AND v.fechaFin > :nuevaFechaInicio)
+            OR (v.fechaInicio < :nuevaFechaInicio AND v.fechaFin > :nuevaFechaInicio)
+        )
+    )
+""")
+    fun findConductoresDisponibles(nuevaFechaInicio: LocalDateTime, nuevaFechaFin: LocalDateTime): List<Conductor>
 
 }

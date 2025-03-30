@@ -1,5 +1,6 @@
 package uberto.backendgrupo72025.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 
 @Entity
@@ -17,6 +18,7 @@ class Viajero(
     @Column
     var saldo: Double=0.0,
     @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinTable(
         name = "amistades",
         joinColumns = [JoinColumn(name = "viajero_id")],

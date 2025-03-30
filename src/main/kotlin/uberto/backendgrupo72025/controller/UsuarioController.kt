@@ -33,9 +33,9 @@ class UsuarioController(@Autowired val userService: UsuarioService) {
     @Operation(summary = "Contratar viaje")
     fun contratarViaje(@RequestBody viaje: ViajeDTO) = userService.contratarViaje(viaje)
 
-//    @PostMapping("/home/buscar")
-//    @Operation(summary = "Devuelve los choferes disponibles")
-//    fun getChoferesDisponiles(@RequestBody busquedaDTO: BusquedaDTO) = userService.getChoferesDisponibles(busquedaDTO)
+    @PostMapping("/home/buscar")
+    @Operation(summary = "Devuelve los choferes disponibles")
+    fun getChoferesDisponiles(@RequestBody busquedaDTO: BusquedaDTO) = userService.getChoferesDisponibles(busquedaDTO)
 
     @GetMapping("/amigos/{id}")
     @Operation(summary = "Devuelve devuelve la lista de amigues")

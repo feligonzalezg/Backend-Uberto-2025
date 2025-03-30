@@ -14,6 +14,7 @@ class UsuarioService(
     val vehiculoService: VehiculoService,
     val usuarioRepository: UsuarioRepository,
     val viajeService: ViajeService,
+    val comentarioService: ComentarioService
 ) {
 
     fun getUsuarios() = usuarioRepository.findAll()
@@ -24,8 +25,9 @@ class UsuarioService(
 
     fun getConductorById(id: Long) = usuarioRepository.findById(id).get() as Conductor
 
-    fun getUsuarioLogin(user: UsuarioLoginDTO) = usuarioRepository.findByUsernameAndContrasenia(user.usuario, user.contrasenia)
-        ?: throw UnauthorizedException("Los datos ingresados son incorrectos")
+    fun getUsuarioLogin(user: UsuarioLoginDTO) =
+        usuarioRepository.findByUsernameAndContrasenia(user.usuario, user.contrasenia)
+            ?: throw UnauthorizedException("Los datos ingresados son incorrectos")
 
     @Transactional
     fun actualizarUsuario(id: Long, usuarioDTO: UsuarioDTO): PerfilDTO {
@@ -117,32 +119,40 @@ class UsuarioService(
         usuarioRepository.buscarViajerosNoAmigos(id, query).map { it.toAmigoDTO() }
 
 
-    fun cargarSaldo(id: Long, esChofer: Boolean, monto: Double): String {
+    fun validarSaldoPositivo(monto: Double) {
         if (monto <= 0 || monto != monto.toLong().toDouble()) {
             throw BadRequestException("El monto debe ser un número entero positivo.")
         }
-        val usuario = getViajeroById(id)
+    }
+
+    fun validarEsChofer(esChofer: Boolean) {
         if (esChofer) {
             throw BadRequestException("Los choferes no pueden cargar saldo")
         }
+    }
+
+    fun validarCargaDeSaldo(monto: Double, esChofer: Boolean) {
+        validarSaldoPositivo(monto)
+        validarEsChofer(esChofer)
+    }
+
+    fun cargarSaldo(id: Long, esChofer: Boolean, monto: Double): String {
+        val usuario = getViajeroById(id)
+        validarCargaDeSaldo(monto, esChofer)
         usuario.agregarSaldo(monto)
         usuarioRepository.save(usuario)
         return "Saldo cargado exitosamente"
     }
-//
-//    fun getChoferesDisponibles(busquedaDTO: BusquedaDTO): List<ConductorDTO> {
-//        return getConductores().filter {
-//            conductorDisponible(
-//                it.id,
-//                LocalDateTime.parse(busquedaDTO.fecha, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
-//                busquedaDTO.duracion
-//            )
-//        }.map {
-//            val calificacionByConductor = comentarioService.getCalificacionByConductor(it.id)
-//            it.toConductorDTO(busquedaDTO.cantidadDePasajeros, busquedaDTO.duracion, calificacionByConductor)
-//        }
-//    }
-//
+
+    fun getChoferesDisponibles(busquedaDTO: BusquedaDTO): List<ConductorDTO> {
+        val nuevaFecha = LocalDateTime.parse(busquedaDTO.fecha, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
+        val nuevaFechaFin = LocalDateTime.parse(busquedaDTO.fecha, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")).plusMinutes(busquedaDTO.duracion.toLong())
+        return usuarioRepository.findConductoresDisponibles(nuevaFecha, nuevaFechaFin).map {
+            val calificacionByConductor = comentarioService.getCalificacionByConductor(it.id)
+            it.toConductorDTO(busquedaDTO.cantidadDePasajeros, busquedaDTO.duracion, calificacionByConductor)
+        }
+    }
+
     fun conductorDisponible(idConductor: Long, fechaNueva: LocalDateTime, duracion: Int) =
         !viajeService.getViajesByUsuarioId(idConductor).any { it.seSolapan(fechaNueva, duracion) }
 

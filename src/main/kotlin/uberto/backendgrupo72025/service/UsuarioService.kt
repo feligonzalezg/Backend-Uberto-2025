@@ -69,9 +69,8 @@ class UsuarioService(
 
     // VIAJERO
 
+    fun getAmigos(id: Long) = getViajeroById(id).amigos
 
-//    fun getAmigos(id: Long) = getViajeroById(id).amigos
-//
     fun actualizarViajero(id: Long, viajeroDTO: PerfilViajeroDTO): PerfilViajeroDTO {
         val viajero = getViajeroById(id)
         validarSeRealizaronCambios(viajero, viajeroDTO, viajero.telefono, viajeroDTO.telefono)
@@ -102,32 +101,31 @@ class UsuarioService(
             throw BadRequestException("No se realizaron cambios.")
     }
 
-//    fun getUsuarioPerfil(id: Long, esChofer: Boolean): PerfilDTO {
-//        return if (esChofer) {
-//            getConductorById(id).toPerfilDTO()
-//        } else {
-//            getViajeroById(id).toPerfilDTO()
-//        }
-//    }
-//
-//    @Transactional
-//    fun agregarAmigo(idViajero: Long, idAmigo: Long): AmigoDTO {
-//        val viajero = getViajeroById(idViajero)
-//        val amigo = getViajeroById(idAmigo)
-//
-//        viajero.agregarAmigo(amigo)
-//        viajeroRepository.update(viajero)
-//        return amigo.toAmigoDTO()
-//    }
-//
-//    @Transactional
-//    fun eliminarAmigo(idViajero: Long, idAmigo: Long) {
-//        val viajero = getViajeroById(idViajero)
-//        val amigo = getViajeroById(idAmigo)
-//        viajero.eliminarAmigo(amigo)
-//        viajeroRepository.update(viajero)
-//    }
-//
+    fun getUsuarioPerfil(id: Long, esChofer: Boolean): PerfilDTO {
+        return if (esChofer) {
+            getConductorById(id).toPerfilDTO()
+        } else {
+            getViajeroById(id).toPerfilDTO()
+        }
+    }
+
+    @Transactional
+    fun agregarAmigo(idViajero: Long, idAmigo: Long): AmigoDTO {
+        val viajero = getViajeroById(idViajero)
+        val amigo = getViajeroById(idAmigo)
+        viajero.agregarAmigo(amigo)
+        usuarioRepository.save(viajero)
+        return amigo.toAmigoDTO()
+    }
+
+    @Transactional
+    fun eliminarAmigo(idViajero: Long, idAmigo: Long) {
+        val viajero = getViajeroById(idViajero)
+        val amigo = getViajeroById(idAmigo)
+        viajero.eliminarAmigo(amigo)
+        usuarioRepository.save(viajero)
+    }
+
 //    fun getViajerosParaAgregarAmigo(id: Long, query: String): List<AmigoDTO> {
 //        val usuario = getViajeroById(id)
 //        val amigos = usuario.amigos
@@ -138,18 +136,18 @@ class UsuarioService(
 //        }.map { it.toAmigoDTO() }
 //    }
 
-//    fun cargarSaldo(id: Long, esChofer: Boolean, monto: Double): String {
-//        if (monto <= 0 || monto != monto.toLong().toDouble()) {
-//            throw BadRequestException("El monto debe ser un número entero positivo.")
-//        }
-//        val usuario = viajeroRepository.findById(id)
-//        if (esChofer) {
-//            throw BadRequestException("Los choferes no pueden cargar saldo")
-//        }
-//        usuario.agregarSaldo(monto)
-//        viajeroRepository.update(usuario)
-//        return "Saldo cargado exitosamente"
-//    }
+    fun cargarSaldo(id: Long, esChofer: Boolean, monto: Double): String {
+        if (monto <= 0 || monto != monto.toLong().toDouble()) {
+            throw BadRequestException("El monto debe ser un número entero positivo.")
+        }
+        val usuario = getViajeroById(id)
+        if (esChofer) {
+            throw BadRequestException("Los choferes no pueden cargar saldo")
+        }
+        usuario.agregarSaldo(monto)
+        usuarioRepository.save(usuario)
+        return "Saldo cargado exitosamente"
+    }
 
 //    fun getChoferesDisponibles(busquedaDTO: BusquedaDTO): List<ConductorDTO> {
 //        return getConductores().filter {
@@ -169,8 +167,8 @@ class UsuarioService(
 
     @Transactional
     fun contratarViaje(viajeDTO: ViajeDTO) {
-        val viajero = getViajeroById(viajeDTO.idViajero).get()
-        val conductor = getConductorById(viajeDTO.idConductor).get()
+        val viajero = getViajeroById(viajeDTO.idViajero)
+        val conductor = getConductorById(viajeDTO.idConductor)
         validarPuedeRealizarseViaje(viajero, conductor.id, viajeDTO)
         val viaje = viajeService.crearViaje(viajeDTO, viajero, conductor)
         viajero.contratarViaje(viaje)

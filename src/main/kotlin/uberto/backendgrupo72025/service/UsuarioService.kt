@@ -1,7 +1,6 @@
 package uberto.backendgrupo72025.service
 
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import uberto.backendgrupo72025.dto.*
 import uberto.backendgrupo72025.domain.*
 import uberto.backendgrupo72025.repository.*
@@ -15,7 +14,8 @@ class UsuarioService(
     val conductorRepository: ConductorRepository,
     val vehiculoService: VehiculoService,
     val viajeService: ViajeService,
-    private val comentarioService: ComentarioService
+    private val comentarioService: ComentarioService,
+    private val usuarioRepository: UsuarioRepository
 ) {
 
     fun getConductores() = conductorRepository.findAll()
@@ -27,6 +27,8 @@ class UsuarioService(
     fun updateViajero(viajero: Viajero) {
         viajeroRepository.save(viajero)
     }
+
+//    fun getSaldo(id:Long) = usuarioRepository.getSaldo(id)
 
     fun updateConductor(conductor: Conductor) {
         conductorRepository.save(conductor)

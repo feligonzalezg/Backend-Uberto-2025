@@ -17,6 +17,8 @@ class Comentario(
     var mensaje: String = "",
     @Column()
     var fecha : LocalDate = LocalDate.now(),
+    @Column
+    var active: Boolean = true
 ) {
 
 

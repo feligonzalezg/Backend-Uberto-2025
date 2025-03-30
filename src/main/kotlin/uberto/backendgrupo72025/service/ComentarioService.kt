@@ -18,15 +18,11 @@ class ComentarioService(
 
     fun getComentarioById(idComentario: Long) = comentarioRepository.findById(idComentario)
 
-    fun getComentariosByViajeroId(idUsuario: Long) = getAll().filter { it.viaje.viajero.id == idUsuario }
-
-    fun getComentariosByConductorId(idUsuario: Long) = getAll().filter { it.viaje.conductor.id == idUsuario }
-
     fun getComentarios(idUsuario: Long, esChofer: Boolean): List<ComentarioDTO> {
         return if (esChofer) {
-            getComentariosByConductorId(idUsuario).map { it.toComentarioDTO(it.viaje.viajero.nombreYApellido(), it.viaje.viajero.foto) }
+            comentarioRepository.findByViajeroIdOrConductorId(idUsuario).map { it.toComentarioDTO(it.viaje.viajero.nombreYApellido(), it.viaje.viajero.foto) }
         } else {
-            getComentariosByViajeroId(idUsuario).map { it.toComentarioDTO(it.viaje.conductor.nombreYApellido(), it.viaje.conductor.foto) }
+            comentarioRepository.findByViajeroIdOrConductorId(idUsuario).map { it.toComentarioDTO(it.viaje.conductor.nombreYApellido(), it.viaje.conductor.foto) }
         }
     }
 
@@ -47,15 +43,16 @@ class ComentarioService(
     }
 
     fun validarNoCalificado(idUsuario: Long, viaje: Viaje) {
-        if (getComentariosByViajeroId(idUsuario).any { it.viaje.id == viaje.id }) throw BadRequestException("No se puede calificar el mismo viaje más de una vez.")
+        //if (getComentariosByViajeroId(idUsuario).any { it.viaje.id == viaje.id }) throw BadRequestException("No se puede calificar el mismo viaje más de una vez.")
     }
 
-//    @Transactional
-//    fun eliminarComentario(idViajero: Long, idComentario: Long) {
-//        val comentario = getComentarioById(idComentario)
-//        validarEliminarComentario(idViajero, comentario)
-//        comentarioRepository.delete(comentario)
-//    }
+    @Transactional
+    fun eliminarComentario(idViajero: Long, idComentario: Long) {
+        val comentario = getComentarioById(idComentario).get()
+        validarEliminarComentario(idViajero, comentario)
+        comentario.active = false
+        comentarioRepository.save(comentario)
+    }
 
     fun validarEliminarComentario(idViajero: Long, comentario: Comentario) {
         if (idViajero != comentario.viaje.viajero.id) throw BadRequestException("No se puede eliminar un comentario realizado por otro usuario")
@@ -68,9 +65,9 @@ class ComentarioService(
         else 0.0
     }
 
-    fun cantidadComentariosByConductor(idConductor: Long) = getComentariosByConductorId(idConductor).size
+    fun cantidadComentariosByConductor(idConductor: Long) = comentarioRepository.countByViajeConductorId(idConductor)
 
-    fun puntajeTotal(idConductor: Long) = getComentariosByConductorId(idConductor).sumOf { it.estrellas }
+    fun puntajeTotal(idConductor: Long) = comentarioRepository.sumEstrellasByViajeConductorId(idConductor)
 
     fun viajeCalificado(idViaje: Long) = getAll().any { it.viaje.id  == idViaje }
 }

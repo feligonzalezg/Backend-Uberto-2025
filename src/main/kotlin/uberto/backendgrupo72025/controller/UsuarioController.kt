@@ -12,6 +12,8 @@ import uberto.backendgrupo72025.service.UsuarioService
 @CrossOrigin("*")
 class UsuarioController(@Autowired val userService: UsuarioService) {
 
+
+
     @GetMapping("/users")//test
     @Operation(summary = "Devuelve todos los usuarios")
     fun usuarios() = userService.getUsuarios()
@@ -77,4 +79,9 @@ class UsuarioController(@Autowired val userService: UsuarioService) {
 //    @Operation(summary = "Actualiza los datos del usuario")
 //    fun actualizarImagen(@PathVariable id: Long, @RequestParam esChofer: Boolean, @RequestParam imagen: String) =
 //        userService.actualizarImagen(id, imagen, esChofer)
+
+
+//    @GetMapping("/saldo/{id}")
+//    fun getSaldo(@PathVariable id: Long)= userService.getSaldo(id)
+
 }

@@ -12,10 +12,10 @@ trigger
 
 stored procedures
 
-4)Evitar que el precio base de un chofer tome un valor nulo en la base (por fuera de la interfaz de usuario).
+4)Evitar que el precio base de un chofer tome un valor nulo en la base (por fuera de la interfaz de usuario). (feli)
 
 constraints
 
-5)Listar los choferes que tengan más de 2 viajes realizados.
+5)Listar los choferes que tengan más de 2 viajes realizados. (Juan)
 
 vista

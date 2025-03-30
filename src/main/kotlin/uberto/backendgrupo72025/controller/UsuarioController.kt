@@ -29,9 +29,9 @@ class UsuarioController(@Autowired val userService: UsuarioService) {
 //        @RequestParam esChofer: Boolean
 //    ) = userService.getUsuarioPerfil(id, esChofer)
 
-//    @PostMapping("/confirmar")
-//    @Operation(summary = "Contratar viaje")
-//    fun contratarViaje(@RequestBody viaje: ViajeDTO) = userService.contratarViaje(viaje)
+    @PostMapping("/confirmar")
+    @Operation(summary = "Contratar viaje")
+    fun contratarViaje(@RequestBody viaje: ViajeDTO) = userService.contratarViaje(viaje)
 
     @PostMapping("/home/buscar")
     @Operation(summary = "Devuelve los choferes disponibles")
@@ -48,10 +48,10 @@ class UsuarioController(@Autowired val userService: UsuarioService) {
 //        @PathVariable friendId: Long
 //    ) = userService.eliminarAmigo(userId, friendId)
 //
-//    @PatchMapping("/actualizarUsuario/{id}")
-//    @Operation(summary = "Actualiza los datos del usuario")
-//    fun actualizarUsuario(@PathVariable id: Long, @RequestBody usuarioDTO: UsuarioDTO) =
-//        userService.actualizarUsuario(id, usuarioDTO)
+    @PatchMapping("/actualizarUsuario/{id}")
+    @Operation(summary = "Actualiza los datos del usuario")
+    fun actualizarUsuario(@PathVariable id: Long, @RequestBody usuarioDTO: UsuarioDTO) =
+        userService.actualizarUsuario(id, usuarioDTO)
 
 //    @GetMapping("/buscarAmigos/{id}")
 //    @Operation(summary = "Busca los usuarios para agregar como amigos")

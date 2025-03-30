@@ -1,5 +1,6 @@
 package uberto.backendgrupo72025.service
 
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.stereotype.Service
 import uberto.backendgrupo72025.dto.*
 import uberto.backendgrupo72025.domain.*
@@ -10,29 +11,19 @@ import java.time.format.DateTimeFormatter
 
 @Service
 class UsuarioService(
-    val viajeroRepository: ViajeroRepository,
-    val conductorRepository: ConductorRepository,
     val vehiculoService: VehiculoService,
     val viajeService: ViajeService,
-    private val comentarioService: ComentarioService,
-    private val usuarioRepository: UsuarioRepository
+    val comentarioService: ComentarioService,
+    val usuarioRepository: UsuarioRepository
 ) {
 
-    fun getConductores() = conductorRepository.findAll()
+    fun getUsuarios() = usuarioRepository.findAll()
 
-    fun getViajeros() = viajeroRepository.findAll()
+    fun getUsuarioById(idUsuario: Long) = usuarioRepository.findById(idUsuario)
 
-    fun getUsuarios() = getConductores() + getViajeros()
+    fun getViajeroById(id: Long) = usuarioRepository.findById(id).get() as Viajero
 
-    fun updateViajero(viajero: Viajero) {
-        viajeroRepository.save(viajero)
-    }
-
-//    fun getSaldo(id:Long) = usuarioRepository.getSaldo(id)
-
-    fun updateConductor(conductor: Conductor) {
-        conductorRepository.save(conductor)
-    }
+    fun getConductorById(id: Long) = usuarioRepository.findById(id).get() as Conductor
 
     fun getUsuarioLogin(user: UsuarioLoginDTO): LoginDTO {
         val usuario = getUsuarios().filter { it.accesoUsuario(user) }
@@ -42,30 +33,30 @@ class UsuarioService(
             throw UnauthorizedException("Los datos ingresados son incorrectos")
         }
     }
-//
-//    @Transactional
-//    fun actualizarUsuario(id: Long, usuarioDTO: UsuarioDTO): PerfilDTO {
-//        return if (usuarioDTO.esChofer) {
-//            actualizarChofer(id, usuarioDTO.toPerfilChoferDTO())
-//        } else {
-//            actualizarViajero(id, usuarioDTO.toPerfilViajeroDTO())
-//        }
-//    }
 
-//    @Transactional
-//    fun actualizarImagen(id: Long, imagen: String, esChofer: Boolean): String {
-//        lateinit var usuario: Usuario
-//        if (esChofer) {
-//            usuario = getConductorById(id)
-//            usuario.foto = imagen
-//            conductorRepository.update(usuario)
-//        } else {
-//            usuario = getViajeroById(id)
-//            usuario.foto = imagen
-//            viajeroRepository.update(usuario)
-//        }
-//        return usuario.foto
-//    }
+    @Transactional
+    fun actualizarUsuario(id: Long, usuarioDTO: UsuarioDTO): PerfilDTO {
+        return if (usuarioDTO.esChofer) {
+            actualizarChofer(id, usuarioDTO.toPerfilChoferDTO())
+        } else {
+            actualizarViajero(id, usuarioDTO.toPerfilViajeroDTO())
+        }
+    }
+
+    @Transactional
+    fun actualizarImagen(id: Long, imagen: String, esChofer: Boolean): String {
+        lateinit var usuario: Usuario
+        if (esChofer) {
+            usuario = getConductorById(id)
+            usuario.foto = imagen
+            usuarioRepository.save(usuario)
+        } else {
+            usuario = getViajeroById(id)
+            usuario.foto = imagen
+            usuarioRepository.save(usuario)
+        }
+        return usuario.foto
+    }
 
     fun validarSeRealizaronCambios(usuario: Usuario, usuarioDTO: PerfilDTO, param1: Number, param2: Number) {
         if (!seRealizaronCambios(usuario, usuarioDTO, param1, param2)) {
@@ -77,35 +68,32 @@ class UsuarioService(
         usuario.nombre != usuarioDTO.nombre || usuario.apellido != usuarioDTO.apellido || param1 != param2
 
     // VIAJERO
-    fun getViajeroById(id: Long) = viajeroRepository.findById(id)
+
 
 //    fun getAmigos(id: Long) = getViajeroById(id).amigos
 //
-//    fun actualizarViajero(id: Long, viajeroDTO: PerfilViajeroDTO): PerfilViajeroDTO {
-//        val viajero = getViajeroById(id)
-//        validarSeRealizaronCambios(viajero, viajeroDTO, viajero.telefono, viajeroDTO.telefono)
-//        viajero.nombre = viajeroDTO.nombre
-//        viajero.apellido = viajeroDTO.apellido
-//        viajero.telefono = viajeroDTO.telefono
-//        viajeroRepository.update(viajero)
-//        return viajero.toPerfilDTO()
-//    }
+    fun actualizarViajero(id: Long, viajeroDTO: PerfilViajeroDTO): PerfilViajeroDTO {
+        val viajero = getViajeroById(id)
+        validarSeRealizaronCambios(viajero, viajeroDTO, viajero.telefono, viajeroDTO.telefono)
+        viajero.nombre = viajeroDTO.nombre
+        viajero.apellido = viajeroDTO.apellido
+        viajero.telefono = viajeroDTO.telefono
+        usuarioRepository.save(viajero)
+        return viajero.toPerfilDTO()
+    }
 
-    // CONDUCTOR
-    fun getConductorById(id: Long) = conductorRepository.findById(id)
-
-//    fun actualizarChofer(id: Long, choferDTO: PerfilChoferDTO): PerfilChoferDTO {
-//        val conductor = getConductorById(id)
-//        validarSeRealizaronCambiosConductor(conductor, choferDTO)
-//        val nuevoVehiculo = vehiculoService.actualizarVehiculo(conductor, choferDTO)
-//        conductor.nombre = choferDTO.nombre
-//        conductor.apellido = choferDTO.apellido
-//        conductor.precioBaseDelViaje = choferDTO.precioBase
-//        conductor.vehiculo = nuevoVehiculo
-//        conductor.validar()
-//        conductorRepository.update(conductor)
-//        return conductor.toPerfilDTO()
-//    }
+    fun actualizarChofer(id: Long, choferDTO: PerfilChoferDTO): PerfilChoferDTO {
+        val conductor = getConductorById(id)
+        validarSeRealizaronCambiosConductor(conductor, choferDTO)
+        val nuevoVehiculo = vehiculoService.actualizarVehiculo(conductor, choferDTO)
+        conductor.nombre = choferDTO.nombre
+        conductor.apellido = choferDTO.apellido
+        conductor.precioBaseDelViaje = choferDTO.precioBase
+        conductor.vehiculo = nuevoVehiculo
+        conductor.validar()
+        usuarioRepository.save(conductor)
+        return conductor.toPerfilDTO()
+    }
 
     fun validarSeRealizaronCambiosConductor(conductor: Conductor, choferDTO: PerfilChoferDTO) {
         if (!seRealizaronCambios(conductor, choferDTO, conductor.precioBaseDelViaje, choferDTO.precioBase) &&
@@ -163,31 +151,31 @@ class UsuarioService(
 //        return "Saldo cargado exitosamente"
 //    }
 
-    fun getChoferesDisponibles(busquedaDTO: BusquedaDTO): List<ConductorDTO> {
-        return getConductores().filter {
-            conductorDisponible(
-                it.id,
-                LocalDateTime.parse(busquedaDTO.fecha, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
-                busquedaDTO.duracion
-            )
-        }.map {
-            val calificacionByConductor = comentarioService.getCalificacionByConductor(it.id)
-            it.toConductorDTO(busquedaDTO.cantidadDePasajeros, busquedaDTO.duracion, calificacionByConductor)
-        }
-    }
+//    fun getChoferesDisponibles(busquedaDTO: BusquedaDTO): List<ConductorDTO> {
+//        return getConductores().filter {
+//            conductorDisponible(
+//                it.id,
+//                LocalDateTime.parse(busquedaDTO.fecha, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")),
+//                busquedaDTO.duracion
+//            )
+//        }.map {
+//            val calificacionByConductor = comentarioService.getCalificacionByConductor(it.id)
+//            it.toConductorDTO(busquedaDTO.cantidadDePasajeros, busquedaDTO.duracion, calificacionByConductor)
+//        }
+//    }
 
     fun conductorDisponible(idConductor: Long, fechaNueva: LocalDateTime, duracion: Int) =
         !viajeService.getViajesByConductorId(idConductor).any { it.seSolapan(fechaNueva, duracion) }
-//
-//    @Transactional
-//    fun contratarViaje(viajeDTO: ViajeDTO) {
-//        val viajero = getViajeroById(viajeDTO.idViajero)
-//        val conductor = getConductorById(viajeDTO.idConductor)
-//        validarPuedeRealizarseViaje(viajero, conductor.id, viajeDTO)
-//        val viaje = viajeService.crearViaje(viajeDTO, viajero, conductor)
-//        viajero.contratarViaje(viaje)
-//        updateViajero(viajero)
-//    }
+
+    @Transactional
+    fun contratarViaje(viajeDTO: ViajeDTO) {
+        val viajero = getViajeroById(viajeDTO.idViajero).get()
+        val conductor = getConductorById(viajeDTO.idConductor).get()
+        validarPuedeRealizarseViaje(viajero, conductor.id, viajeDTO)
+        val viaje = viajeService.crearViaje(viajeDTO, viajero, conductor)
+        viajero.contratarViaje(viaje)
+        usuarioRepository.save(viajero)
+    }
 
     fun validarPuedeRealizarseViaje(viajero: Viajero, idConductor: Long, viajeDTO: ViajeDTO) {
         conductorDisponible(

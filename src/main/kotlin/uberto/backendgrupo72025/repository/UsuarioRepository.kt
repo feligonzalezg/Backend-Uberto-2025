@@ -21,6 +21,11 @@ interface ConductorRepository  : CrudRepository<Conductor, Long> {
 @Repository
 interface UsuarioRepository   : CrudRepository<Usuario, Long> {
 
+//    @Query("select v from Viajero v where v.id = :id")
+//    fun findViajeroById(id: Long): Viajero
+//
+//    @Query("select c from Conductor c where c.id = :id")
+//    fun findConductorById(id: Long): Conductor
 //    @Query("select v.saldo from Viajero v where v.id= :id")
 //    fun getSaldo(id: Long): Double
 

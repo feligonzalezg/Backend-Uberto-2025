@@ -32,10 +32,6 @@ class ViajeService(
         return viaje
     }
 
-    fun updateViaje(viaje: Viaje) {
-        viajeRepository.save(viaje)
-    }
-
     fun getViajesRealizadosByUsuario(idUsuario: Long, esChofer: Boolean): ViajesCompletadosDTO {
         lateinit var viajesRealizados: List<ViajeDTO>
         var totalFacturado = 0.0

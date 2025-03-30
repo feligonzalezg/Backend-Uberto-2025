@@ -13,16 +13,16 @@ class VehiculoService(
 
     fun getAll() = vehiculoRepository.findAll()
 
-//    fun createVehiculo(dominio: String, marca: String, modelo: String, anio: Int): Vehiculo {
-//        val nuevoVehiculo = Vehiculo(marca, modelo, dominio, anio)
-//        nuevoVehiculo.validar()
-//        vehiculoRepository.save(nuevoVehiculo)
-//        return nuevoVehiculo
-//    }
+    fun createVehiculo(dominio: String, marca: String, modelo: String, anio: Int): Vehiculo {
+        val nuevoVehiculo = Vehiculo(marca = marca, modelo = modelo, dominio =  dominio, anio =  anio)
+        nuevoVehiculo.validar()
+        vehiculoRepository.save(nuevoVehiculo)
+        return nuevoVehiculo
+    }
 
-//    fun actualizarVehiculo(conductor: Conductor, choferDTO: PerfilChoferDTO): Vehiculo {
-//        return createVehiculo(choferDTO.dominio, choferDTO.marca, choferDTO.modelo, choferDTO.anio)
-//    }
+    fun actualizarVehiculo(conductor: Conductor, choferDTO: PerfilChoferDTO): Vehiculo {
+        return createVehiculo(choferDTO.dominio, choferDTO.marca, choferDTO.modelo, choferDTO.anio)
+    }
 
     fun validarCambioVehiculo(conductor: Conductor, choferDTO: PerfilChoferDTO): Boolean =
         conductor.vehiculo.dominio != choferDTO.dominio ||

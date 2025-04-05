@@ -10,13 +10,10 @@ import java.time.LocalDate
 
 @Component
 class UbertoBootstrap(
-    val viajeroRepository: ViajeroRepository,
-    val conductorRepository: ConductorRepository,
     val vehiculoRepository: VehiculoRepository,
     val viajeRepository: ViajeRepository,
     val comentarioRepository: ComentarioRepository,
     val usuarioRepository: UsuarioRepository,
-
     ) : InitializingBean {
 
     override fun afterPropertiesSet() {

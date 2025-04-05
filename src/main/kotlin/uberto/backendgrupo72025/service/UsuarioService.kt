@@ -31,7 +31,7 @@ class UsuarioService(
         return if (esChofer) {
             getConductorById(id).toPerfilDTO()
         } else {
-            usuarioRepository.findByIdWithAmigos(id).toPerfilDTO()
+            (usuarioRepository.findViajeroById(id)).toPerfilDTO()
         }
     }
 

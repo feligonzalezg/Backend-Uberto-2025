@@ -1,5 +1,6 @@
 package uberto.backendgrupo72025.repository
 
+import org.springframework.data.jpa.repository.EntityGraph
 import org.springframework.data.jpa.repository.Query
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
@@ -34,8 +35,8 @@ interface UsuarioRepository   : CrudRepository<Usuario, Long> {
 """)
     fun buscarViajerosNoAmigos(id: Long, query: String): List<Viajero>
 
-    @Query("SELECT v FROM Viajero v LEFT JOIN FETCH v.amigos WHERE v.id = :id")
-    fun findByIdWithAmigos(id: Long): Viajero
+    @EntityGraph(attributePaths = ["amigos"])
+    fun findViajeroById(id: Long): Viajero
 
     @Query("""
     SELECT c 

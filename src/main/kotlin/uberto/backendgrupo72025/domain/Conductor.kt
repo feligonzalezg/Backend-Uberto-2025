@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 import jakarta.persistence.*
 
 @Entity
+@Table(name = "conductores")
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include =
     JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonSubTypes(

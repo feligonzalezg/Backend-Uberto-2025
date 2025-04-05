@@ -6,15 +6,15 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 @Entity
-@Table(name = "viaje")
+@Table(name = "viajes")
 class Viaje(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0,
-    @ManyToOne(fetch = FetchType.LAZY )
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "viajero_id")
     val viajero: Viajero = Viajero(),
-    @ManyToOne(fetch = FetchType.LAZY )
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "conductor_id")
     val conductor: Conductor = Simple(),
     @Column

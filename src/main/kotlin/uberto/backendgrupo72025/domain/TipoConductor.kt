@@ -1,43 +1,43 @@
 package uberto.backendgrupo72025.domain
 
-import jakarta.persistence.DiscriminatorValue
-import jakarta.persistence.Entity
+import jakarta.persistence.*
 
 @Entity
-@DiscriminatorValue(value = "S")
+@DiscriminatorValue(value = "Standard")
 class Simple(
     id: Long = 0,
-    nombre: String="",
-    apellido: String="",
-    edad: Int=0,
-    username: String="",
-    contrasenia: String="",
-    telefono: Int=0,
-    esChofer: Boolean=true,
-    foto: String="",
-    vehiculo: Vehiculo=Vehiculo(),
-    precioBaseDelViaje: Double =0.0
+    nombre: String = "",
+    apellido: String = "",
+    edad: Int = 0,
+    username: String = "",
+    contrasenia: String = "",
+    telefono: Int = 0,
+    esChofer: Boolean = true,
+    foto: String = "",
+    vehiculo: Vehiculo = Vehiculo(),
+    precioBaseDelViaje: Double = 0.0
 ) : Conductor(id,nombre, apellido, edad, username, contrasenia, telefono, esChofer, foto, vehiculo, precioBaseDelViaje) {
 
     override fun calculoPlus(cantidadDePasajeros: Int, duracion: Int): Double = 1000.toDouble()
 }
 
 @Entity
-@DiscriminatorValue(value = "E")
+@DiscriminatorValue(value = "Ejecutivo")
 class Ejecutivo(
     id: Long = 0,
-    nombre: String="",
-    apellido: String="",
-    edad: Int=0,
-    username: String="",
-    contrasenia: String="",
-    telefono: Int=0,
-    esChofer: Boolean=true,
-    foto: String="",
-    vehiculo: Vehiculo=Vehiculo(),
-    precioBaseDelViaje: Double =0.0
+    nombre: String = "",
+    apellido: String = "",
+    edad: Int = 0,
+    username: String = "",
+    contrasenia: String = "",
+    telefono: Int = 0,
+    esChofer: Boolean = true,
+    foto: String = "",
+    vehiculo: Vehiculo = Vehiculo(),
+    precioBaseDelViaje: Double = 0.0
 ) : Conductor(id,nombre, apellido, edad, username, contrasenia, telefono, esChofer, foto, vehiculo, precioBaseDelViaje) {
 
+    @Transient
     override var mensaje: String = "No cumple con los requisitos de la antiguedad, ya que debe ser de menos de 10 años"
 
     override fun esValidaLaCondicion(vehiculo: Vehiculo) = vehiculo.antiguedad() <= 10
@@ -48,19 +48,19 @@ class Ejecutivo(
 }
 
 @Entity
-@DiscriminatorValue(value = "M")
+@DiscriminatorValue(value = "Moto")
 class Moto(
     id: Long = 0,
-    nombre: String="",
-    apellido: String="",
-    edad: Int=0,
-    username: String="",
-    contrasenia: String="",
-    telefono: Int=0,
-    esChofer: Boolean=true,
-    foto: String="",
-    vehiculo: Vehiculo=Vehiculo(),
-    precioBaseDelViaje: Double =0.0
+    nombre: String = "",
+    apellido: String = "",
+    edad: Int = 0,
+    username: String = "",
+    contrasenia: String = "",
+    telefono: Int = 0,
+    esChofer: Boolean = true,
+    foto: String = "",
+    vehiculo: Vehiculo = Vehiculo(),
+    precioBaseDelViaje: Double = 0.0
 ) : Conductor(id,nombre, apellido, edad, username, contrasenia, telefono, esChofer, foto, vehiculo, precioBaseDelViaje) {
 
     override fun calculoPlus(cantidadDePasajeros: Int, duracion: Int): Double = costoPorDuracion(duracion)

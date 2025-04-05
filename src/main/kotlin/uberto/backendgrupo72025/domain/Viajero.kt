@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
 
 @Entity
-@DiscriminatorValue(value = "V")
+@Table(name = "viajeros")
 class Viajero(
     id: Long = 0,
     nombre: String="",

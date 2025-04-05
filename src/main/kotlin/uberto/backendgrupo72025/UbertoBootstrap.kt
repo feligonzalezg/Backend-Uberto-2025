@@ -13,7 +13,8 @@ class UbertoBootstrap(
     val vehiculoRepository: VehiculoRepository,
     val viajeRepository: ViajeRepository,
     val comentarioRepository: ComentarioRepository,
-    val usuarioRepository: UsuarioRepository,
+    val viajeroRepository: ViajeroRepository,
+    val conductorRepository: ConductorRepository
     ) : InitializingBean {
 
     override fun afterPropertiesSet() {
@@ -75,7 +76,7 @@ class UbertoBootstrap(
     )
 
     fun crearUsuarios() {
-        listOf(viajero1, viajero2, viajero3, viajero4).forEach { usuarioRepository.save(it) }
+        listOf(viajero1, viajero2, viajero3, viajero4).forEach { viajeroRepository.save(it) }
     }
 
     // VEHICULOS
@@ -126,7 +127,7 @@ class UbertoBootstrap(
     )
 
     fun crearChoferes() {
-        listOf(conductor1, conductor2, conductor3).forEach { usuarioRepository.save(it) }
+        listOf(conductor1, conductor2, conductor3).forEach { conductorRepository.save(it) }
     }
 
     // VIAJES

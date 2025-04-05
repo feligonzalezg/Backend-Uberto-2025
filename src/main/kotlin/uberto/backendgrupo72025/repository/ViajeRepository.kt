@@ -10,6 +10,7 @@ import org.springframework.data.repository.query.Param
 import org.springframework.stereotype.Repository
 import uberto.backendgrupo72025.domain.Comentario
 import uberto.backendgrupo72025.domain.Vehiculo
+import java.time.LocalDateTime
 
 @Repository
 interface ViajeRepository  : CrudRepository<Viaje, Long> {
@@ -18,15 +19,13 @@ interface ViajeRepository  : CrudRepository<Viaje, Long> {
             "where v.conductor.id = :id or v.viajero.id = :id")
     fun findByViajeroIdOrConductorId(id: Long): List<Viaje>
 
-    @Query("SELECT v FROM Viaje v " +
-            "WHERE (v.conductor.id = :id OR v.viajero.id = :id) " +
-            "AND v.fechaFin > CURRENT_TIMESTAMP")
-    fun findViajesPendientesByUsuarioId(id: Long): List<Viaje>
+    fun findByViajeroIdAndFechaFinAfter(idViajero: Long, fechaFin: LocalDateTime = LocalDateTime.now()): List<Viaje>
 
-    @Query("SELECT v FROM Viaje v " +
-            "WHERE (v.conductor.id = :id OR v.viajero.id = :id) " +
-            "AND v.fechaFin < CURRENT_TIMESTAMP")
-    fun findViajesRealizadosByUsuarioId(id: Long): List<Viaje>
+    fun findByConductorIdAndFechaFinAfter(idConductor: Long, fechaFin: LocalDateTime = LocalDateTime.now()): List<Viaje>
+
+    fun findByViajeroIdAndFechaFinBefore(idViajero: Long, fechaFin: LocalDateTime = LocalDateTime.now()): List<Viaje>
+
+    fun findByConductorIdAndFechaFinBefore(conductor: Long, fechaFin: LocalDateTime = LocalDateTime.now()): List<Viaje>
 
     @Query("SELECT SUM(v.importe) FROM Viaje v " +
             "WHERE v.conductor.id = :id " +

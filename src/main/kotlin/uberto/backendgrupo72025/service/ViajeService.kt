@@ -28,12 +28,14 @@ class ViajeService(
 
     fun getViajesRealizadosByUsuario(idUsuario: Long, esChofer: Boolean): ViajesCompletadosDTO {
         lateinit var viajesRealizadosDTO: List<ViajeDTO>
-        val viajesRealizados = viajeRepository.findViajesRealizadosByUsuarioId(idUsuario)
+        lateinit var viajesRealizados: List<Viaje>
         var totalFacturado = 0.0
          if (esChofer) {
+             viajesRealizados = viajeRepository.findByConductorIdAndFechaFinBefore(idUsuario)
              viajesRealizadosDTO = viajesRealizados.map { it.toViajeDTO(it.viajero.nombreYApellido(),it.viajero.foto, viajeCalificable(it)) }
              totalFacturado = getTotalFacturado(idUsuario)
         } else {
+             viajesRealizados = viajeRepository.findByViajeroIdAndFechaFinBefore(idUsuario)
              viajesRealizadosDTO = viajesRealizados.map { it.toViajeDTO(it.conductor.nombreYApellido(), it.conductor.foto, viajeCalificable(it)) }
         }
         return ViajesCompletadosDTO(viajesRealizadosDTO, totalFacturado)
@@ -44,11 +46,13 @@ class ViajeService(
     fun viajeCalificable(viaje: Viaje) = !viaje.viajePendiente() && !comentarioService.viajeCalificado(viaje.id)
 
     fun getViajesPendientesByUsuario(idUsuario: Long, esChofer: Boolean): List<ViajeDTO> {
-        val viajesPendientes = viajeRepository.findViajesPendientesByUsuarioId(idUsuario)
-        return if (esChofer) {
-            viajesPendientes.map { it.toViajeDTO(it.viajero.nombreYApellido(), it.viajero.foto, viajeCalificable(it)) }
+        lateinit var viajesPendientes: List<Viaje>
+        if (esChofer) {
+            viajesPendientes = viajeRepository.findByConductorIdAndFechaFinAfter(idUsuario)
+            return viajesPendientes.map { it.toViajeDTO(it.viajero.nombreYApellido(), it.viajero.foto, viajeCalificable(it)) }
         } else {
-            viajesPendientes.map { it.toViajeDTO(it.conductor.nombreYApellido(),it.conductor.foto, viajeCalificable(it)) }
+            viajesPendientes = viajeRepository.findByViajeroIdAndFechaFinAfter(idUsuario)
+            return viajesPendientes.map { it.toViajeDTO(it.conductor.nombreYApellido(),it.conductor.foto, viajeCalificable(it)) }
         }
     }
 

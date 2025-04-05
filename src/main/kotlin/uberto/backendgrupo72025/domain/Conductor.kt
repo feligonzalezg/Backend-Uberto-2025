@@ -1,9 +1,19 @@
 package uberto.backendgrupo72025.domain
 
+import com.fasterxml.jackson.annotation.JsonSubTypes
+import com.fasterxml.jackson.annotation.JsonTypeInfo
 import jakarta.persistence.*
 
 @Entity
-@DiscriminatorValue(value = "C")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include =
+    JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes(
+    JsonSubTypes.Type(value = Simple::class, name = "Standard"),
+    JsonSubTypes.Type(value = Ejecutivo::class, name = "Ejecutivo"),
+    JsonSubTypes.Type(value = Moto::class, name = "Moto")
+)
+@Inheritance(strategy= InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo_de_conductor", discriminatorType = DiscriminatorType.STRING)
 abstract class Conductor(
     id: Long = 0,
     nombre: String="",
@@ -20,6 +30,7 @@ abstract class Conductor(
     var precioBaseDelViaje: Double = 0.0
 ) : Usuario(id,nombre, apellido, edad, username, contrasenia, telefono, esChofer,foto) {
 
+    @Transient
     open var mensaje = ""
 
     override fun validacionesPorUsuario() {

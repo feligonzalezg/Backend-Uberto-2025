@@ -5,18 +5,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo
 import jakarta.persistence.*
 import uberto.backendgrupo72025.dto.UsuarioLoginDTO
 
-@Entity
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include =
-    JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonSubTypes(
-    JsonSubTypes.Type(value = Viajero::class, name = "V"),
-    JsonSubTypes.Type(value = Conductor::class, name = "C"),
-    JsonSubTypes.Type(value = Simple::class, name = "S"),
-    JsonSubTypes.Type(value = Ejecutivo::class, name = "E"),
-    JsonSubTypes.Type(value = Moto::class, name = "M")
-)
-@Inheritance(strategy= InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "tipo_de_usuario", discriminatorType = DiscriminatorType.STRING)
+@MappedSuperclass
 abstract class Usuario(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

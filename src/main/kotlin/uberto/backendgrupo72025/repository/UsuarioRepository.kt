@@ -10,17 +10,10 @@ import java.time.LocalDateTime
 @Repository
 interface ViajeroRepository  : CrudRepository<Viajero, Long> {
 
-}
+    fun findByUsernameAndContrasenia(username: String, contrasenia: String): Viajero?
 
-@Repository
-interface ConductorRepository  : CrudRepository<Conductor, Long> {
-
-}
-
-@Repository
-interface UsuarioRepository   : CrudRepository<Usuario, Long> {
-
-    fun findByUsernameAndContrasenia(username: String, contrasenia: String): Usuario?
+    @EntityGraph(attributePaths = ["amigos"])
+    fun findViajeroPerfilById(id: Long): Viajero
 
     @Query("""
     SELECT v FROM Viajero v 
@@ -35,8 +28,14 @@ interface UsuarioRepository   : CrudRepository<Usuario, Long> {
 """)
     fun buscarViajerosNoAmigos(id: Long, query: String): List<Viajero>
 
-    @EntityGraph(attributePaths = ["amigos"])
-    fun findViajeroById(id: Long): Viajero
+}
+
+
+
+@Repository
+interface ConductorRepository  : CrudRepository<Conductor, Long> {
+
+    fun findByUsernameAndContrasenia(username: String, contrasenia: String): Conductor?
 
     @Query("""
     SELECT c 
@@ -51,5 +50,9 @@ interface UsuarioRepository   : CrudRepository<Usuario, Long> {
     )
 """)
     fun findConductoresDisponibles(nuevaFechaInicio: LocalDateTime, nuevaFechaFin: LocalDateTime): List<Conductor>
-
 }
+
+//@Repository
+//interface UsuarioRepository   : CrudRepository<Usuario, Long> {
+//
+//}

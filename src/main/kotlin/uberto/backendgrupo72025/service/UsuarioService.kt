@@ -12,34 +12,46 @@ import java.time.format.DateTimeFormatter
 @Service
 class UsuarioService(
     val vehiculoService: VehiculoService,
-    val usuarioRepository: UsuarioRepository,
+    val viajeroRepository: ViajeroRepository,
+    val conductorRepository: ConductorRepository,
     val viajeService: ViajeService,
     val comentarioService: ComentarioService
 ) {
 
-    fun getUsuarioById(idUsuario: Long) = usuarioRepository.findById(idUsuario).get()
+    fun getViajeroById(id: Long) = viajeroRepository.findById(id).orElseThrow { NotFoundException("El viajero con id $id no fue encontrado") }
 
-    fun getViajeroById(id: Long) = usuarioRepository.findById(id).get() as Viajero
+    fun getConductorById(id: Long) = conductorRepository.findById(id).orElseThrow { NotFoundException("El conductor con id $id no fue encontrado") }
 
-    fun getConductorById(id: Long) = usuarioRepository.findById(id).get() as Conductor
-
-    fun getUsuarioLogin(user: UsuarioLoginDTO) =
-        usuarioRepository.findByUsernameAndContrasenia(user.usuario, user.contrasenia)
-            ?: throw UnauthorizedException("Los datos ingresados son incorrectos")
+    fun getUsuarioLogin(user: UsuarioLoginDTO): LoginDTO {
+        var usuario: Usuario?
+        usuario = viajeroRepository.findByUsernameAndContrasenia(user.usuario, user.contrasenia)
+        if (usuario != null) { return usuario.toLoginDTO() }
+        else {
+            usuario = conductorRepository.findByUsernameAndContrasenia(user.usuario, user.contrasenia)
+            return usuario?.toLoginDTO() ?: throw UnauthorizedException("Los datos ingresados son incorrectos")
+        }
+    }
 
     fun getUsuarioPerfil(id: Long, esChofer: Boolean): PerfilDTO {
         return if (esChofer) {
             getConductorById(id).toPerfilDTO()
         } else {
-            (usuarioRepository.findViajeroById(id)).toPerfilDTO()
+            (viajeroRepository.findViajeroPerfilById(id)).toPerfilDTO()
         }
     }
 
     @Transactional
     fun actualizarImagen(id: Long, imagen: String, esChofer: Boolean): String {
-        val usuario = getUsuarioById(id)
-        usuario.foto = imagen
-        usuarioRepository.save(usuario)
+        lateinit var usuario: Usuario
+        if (esChofer) {
+            usuario = getConductorById(id)
+            usuario.foto = imagen
+            conductorRepository.save(usuario)
+        } else {
+            usuario = getViajeroById(id)
+            usuario.foto = imagen
+            viajeroRepository.save(usuario)
+        }
         return usuario.foto
     }
 
@@ -59,7 +71,7 @@ class UsuarioService(
         viajero.nombre = viajeroDTO.nombre
         viajero.apellido = viajeroDTO.apellido
         viajero.telefono = viajeroDTO.telefono
-        usuarioRepository.save(viajero)
+        viajeroRepository.save(viajero)
         return viajero.toPerfilDTO()
     }
 
@@ -73,7 +85,7 @@ class UsuarioService(
         conductor.vehiculo.active = false
         conductor.vehiculo = nuevoVehiculo
         conductor.validar()
-        usuarioRepository.save(conductor)
+        conductorRepository.save(conductor)
         return conductor.toPerfilDTO()
     }
 
@@ -98,7 +110,7 @@ class UsuarioService(
         val viajero = getViajeroById(idViajero)
         val amigo = getViajeroById(idAmigo)
         viajero.agregarAmigo(amigo)
-        usuarioRepository.save(viajero)
+        viajeroRepository.save(viajero)
         return amigo.toAmigoDTO()
     }
 
@@ -107,11 +119,11 @@ class UsuarioService(
         val viajero = getViajeroById(idViajero)
         val amigo = getViajeroById(idAmigo)
         viajero.eliminarAmigo(amigo)
-        usuarioRepository.save(viajero)
+        viajeroRepository.save(viajero)
     }
 
     fun getViajerosParaAgregarAmigo(id: Long, query: String) =
-        usuarioRepository.buscarViajerosNoAmigos(id, query).map { it.toAmigoDTO() }
+        viajeroRepository.buscarViajerosNoAmigos(id, query).map { it.toAmigoDTO() }
 
 
     fun validarSaldoPositivo(monto: Double) {
@@ -136,13 +148,13 @@ class UsuarioService(
         val usuario = getViajeroById(id)
         validarCargaDeSaldo(monto, esChofer)
         usuario.agregarSaldo(monto)
-        usuarioRepository.save(usuario)
+        viajeroRepository.save(usuario)
     }
 
     fun getChoferesDisponibles(busquedaDTO: BusquedaDTO): List<ConductorDTO> {
         val nuevaFecha = LocalDateTime.parse(busquedaDTO.fecha, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
         val nuevaFechaFin = LocalDateTime.parse(busquedaDTO.fecha, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")).plusMinutes(busquedaDTO.duracion.toLong())
-        return usuarioRepository.findConductoresDisponibles(nuevaFecha, nuevaFechaFin).map {
+        return conductorRepository.findConductoresDisponibles(nuevaFecha, nuevaFechaFin).map {
             val calificacionByConductor = comentarioService.getCalificacionByConductor(it.id)
             it.toConductorDTO(busquedaDTO.cantidadDePasajeros, busquedaDTO.duracion, calificacionByConductor)
         }
@@ -158,7 +170,7 @@ class UsuarioService(
         validarPuedeRealizarseViaje(viajero, conductor.id, viajeDTO)
         val viaje = viajeService.crearViaje(viajeDTO, viajero, conductor)
         viajero.contratarViaje(viaje)
-        usuarioRepository.save(viajero)
+        viajeroRepository.save(viajero)
     }
 
     fun validarPuedeRealizarseViaje(viajero: Viajero, idConductor: Long, viajeDTO: ViajeDTO) {

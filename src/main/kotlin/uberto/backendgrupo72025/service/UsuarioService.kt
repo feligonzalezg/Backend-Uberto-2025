@@ -155,8 +155,7 @@ class UsuarioService(
         val nuevaFecha = LocalDateTime.parse(busquedaDTO.fecha, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
         val nuevaFechaFin = LocalDateTime.parse(busquedaDTO.fecha, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")).plusMinutes(busquedaDTO.duracion.toLong())
         return conductorRepository.findConductoresDisponibles(nuevaFecha, nuevaFechaFin).map {
-            val calificacionByConductor = comentarioService.getCalificacionByConductor(it.id)
-            it.toConductorDTO(busquedaDTO.cantidadDePasajeros, busquedaDTO.duracion, calificacionByConductor)
+            it.toConductorDTO(busquedaDTO.cantidadDePasajeros, busquedaDTO.duracion)
         }
     }
 
@@ -180,5 +179,25 @@ class UsuarioService(
             viajeDTO.duracion
         )
         viajero.validarSaldoSuficiente(viajeDTO.importe)
+    }
+
+    @Transactional
+    fun calificarViaje(idUsuario: Long, calificacion: CalificacionDTO): ComentarioDTO {
+        val viaje = viajeService.getViajeById(calificacion.idViaje)
+        val comentario = comentarioService.calificar(calificacion, viaje, idUsuario)
+        actualizarCalificacion(viaje.conductor)
+        return comentario.toComentarioDTO(viaje.conductor.nombreYApellido(), viaje.conductor.foto)
+    }
+
+    @Transactional
+    fun eliminarComentario(idViajero: Long, idComentario: Long) {
+        val comentario = comentarioService.getComentarioById(idComentario)
+        comentarioService.eliminarComentario(idViajero, comentario)
+        actualizarCalificacion(comentario.viaje.conductor)
+    }
+
+    private fun actualizarCalificacion(conductor: Conductor) {
+        conductor.calificacion = comentarioService.getCalificacionByConductor(conductor.id)
+        conductorRepository.save(conductor)
     }
 }

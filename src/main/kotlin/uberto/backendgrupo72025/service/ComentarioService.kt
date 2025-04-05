@@ -16,13 +16,13 @@ class ComentarioService(
 
     fun getAll() = comentarioRepository.findAll()
 
-    fun getComentarioById(idComentario: Long) = comentarioRepository.findById(idComentario).get()
+    fun getComentarioById(idComentario: Long) = comentarioRepository.findById(idComentario).orElseThrow{ NotFoundException("No se encontro el comentario con id $idComentario") }
 
     fun getComentarios(idUsuario: Long, esChofer: Boolean): List<ComentarioDTO> {
         return if (esChofer) {
-            comentarioRepository.findByViajeroIdOrConductorId(idUsuario).map { it.toComentarioDTO(it.viaje.viajero.nombreYApellido(), it.viaje.viajero.foto) }
+            comentarioRepository.findByViajeConductorIdAndActive(idUsuario).map { it.toComentarioDTO(it.viaje.viajero.nombreYApellido(), it.viaje.viajero.foto) }
         } else {
-            comentarioRepository.findByViajeroIdOrConductorId(idUsuario).map { it.toComentarioDTO(it.viaje.conductor.nombreYApellido(), it.viaje.conductor.foto) }
+            comentarioRepository.findByViajeViajeroIdAndActive(idUsuario).map { it.toComentarioDTO(it.viaje.conductor.nombreYApellido(), it.viaje.conductor.foto) }
         }
     }
 
@@ -48,9 +48,7 @@ class ComentarioService(
 
     fun viajeCalificado(idViaje : Long) = comentarioRepository.existsByViajeIdAndActive(idViaje, true)
 
-    @Transactional
-    fun eliminarComentario(idViajero: Long, idComentario: Long) {
-        val comentario = getComentarioById(idComentario)
+    fun eliminarComentario(idViajero: Long, comentario: Comentario) {
         validarEliminarComentario(idViajero, comentario)
         comentario.active = false
         comentarioRepository.save(comentario)

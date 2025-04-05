@@ -15,14 +15,14 @@ data class ConductorDTO(
     val foto: String
 )
 
-fun Conductor.toConductorDTO(cantidadDePasajeros: Int, duracion: Int, calificacion: Double) = ConductorDTO(
+fun Conductor.toConductorDTO(cantidadDePasajeros: Int, duracion: Int) = ConductorDTO(
         idConductor = id,
         nombreYApellido = nombreYApellido(),
         dominio = vehiculo.dominio,
         marca = vehiculo.marca,
         modelo = vehiculo.modelo,
         anio = vehiculo.anio,
-        calificacion = ((calificacion* 10.0).roundToInt() / 10.0),
+        calificacion = calificacion,
         importe = importeViaje(cantidadDePasajeros, duracion),
         foto = foto
     )

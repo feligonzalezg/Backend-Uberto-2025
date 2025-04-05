@@ -5,13 +5,15 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.web.bind.annotation.*
 import uberto.backendgrupo72025.dto.CalificacionDTO
 import uberto.backendgrupo72025.service.ComentarioService
+import uberto.backendgrupo72025.service.UsuarioService
 import uberto.backendgrupo72025.service.ViajeService
 
 @RestController
 @CrossOrigin("*")
 class ComentarioController(
     @Autowired val comentarioService: ComentarioService,
-    @Autowired val viajeService: ViajeService
+    @Autowired val viajeService: ViajeService,
+    private val usuarioService: UsuarioService
 ) {
 
     @GetMapping("/comentarios")
@@ -30,7 +32,7 @@ class ComentarioController(
     fun eliminarComentario(
         @PathVariable idUsuario: Long,
         @PathVariable idComentario: Long
-    ) = comentarioService.eliminarComentario(idUsuario, idComentario)
+    ) = usuarioService.eliminarComentario(idUsuario, idComentario)
 
     @GetMapping("/puntaje/{id}")
     @Operation(summary = "Devuelve devuelve el puntaje por chofer")
@@ -41,5 +43,5 @@ class ComentarioController(
     fun calificarViaje(
         @PathVariable idUsuario: Long,
         @RequestBody calificacion: CalificacionDTO
-    ) = viajeService.calificarViaje(idUsuario, calificacion)
+    ) = usuarioService.calificarViaje(idUsuario, calificacion)
 }

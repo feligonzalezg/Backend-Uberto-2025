@@ -4,7 +4,9 @@ import uberto.backendgrupo72025.domain.*
 import org.springframework.beans.factory.InitializingBean
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
+import uberto.backendgrupo72025.dto.CalificacionDTO
 import uberto.backendgrupo72025.repository.*
+import uberto.backendgrupo72025.service.UsuarioService
 import java.time.LocalDateTime
 import java.time.LocalDate
 
@@ -14,7 +16,8 @@ class UbertoBootstrap(
     val viajeRepository: ViajeRepository,
     val comentarioRepository: ComentarioRepository,
     val viajeroRepository: ViajeroRepository,
-    val conductorRepository: ConductorRepository
+    val conductorRepository: ConductorRepository,
+    val usuarioService: UsuarioService
     ) : InitializingBean {
 
     override fun afterPropertiesSet() {
@@ -176,6 +179,6 @@ class UbertoBootstrap(
                 )
             )
         }
-        comentarios.forEach { comentarioRepository.save(it) }
+        comentarios.forEach { usuarioService.calificarViaje(it.viaje.viajero.id, CalificacionDTO(it.viaje.id, it.estrellas, it.mensaje)) }
     }
 }

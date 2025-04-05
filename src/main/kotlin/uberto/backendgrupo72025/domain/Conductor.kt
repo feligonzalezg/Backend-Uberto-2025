@@ -17,19 +17,22 @@ import jakarta.persistence.*
 @DiscriminatorColumn(name = "tipo_de_conductor", discriminatorType = DiscriminatorType.STRING)
 abstract class Conductor(
     id: Long = 0,
-    nombre: String="",
-    apellido: String="",
-    edad: Int=0,
-    username: String="",
-    contrasenia: String="",
-    telefono: Int=0,
-    esChofer: Boolean=true,
-    foto : String="",
+    nombre: String = "",
+    apellido: String = "",
+    edad: Int = 0,
+    username: String = "",
+    contrasenia: String = "",
+    telefono: Int = 0,
+    esChofer: Boolean = true,
+    foto: String = "",
     @OneToOne
     var vehiculo: Vehiculo = Vehiculo(),
     @Column
     var precioBaseDelViaje: Double = 0.0
 ) : Usuario(id,nombre, apellido, edad, username, contrasenia, telefono, esChofer,foto) {
+
+    @Column
+    var calificacion: Double = 0.0
 
     @Transient
     open var mensaje = ""

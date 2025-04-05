@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import uberto.backendgrupo72025.dto.*
 import uberto.backendgrupo72025.domain.Conductor
+import uberto.backendgrupo72025.domain.NotFoundException
 import uberto.backendgrupo72025.domain.Viaje
 import uberto.backendgrupo72025.domain.Viajero
 import uberto.backendgrupo72025.repository.ViajeRepository
@@ -16,7 +17,7 @@ class ViajeService(
 
     fun getAllViajes() = viajeRepository.findAll()
 
-    fun getViajeById(idViaje: Long) = viajeRepository.findById(idViaje).get()
+    fun getViajeById(idViaje: Long) = viajeRepository.findById(idViaje).orElseThrow { NotFoundException("No se encontró el viaje con id $idViaje") }
 
     fun getViajesByUsuarioId(idUsuario: Long) = viajeRepository.findByViajeroIdOrConductorId(idUsuario)
 
@@ -60,12 +61,5 @@ class ViajeService(
       return viajeRepository.findViajesFiltradosByConductorId(idConductor,
           filtroDTO.usernameViajero, filtroDTO.origen, filtroDTO.destino, filtroDTO.cantidadDePasajeros)
             .map { it.toViajeDTO(it.viajero.nombreYApellido(), it.viajero.foto, viajeCalificable(it)) }
-    }
-
-    @Transactional
-    fun calificarViaje(idUsuario: Long, calificacion: CalificacionDTO): ComentarioDTO {
-        val viaje = getViajeById(calificacion.idViaje)
-        val comentario = comentarioService.calificar(calificacion, viaje, idUsuario)
-        return comentario.toComentarioDTO(viaje.conductor.nombreYApellido(), viaje.conductor.foto)
     }
 }

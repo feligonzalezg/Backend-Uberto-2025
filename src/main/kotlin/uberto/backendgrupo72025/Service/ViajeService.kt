@@ -68,12 +68,6 @@ class ViajeService(
         }.map { it.toViajeDTO(it.viajero.nombreYApellido(), it.viajero.foto, viajeCalificable(it)) }
     }
 
-    fun getTotalFacturado(idConductor: Long): Double {
-        return viajeRepository.findAll()
-            .filter { it.viajeFinalizado() && it.conductor.id == idConductor }
-            .sumOf { it.importe }
-    }
-
     @Transactional
     fun calificarViaje(idUsuario: Long, calificacion: CalificacionDTO): ComentarioDTO {
         val viaje = getViajeById(calificacion.idViaje)

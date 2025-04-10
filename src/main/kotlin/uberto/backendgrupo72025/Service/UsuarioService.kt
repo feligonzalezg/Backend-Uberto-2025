@@ -35,7 +35,7 @@ class UsuarioService(
     fun getUsuarioLogin(user: UsuarioLoginDTO): LoginDTO {
         val usuario = getUsuarios().filter { it.accesoUsuario(user) }
         if (usuario.isNotEmpty()) {
-            return usuario.first().toDTO1()
+            return usuario.first().toLoginDTO()
         } else {
             throw UnauthorizedException("Los datos ingresados son incorrectos")
         }

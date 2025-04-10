@@ -19,7 +19,7 @@ data class LoginDTO(
     val esChofer: Boolean
 )
 
-fun Usuario.toDTO1() = LoginDTO(
+fun Usuario.toLoginDTO() = LoginDTO(
     id =  id,
     esChofer = esChofer
 )

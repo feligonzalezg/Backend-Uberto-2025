@@ -8,8 +8,8 @@ import java.time.LocalDate
 @Table(name = "comentarios")
 class Comentario(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0,
+    @GeneratedValue(strategy = GenerationType.UUID)
+    var id: String? = "",
     @ManyToOne(fetch = FetchType.LAZY)
     val viaje: Viaje = Viaje(),
     @Column

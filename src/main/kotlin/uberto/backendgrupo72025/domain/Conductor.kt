@@ -25,7 +25,7 @@ abstract class Conductor(
     telefono: Int = 0,
     esChofer: Boolean = true,
     foto: String = "",
-    @OneToOne
+    @OneToOne (cascade = [(CascadeType.ALL)])
     var vehiculo: Vehiculo = Vehiculo(),
     @Column
     var precioBaseDelViaje: Double = 0.0

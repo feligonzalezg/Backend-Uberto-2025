@@ -12,7 +12,6 @@ import java.time.LocalDate
 
 @Component
 class UbertoBootstrap(
-    val vehiculoRepository: VehiculoRepository,
     val viajeRepository: ViajeRepository,
     val comentarioRepository: ComentarioRepository,
     val viajeroRepository: ViajeroRepository,
@@ -22,7 +21,6 @@ class UbertoBootstrap(
 
     override fun afterPropertiesSet() {
         crearUsuarios()
-        crearVehiculos()
         crearChoferes()
         crearViajes()
         crearComentarios()
@@ -87,9 +85,6 @@ class UbertoBootstrap(
     final val vehiculoEjecutivo = Vehiculo(marca = "Ford", modelo = "Focus", dominio = "DEF456", anio = 2020)
     final val vehiculoMoto = Vehiculo(marca = "Yamaha", modelo = "FZ25", dominio = "MNO345", anio = 2022)
 
-    fun crearVehiculos() {
-        listOf(vehiculoSimple, vehiculoEjecutivo, vehiculoMoto).forEach { vehiculoRepository.save(it) }
-    }
 
     // CONDUCTORES
     val conductor1 = Simple(

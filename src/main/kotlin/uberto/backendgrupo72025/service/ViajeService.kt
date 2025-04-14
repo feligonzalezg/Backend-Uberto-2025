@@ -44,7 +44,7 @@ class ViajeService(
 
     fun getTotalFacturado(idUsuario: Long) = viajeRepository.sumTotalFacturadoByChoferId(idUsuario)
 
-    fun viajeCalificable(viaje: Viaje) = !viaje.viajePendiente() && !comentarioService.viajeCalificado(viaje.id)
+    fun viajeCalificable(viaje: Viaje) = !viaje.viajePendiente() && !viaje.viajeComentado
 
     fun getViajesPendientesByUsuario(idUsuario: Long, esChofer: Boolean): List<ViajeDTO> {
         lateinit var viajesPendientes: List<Viaje>
@@ -61,5 +61,9 @@ class ViajeService(
       return viajeRepository.findViajesFiltradosByConductorId(idConductor,
           filtroDTO.usernameViajero, filtroDTO.origen, filtroDTO.destino, filtroDTO.cantidadDePasajeros)
             .map { it.toViajeDTO(it.viajero.nombreYApellido(), it.viajero.foto, viajeCalificable(it)) }
+    }
+
+    fun save(viaje:Viaje){
+        viajeRepository.save(viaje)
     }
 }

@@ -34,7 +34,8 @@ class Viaje(
     @Column
     var importe: Double = 0.0,
 ) {
-
+    @Column (nullable = false)
+    var viajeComentado : Boolean= false
     fun viajePendiente() = fechaFin.isAfter(LocalDateTime.now())
 
     fun viajeFinalizado()= !viajePendiente()

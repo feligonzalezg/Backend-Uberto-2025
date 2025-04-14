@@ -8,8 +8,8 @@ import uberto.backendgrupo72025.dto.UsuarioLoginDTO
 @MappedSuperclass
 abstract class Usuario(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long= 0,
+    @GeneratedValue(strategy = GenerationType.UUID)
+    var id: String? = null,
     @Column
     var nombre: String="",
     @Column

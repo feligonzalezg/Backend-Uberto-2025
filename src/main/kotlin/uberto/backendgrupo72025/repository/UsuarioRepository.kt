@@ -8,12 +8,12 @@ import uberto.backendgrupo72025.domain.*
 import java.time.LocalDateTime
 
 @Repository
-interface ViajeroRepository  : CrudRepository<Viajero, Long> {
+interface ViajeroRepository  : CrudRepository<Viajero, String?> {
 
     fun findByUsernameAndContrasenia(username: String, contrasenia: String): Viajero?
 
     @EntityGraph(attributePaths = ["amigos"])
-    fun findViajeroPerfilById(id: Long): Viajero
+    fun findViajeroPerfilById(id: String?): Viajero
 
     @Query("""
     SELECT v FROM Viajero v 
@@ -26,14 +26,14 @@ interface ViajeroRepository  : CrudRepository<Viajero, Long> {
         OR LOWER(v.username) LIKE LOWER(CONCAT('%', :query, '%'))
     )
 """)
-    fun buscarViajerosNoAmigos(id: Long, query: String): List<Viajero>
+    fun buscarViajerosNoAmigos(id: String?, query: String): List<Viajero>
 
 }
 
 
 
 @Repository
-interface ConductorRepository  : CrudRepository<Conductor, Long> {
+interface ConductorRepository  : CrudRepository<Conductor, String?> {
 
     fun findByUsernameAndContrasenia(username: String, contrasenia: String): Conductor?
 
@@ -53,6 +53,6 @@ interface ConductorRepository  : CrudRepository<Conductor, Long> {
 }
 
 //@Repository
-//interface UsuarioRepository   : CrudRepository<Usuario, Long> {
+//interface UsuarioRepository   : CrudRepository<Usuario, String> {
 //
 //}

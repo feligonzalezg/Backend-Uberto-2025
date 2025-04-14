@@ -5,7 +5,7 @@ import jakarta.persistence.*
 @Entity
 @DiscriminatorValue(value = "Standard")
 class Simple(
-    id: Long = 0,
+    id: String? = null,
     nombre: String = "",
     apellido: String = "",
     edad: Int = 0,
@@ -24,7 +24,7 @@ class Simple(
 @Entity
 @DiscriminatorValue(value = "Ejecutivo")
 class Ejecutivo(
-    id: Long = 0,
+    id: String? = null,
     nombre: String = "",
     apellido: String = "",
     edad: Int = 0,
@@ -50,7 +50,7 @@ class Ejecutivo(
 @Entity
 @DiscriminatorValue(value = "Moto")
 class Moto(
-    id: Long = 0,
+    id: String? = null,
     nombre: String = "",
     apellido: String = "",
     edad: Int = 0,

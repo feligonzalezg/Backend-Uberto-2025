@@ -13,24 +13,24 @@ import uberto.backendgrupo72025.domain.Vehiculo
 import java.time.LocalDateTime
 
 @Repository
-interface ViajeRepository  : CrudRepository<Viaje, Long> {
+interface ViajeRepository  : CrudRepository<Viaje, String?> {
 
     @Query("SELECT v FROM Viaje v " +
             "where v.conductor.id = :id or v.viajero.id = :id")
-    fun findByViajeroIdOrConductorId(id: Long): List<Viaje>
+    fun findByViajeroIdOrConductorId(id: String?): List<Viaje>
 
-    fun findByViajeroIdAndFechaFinAfter(idViajero: Long, fechaFin: LocalDateTime = LocalDateTime.now()): List<Viaje>
+    fun findByViajeroIdAndFechaFinAfter(idViajero: String?, fechaFin: LocalDateTime = LocalDateTime.now()): List<Viaje>
 
-    fun findByConductorIdAndFechaFinAfter(idConductor: Long, fechaFin: LocalDateTime = LocalDateTime.now()): List<Viaje>
+    fun findByConductorIdAndFechaFinAfter(idConductor: String?, fechaFin: LocalDateTime = LocalDateTime.now()): List<Viaje>
 
-    fun findByViajeroIdAndFechaFinBefore(idViajero: Long, fechaFin: LocalDateTime = LocalDateTime.now()): List<Viaje>
+    fun findByViajeroIdAndFechaFinBefore(idViajero: String?, fechaFin: LocalDateTime = LocalDateTime.now()): List<Viaje>
 
-    fun findByConductorIdAndFechaFinBefore(conductor: Long, fechaFin: LocalDateTime = LocalDateTime.now()): List<Viaje>
+    fun findByConductorIdAndFechaFinBefore(idConductor: String?, fechaFin: LocalDateTime = LocalDateTime.now()): List<Viaje>
 
     @Query("SELECT SUM(v.importe) FROM Viaje v " +
             "WHERE v.conductor.id = :id " +
             "AND v.fechaFin < CURRENT_TIMESTAMP")
-    fun sumTotalFacturadoByChoferId(id: Long): Double
+    fun sumTotalFacturadoByChoferId(id: String?): Double
 
     @Query("""
     SELECT v FROM Viaje v 
@@ -42,7 +42,7 @@ interface ViajeRepository  : CrudRepository<Viaje, Long> {
     AND (:cantidadDePasajeros IS NULL OR :cantidadDePasajeros = 0 OR v.cantidadDePasajeros = :cantidadDePasajeros)
 """)
      fun findViajesFiltradosByConductorId(
-        id: Long,
+        id: String?,
         usernameViajero: String?,
         origen: String?,
         destino: String?,

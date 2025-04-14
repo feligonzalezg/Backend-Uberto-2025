@@ -9,9 +9,9 @@ import java.time.temporal.ChronoUnit
 
 
 data class ViajeDTO(
-    val idViaje: Long,
-    val idViajero: Long,
-    val idConductor: Long,
+    val idViaje: String?,
+    val idViajero: String?,
+    val idConductor: String?,
     var nombre: String,
     val origen: String,
     val destino: String,

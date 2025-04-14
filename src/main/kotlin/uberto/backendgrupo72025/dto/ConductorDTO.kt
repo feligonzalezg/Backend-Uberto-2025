@@ -4,7 +4,7 @@ import uberto.backendgrupo72025.domain.Conductor
 import kotlin.math.roundToInt
 
 data class ConductorDTO(
-    val id: Long,
+    val id: String?,
     val nombreYApellido: String,
     val dominio: String,
     val modelo: String,

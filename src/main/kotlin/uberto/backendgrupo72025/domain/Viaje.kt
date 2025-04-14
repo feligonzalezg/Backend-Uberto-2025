@@ -9,8 +9,8 @@ import java.time.temporal.ChronoUnit
 @Table(name = "viajes")
 class Viaje(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0,
+    @GeneratedValue(strategy = GenerationType.UUID)
+    var id: String = "",
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "viajero_id")
     val viajero: Viajero = Viajero(),

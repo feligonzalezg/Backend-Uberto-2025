@@ -7,8 +7,8 @@ import java.time.LocalDate
 @Table(name = "vehiculos")
 class Vehiculo(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0,
+    @GeneratedValue(strategy = GenerationType.UUID)
+    var id: String = "",
     @Column
     var marca: String = "",
     @Column

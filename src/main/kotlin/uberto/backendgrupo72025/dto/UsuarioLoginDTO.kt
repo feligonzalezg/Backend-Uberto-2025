@@ -9,7 +9,7 @@ data class UsuarioLoginDTO(
 )
 
 data class LoginDTO(
-    val id : Long,
+    val id : String?,
     val esChofer: Boolean
 )
 

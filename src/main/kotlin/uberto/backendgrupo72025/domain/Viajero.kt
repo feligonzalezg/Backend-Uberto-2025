@@ -6,7 +6,7 @@ import jakarta.persistence.*
 @Entity
 @Table(name = "viajeros")
 class Viajero(
-    id: Long = 0,
+    id: String? = null,
     nombre: String="",
     apellido: String="",
     edad: Int=0,

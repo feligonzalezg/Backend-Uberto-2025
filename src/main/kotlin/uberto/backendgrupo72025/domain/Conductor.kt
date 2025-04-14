@@ -3,6 +3,7 @@ package uberto.backendgrupo72025.domain
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import jakarta.persistence.*
+import jakarta.validation.constraints.Min
 
 @Entity
 @Table(name = "conductores")

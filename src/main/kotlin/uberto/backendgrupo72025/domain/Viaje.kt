@@ -2,6 +2,7 @@ package uberto.backendgrupo72025.domain
 
 import com.fasterxml.jackson.annotation.JsonFormat
 import jakarta.persistence.*
+import jakarta.validation.constraints.Min
 import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
@@ -17,9 +18,9 @@ class Viaje(
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "conductor_id")
     val conductor: Conductor = Simple(),
-    @Column
+    @Column(length = 50)
     val origen: String = "",
-    @Column
+    @Column(length = 50)
     val destino: String = "",
     @Column(columnDefinition = "TIMESTAMP(0)")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -36,6 +37,7 @@ class Viaje(
 ) {
     @Column (nullable = false)
     var viajeComentado : Boolean= false
+
     fun viajePendiente() = fechaFin.isAfter(LocalDateTime.now())
 
     fun viajeFinalizado()= !viajePendiente()

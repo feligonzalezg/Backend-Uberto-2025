@@ -2,6 +2,7 @@ package uberto.backendgrupo72025.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import jakarta.persistence.*
+import jakarta.validation.constraints.Min
 
 @Entity
 @Table(name = "viajeros")
@@ -16,7 +17,7 @@ class Viajero(
     esChofer: Boolean=false,
     foto : String="",
     @Column
-    var saldo: Double=0.0,
+    var saldo: Double = 0.0,
     @ManyToMany(fetch = FetchType.LAZY)
     @JsonIgnore
     @JoinTable(

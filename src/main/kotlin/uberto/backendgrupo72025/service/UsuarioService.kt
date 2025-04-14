@@ -185,7 +185,9 @@ class UsuarioService(
     fun calificarViaje(idUsuario: Long, calificacion: CalificacionDTO): ComentarioDTO {
         val viaje = viajeService.getViajeById(calificacion.idViaje)
         val comentario = comentarioService.calificar(calificacion, viaje, idUsuario)
+        viaje.viajeComentado=true
         actualizarCalificacion(viaje.conductor)
+        viajeService.save(viaje)
         return comentario.toComentarioDTO(viaje.conductor.nombreYApellido(), viaje.conductor.foto)
     }
 
@@ -193,7 +195,10 @@ class UsuarioService(
     fun eliminarComentario(idViajero: Long, idComentario: Long) {
         val comentario = comentarioService.getComentarioById(idComentario)
         comentarioService.eliminarComentario(idViajero, comentario)
+        val viaje=comentario.viaje
+        viaje.viajeComentado=false
         actualizarCalificacion(comentario.viaje.conductor)
+        viajeService.save(viaje)
     }
 
     private fun actualizarCalificacion(conductor: Conductor) {

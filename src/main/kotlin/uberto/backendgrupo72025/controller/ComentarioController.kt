@@ -23,25 +23,25 @@ class ComentarioController(
     @GetMapping("/comentario/{id}")
     @Operation(summary = "Devuelve los comentarios por usuario")
     fun getComentariosPorUsuario(
-        @PathVariable id: Long,
+        @PathVariable id: String,
         @RequestParam esChofer: Boolean
     ) = comentarioService.getComentarios(id, esChofer)
 
     @DeleteMapping("eliminarComentario/{idUsuario}/{idComentario}")
     @Operation(summary = "Elimina un comentario realizado")
     fun eliminarComentario(
-        @PathVariable idUsuario: Long,
-        @PathVariable idComentario: Long
+        @PathVariable idUsuario: String,
+        @PathVariable idComentario: String
     ) = usuarioService.eliminarComentario(idUsuario, idComentario)
 
     @GetMapping("/puntaje/{id}")
     @Operation(summary = "Devuelve devuelve el puntaje por chofer")
-    fun getPuntajePorChofer(@PathVariable id: Long) = comentarioService.getCalificacionByConductor(id)
+    fun getPuntajePorChofer(@PathVariable id: String) = comentarioService.getCalificacionByConductor(id)
 
     @PostMapping("/calificar/{idUsuario}")
     @Operation(summary = "Calificar un viaje realizado")
     fun calificarViaje(
-        @PathVariable idUsuario: Long,
+        @PathVariable idUsuario: String,
         @RequestBody calificacion: CalificacionDTO
     ) = usuarioService.calificarViaje(idUsuario, calificacion)
 }

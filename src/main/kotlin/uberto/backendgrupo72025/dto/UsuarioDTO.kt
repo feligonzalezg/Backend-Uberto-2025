@@ -1,7 +1,7 @@
 package uberto.backendgrupo72025.dto
 
 data class UsuarioDTO(
-    val id: Long,
+    val id: String?,
     val nombre: String,
     val apellido: String,
     val esChofer: Boolean,

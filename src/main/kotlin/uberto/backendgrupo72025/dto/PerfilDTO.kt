@@ -3,7 +3,7 @@ package uberto.backendgrupo72025.dto
 import uberto.backendgrupo72025.domain.*
 
 interface PerfilDTO {
-    val id: Long
+    val id: String?
     val nombre: String
     val apellido: String
     val esChofer: Boolean
@@ -11,7 +11,7 @@ interface PerfilDTO {
 }
 
 data class PerfilViajeroDTO(
-    override val id: Long,
+    override val id: String?,
     override val nombre: String,
     override val apellido: String,
     override val esChofer: Boolean,
@@ -33,7 +33,7 @@ fun Viajero.toPerfilDTO() = PerfilViajeroDTO(
 )
 
 data class PerfilChoferDTO(
-    override val id: Long,
+    override val id: String?,
     override val nombre: String,
     override val apellido: String,
     override val esChofer: Boolean,
@@ -62,7 +62,7 @@ fun Conductor.toPerfilDTO() = PerfilChoferDTO(
 data class AmigoDTO(
     val nombreYApellido : String,
     val username: String,
-    val id: Long,
+    val id: String?,
     val foto: String
 )
 

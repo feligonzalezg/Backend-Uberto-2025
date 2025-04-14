@@ -17,9 +17,9 @@ class ViajeService(
 
     fun getAllViajes() = viajeRepository.findAll()
 
-    fun getViajeById(idViaje: Long) = viajeRepository.findById(idViaje).orElseThrow { NotFoundException("No se encontró el viaje con id $idViaje") }
+    fun getViajeById(idViaje: String?) = idViaje?.let { viajeRepository.findById(it).orElseThrow { NotFoundException("No se encontró el viaje con id $idViaje") } }!!
 
-    fun getViajesByUsuarioId(idUsuario: Long) = viajeRepository.findByViajeroIdOrConductorId(idUsuario)
+    fun getViajesByUsuarioId(idUsuario: String?) = viajeRepository.findByViajeroIdOrConductorId(idUsuario)
 
     fun crearViaje(viajeDTO: ViajeDTO, viajero: Viajero, conductor: Conductor): Viaje {
         val viaje = viajeDTO.toViaje(viajero, conductor)
@@ -27,7 +27,7 @@ class ViajeService(
         return viaje
     }
 
-    fun getViajesRealizadosByUsuario(idUsuario: Long, esChofer: Boolean): ViajesCompletadosDTO {
+    fun getViajesRealizadosByUsuario(idUsuario: String?, esChofer: Boolean): ViajesCompletadosDTO {
         lateinit var viajesRealizadosDTO: List<ViajeDTO>
         lateinit var viajesRealizados: List<Viaje>
         var totalFacturado = 0.0
@@ -42,11 +42,11 @@ class ViajeService(
         return ViajesCompletadosDTO(viajesRealizadosDTO, totalFacturado)
     }
 
-    fun getTotalFacturado(idUsuario: Long) = viajeRepository.sumTotalFacturadoByChoferId(idUsuario)
+    fun getTotalFacturado(idUsuario: String?) = viajeRepository.sumTotalFacturadoByChoferId(idUsuario)
 
     fun viajeCalificable(viaje: Viaje) = !viaje.viajePendiente() && !viaje.viajeComentado
 
-    fun getViajesPendientesByUsuario(idUsuario: Long, esChofer: Boolean): List<ViajeDTO> {
+    fun getViajesPendientesByUsuario(idUsuario: String?, esChofer: Boolean): List<ViajeDTO> {
         lateinit var viajesPendientes: List<Viaje>
         if (esChofer) {
             viajesPendientes = viajeRepository.findByConductorIdAndFechaFinAfter(idUsuario)
@@ -57,7 +57,7 @@ class ViajeService(
         }
     }
 
-    fun getViajesConductorFiltrados(idConductor: Long, filtroDTO: FiltroDTO): List<ViajeDTO> {
+    fun getViajesConductorFiltrados(idConductor: String?, filtroDTO: FiltroDTO): List<ViajeDTO> {
       return viajeRepository.findViajesFiltradosByConductorId(idConductor,
           filtroDTO.usernameViajero, filtroDTO.origen, filtroDTO.destino, filtroDTO.cantidadDePasajeros)
             .map { it.toViajeDTO(it.viajero.nombreYApellido(), it.viajero.foto, viajeCalificable(it)) }

@@ -1,23 +1,24 @@
 package uberto.backendgrupo72025.domain
 
 import jakarta.persistence.*
+import jakarta.validation.constraints.Min
 import java.time.LocalDate
 
 @Entity
 @Table(name = "vehiculos")
 class Vehiculo(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long = 0,
-    @Column
+    @GeneratedValue(strategy = GenerationType.UUID)
+    var id: String = "",
+    @Column(length = 20)
     var marca: String = "",
-    @Column
+    @Column(length = 20)
     var modelo : String = "",
-    @Column
+    @Column(length = 7)
     var dominio: String = "",
-    @Column
+    @Column(length = 4)
     var anio: Int = 0,
-    @Column
+    @Column(nullable = false)
     var active: Boolean = true
 ) {
 

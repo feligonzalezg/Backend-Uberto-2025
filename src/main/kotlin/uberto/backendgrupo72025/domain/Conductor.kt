@@ -3,6 +3,7 @@ package uberto.backendgrupo72025.domain
 import com.fasterxml.jackson.annotation.JsonSubTypes
 import com.fasterxml.jackson.annotation.JsonTypeInfo
 import jakarta.persistence.*
+import jakarta.validation.constraints.Min
 
 @Entity
 @Table(name = "conductores")
@@ -16,7 +17,7 @@ import jakarta.persistence.*
 @Inheritance(strategy= InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo_de_conductor", discriminatorType = DiscriminatorType.STRING)
 abstract class Conductor(
-    id: Long = 0,
+    id: String? = null,
     nombre: String = "",
     apellido: String = "",
     edad: Int = 0,

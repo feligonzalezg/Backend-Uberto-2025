@@ -1,31 +1,32 @@
 package uberto.backendgrupo72025.domain
 
-import com.fasterxml.jackson.annotation.JsonSubTypes
-import com.fasterxml.jackson.annotation.JsonTypeInfo
 import jakarta.persistence.*
+import jakarta.validation.constraints.Max
+import jakarta.validation.constraints.Min
+import jakarta.validation.constraints.NotNull
 import uberto.backendgrupo72025.dto.UsuarioLoginDTO
 
 @MappedSuperclass
 abstract class Usuario(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long= 0,
-    @Column
-    var nombre: String="",
-    @Column
-    var apellido: String="",
-    @Column
-    var edad: Int= 0,
+    @GeneratedValue(strategy = GenerationType.UUID)
+    var id: String? = null,
+    @Column(length = 25)
+    var nombre: String = "",
+    @Column(length = 25)
+    var apellido: String = "",
+    @Column(length = 2)
+    var edad: Int = 0,
     @Column(unique = true)
-    val username: String="",
+    val username: String = "",
+    @Column(length = 20)
+    val contrasenia: String = "",
+    @Column(length = 10)
+    var telefono: Int = 0,
+    @Column(nullable = false)
+    val esChofer: Boolean = false,
     @Column
-    val contrasenia: String="",
-    @Column
-    var telefono: Int= 0,
-    @Column
-    val esChofer : Boolean = false,
-    @Column
-    var foto : String = "1"
+    var foto: String = ""
 ) {
 
     fun nombreYApellido() = "$nombre $apellido"

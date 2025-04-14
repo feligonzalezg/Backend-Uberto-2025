@@ -20,21 +20,21 @@ class ViajeController(
     @PostMapping("/filtrar/{id}")
     @Operation(summary = "Devuelve los viajes pendientes filtrados para el home chofer")
     fun getViajesFiltrados(
-        @PathVariable id: Long,
+        @PathVariable id: String,
         @RequestBody filtroDTO: FiltroDTO
     ) = viajeService.getViajesConductorFiltrados(id, filtroDTO)
 
     @GetMapping("/viajesRealizados/{idUsuario}")
     @Operation(summary = "Devuelve los viajes realizados")
     fun getViajesRealizadosPorUsuario(
-        @PathVariable idUsuario: Long,
+        @PathVariable idUsuario: String,
         @RequestParam esChofer: Boolean
     ) = viajeService.getViajesRealizadosByUsuario(idUsuario, esChofer)
 
     @GetMapping("/viajesPendientes/{idUsuario}")
     @Operation(summary = "Devuelve los viajes Pendientes")
     fun getViajesPendientesPorUsuario(
-        @PathVariable idUsuario: Long,
+        @PathVariable idUsuario: String,
         @RequestParam esChofer: Boolean
     ) = viajeService.getViajesPendientesByUsuario(idUsuario, esChofer)
 

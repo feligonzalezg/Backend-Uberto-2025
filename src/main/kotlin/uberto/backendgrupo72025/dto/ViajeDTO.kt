@@ -9,7 +9,7 @@ import java.time.temporal.ChronoUnit
 
 
 data class ViajeDTO(
-    val id: Long,
+    val idViaje: Long,
     val idViajero: Long,
     val idConductor: Long,
     var nombre: String,
@@ -42,7 +42,7 @@ fun ViajeDTO.toViaje(viajero: Viajero, conductor: Conductor) = Viaje(
 )
 
 fun Viaje.toViajeDTO(nombre: String, foto : String, puedeCalificar: Boolean) = ViajeDTO(
-    id = id,
+    idViaje = id,
     idViajero = viajero.id,
     idConductor = conductor.id,
     nombre = nombre,

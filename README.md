@@ -1,9 +1,21 @@
-# backend-2025-grupo7
+1)Conocer los viajes que reservó un determinado usuario en el corriente año. (Braian)
 
-> [!NOTE]  
-> Como trabajar el random con la busqueda de para viaje antes de confirmar, en caso de no generar el viaje donde quedaria guardado.
-> 
-> Dividir los repos por clase hijas
-> 
-> Consultar el template method de validacion de los tipos de vehiculos
->
+vista
+
+2)Llevar un control de las veces que un usuario modifica su saldo, de manera de saber:  (Mary)
+    a) la fecha en la que se modificó, 
+    b) el nuevo saldo y el anterior saldo.
+
+trigger
+
+3)saber qué usuarios tienen más de N reservas. (Gaston)
+
+stored procedures
+
+4)Evitar que el precio base de un chofer tome un valor nulo en la base (por fuera de la interfaz de usuario). (feli)
+
+constraints
+
+5)Listar los choferes que tengan más de 2 viajes realizados. (Juan)
+
+vista

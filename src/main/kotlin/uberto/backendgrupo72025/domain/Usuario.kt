@@ -1,20 +1,33 @@
 package uberto.backendgrupo72025.domain
 
+import jakarta.persistence.*
+import jakarta.validation.constraints.Max
+import jakarta.validation.constraints.Min
+import jakarta.validation.constraints.NotNull
 import uberto.backendgrupo72025.dto.UsuarioLoginDTO
-import uberto.backendgrupo72025.repository.ItemRepo
 
+@MappedSuperclass
 abstract class Usuario(
-//    var id: Long?= 0,
-    var nombre: String,
-    var apellido: String,
-    var edad: Int,
-    val username: String,
-    val contrasenia: String,
-    var telefono: Int,
-    val esChofer : Boolean = false,
-    var foto : String = "1"
-): ItemRepo {
-    override var id: Long = -1
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    var id: String? = null,
+    @Column(length = 25)
+    var nombre: String = "",
+    @Column(length = 25)
+    var apellido: String = "",
+    @Column(length = 2)
+    var edad: Int = 0,
+    @Column(unique = true)
+    val username: String = "",
+    @Column(length = 20)
+    val contrasenia: String = "",
+    @Column(length = 10)
+    var telefono: Int = 0,
+    @Column(nullable = false)
+    val esChofer: Boolean = false,
+    @Column
+    var foto: String = ""
+) {
 
     fun nombreYApellido() = "$nombre $apellido"
 

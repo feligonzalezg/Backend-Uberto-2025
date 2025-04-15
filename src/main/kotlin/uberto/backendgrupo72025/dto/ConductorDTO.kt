@@ -4,7 +4,7 @@ import uberto.backendgrupo72025.domain.Conductor
 import kotlin.math.roundToInt
 
 data class ConductorDTO(
-    val id: Long,
+    val id: String?,
     val nombreYApellido: String,
     val dominio: String,
     val modelo: String,
@@ -16,14 +16,14 @@ data class ConductorDTO(
     val esChofer: Boolean
 )
 
-fun Conductor.toConductorDTO(cantidadDePasajeros: Int, duracion: Int, calificacion: Double) = ConductorDTO(
+fun Conductor.toConductorDTO(cantidadDePasajeros: Int, duracion: Int) = ConductorDTO(
         id = id,
         nombreYApellido = nombreYApellido(),
         dominio = vehiculo.dominio,
         marca = vehiculo.marca,
         modelo = vehiculo.modelo,
         anio = vehiculo.anio,
-        calificacion = ((calificacion* 10.0).roundToInt() / 10.0),
+        calificacion = calificacion,
         importe = importeViaje(cantidadDePasajeros, duracion),
         foto = foto,
         esChofer = esChofer

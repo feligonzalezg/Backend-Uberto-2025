@@ -1,26 +1,25 @@
 package uberto.backendgrupo72025.domain
 
-import uberto.backendgrupo72025.repository.ItemRepo
-
+import com.fasterxml.jackson.annotation.JsonFormat
+import jakarta.persistence.*
+import jakarta.validation.constraints.Max
+import jakarta.validation.constraints.Min
 import java.time.LocalDate
 
-class Comentario(
-    val viaje: Viaje,
-    var estrellas: Int,
-    var mensaje: String,
+@Entity
+@Table(name = "comentarios")
+data class Comentario(
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    var id: String = "",
+    @ManyToOne(fetch = FetchType.LAZY)
+    val viaje: Viaje = Viaje(),
+    @Column
+    var estrellas: Int = 0,
+    @Column
+    var mensaje: String = "",
+    @Column
     var fecha : LocalDate = LocalDate.now(),
-): ItemRepo {
-    override var id: Long = -1
-
-    fun modificarComentario(nuevoMensaje: String) {
-        if (nuevoMensaje.isBlank()) throw BadRequestException("El comentario no puede estar vacio")
-        mensaje = nuevoMensaje
-        fecha = LocalDate.now()
-    }
-
-    fun modificarPuntaje(nuevoPuntaje: Int) {
-        if (nuevoPuntaje < 0 || nuevoPuntaje > 5) throw BadRequestException("El comentario no puede estar vacio")
-        estrellas = nuevoPuntaje
-        fecha = LocalDate.now()
-    }
-}
+    @Column(nullable = false)
+    var active: Boolean = true
+)

@@ -8,14 +8,8 @@ data class UsuarioLoginDTO(
     val contrasenia : String,
 )
 
-fun Usuario.toDTO() = UsuarioLoginDTO(
-    usuario = username,
-    contrasenia =  contrasenia,
-
-)
-
 data class LoginDTO(
-    val id : Long,
+    val id : String?,
     val esChofer: Boolean
 )
 

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import uberto.backendgrupo72025.dto.*
 import uberto.backendgrupo72025.domain.Conductor
+import uberto.backendgrupo72025.domain.NotFoundException
 import uberto.backendgrupo72025.domain.Viaje
 import uberto.backendgrupo72025.domain.Viajero
 import uberto.backendgrupo72025.repository.ViajeRepository
@@ -16,15 +17,9 @@ class ViajeService(
 
     fun getAllViajes() = viajeRepository.findAll()
 
-    fun getViajeById(idViaje: Long) = viajeRepository.findById(idViaje)
+    fun getViajeById(idViaje: String?) = idViaje?.let { viajeRepository.findById(it).orElseThrow { NotFoundException("No se encontró el viaje con id $idViaje") } }!!
 
-    fun getViajesByViajeroId(idViajero: Long) = getAllViajes().filter { it.viajero.id == idViajero }
-
-    fun getViajesByConductorId(idConductor: Long) = getAllViajes().filter { it.conductor.id == idConductor }
-
-    fun getViajesPendientes(viajes: List<Viaje>) = viajes.filter { it.viajePendiente() }
-
-    fun getViajesRealizados(viajes: List<Viaje>) = viajes.filter { it.viajeFinalizado() }
+    fun getViajesByUsuarioId(idUsuario: String?) = viajeRepository.findByViajeroIdOrConductorId(idUsuario)
 
     fun crearViaje(viajeDTO: ViajeDTO, viajero: Viajero, conductor: Conductor): Viaje {
         val viaje = viajeDTO.toViaje(viajero, conductor)
@@ -32,46 +27,43 @@ class ViajeService(
         return viaje
     }
 
-    fun updateViaje(viaje: Viaje) {
-        viajeRepository.update(viaje)
-    }
-
-    fun getViajesRealizadosByUsuario(idUsuario: Long, esChofer: Boolean): ViajesCompletadosDTO {
-        lateinit var viajesRealizados: List<ViajeDTO>
+    fun getViajesRealizadosByUsuario(idUsuario: String?, esChofer: Boolean): ViajesCompletadosDTO {
+        lateinit var viajesRealizadosDTO: List<ViajeDTO>
+        lateinit var viajesRealizados: List<Viaje>
         var totalFacturado = 0.0
          if (esChofer) {
-             viajesRealizados = getViajesRealizados(getViajesByConductorId(idUsuario)).map { it.toViajeDTO(it.viajero.nombreYApellido(),it.viajero.foto, viajeCalificable(it)) }
-             totalFacturado = viajesRealizados.sumOf { it.importe }
+             viajesRealizados = viajeRepository.findByConductorIdAndFechaFinBefore(idUsuario)
+             viajesRealizadosDTO = viajesRealizados.map { it.toViajeDTO(it.viajero.nombreYApellido(),it.viajero.foto, viajeCalificable(it)) }
+             totalFacturado = getTotalFacturado(idUsuario)
         } else {
-             viajesRealizados = getViajesRealizados(getViajesByViajeroId(idUsuario)).map { it.toViajeDTO(it.conductor.nombreYApellido(), it.conductor.foto, viajeCalificable(it)) }
+             viajesRealizados = viajeRepository.findByViajeroIdAndFechaFinBefore(idUsuario)
+             viajesRealizadosDTO = viajesRealizados.map { it.toViajeDTO(it.conductor.nombreYApellido(), it.conductor.foto, viajeCalificable(it)) }
         }
-        return ViajesCompletadosDTO(viajesRealizados, totalFacturado)
+        return ViajesCompletadosDTO(viajesRealizadosDTO, totalFacturado)
     }
 
-    fun viajeCalificable(viaje: Viaje) = !viaje.viajePendiente() && !comentarioService.viajeCalificado(viaje.id)
+    fun getTotalFacturado(idUsuario: String?) = viajeRepository.sumTotalFacturadoByChoferId(idUsuario)
 
-    fun getViajesPendientesByUsuario(idUsuario: Long, esChofer: Boolean): List<ViajeDTO> {
-        return if (esChofer) {
-            getViajesPendientes(getViajesByConductorId(idUsuario)).map { it.toViajeDTO(it.viajero.nombreYApellido(), it.viajero.foto, viajeCalificable(it)) }
+    fun viajeCalificable(viaje: Viaje) = !viaje.viajePendiente() && !viaje.viajeComentado
+
+    fun getViajesPendientesByUsuario(idUsuario: String?, esChofer: Boolean): List<ViajeDTO> {
+        lateinit var viajesPendientes: List<Viaje>
+        if (esChofer) {
+            viajesPendientes = viajeRepository.findByConductorIdAndFechaFinAfter(idUsuario)
+            return viajesPendientes.map { it.toViajeDTO(it.viajero.nombreYApellido(), it.viajero.foto, viajeCalificable(it)) }
         } else {
-            getViajesPendientes(getViajesByViajeroId(idUsuario)).map { it.toViajeDTO(it.conductor.nombreYApellido(),it.conductor.foto, viajeCalificable(it)) }
+            viajesPendientes = viajeRepository.findByViajeroIdAndFechaFinAfter(idUsuario)
+            return viajesPendientes.map { it.toViajeDTO(it.conductor.nombreYApellido(),it.conductor.foto, viajeCalificable(it)) }
         }
     }
 
-    fun getViajesConductorFiltrados(idConductor: Long, filtroDTO: FiltroDTO): List<ViajeDTO> {
-        val viajesPendientes = getViajesPendientes(getViajesByConductorId(idConductor))
-        return viajesPendientes.filter {
-            (filtroDTO.usernameViajero.isBlank() || it.viajero.username.contains(filtroDTO.usernameViajero, ignoreCase = true)) &&
-                    (filtroDTO.origen.isBlank() || it.origen.contains(filtroDTO.origen, ignoreCase = true)) &&
-                    (filtroDTO.destino.isBlank() || it.destino.contains(filtroDTO.destino, ignoreCase = true)) &&
-                    (filtroDTO.cantidadDePasajeros == 0 || it.cantidadDePasajeros == filtroDTO.cantidadDePasajeros)
-        }.map { it.toViajeDTO(it.viajero.nombreYApellido(), it.viajero.foto, viajeCalificable(it)) }
+    fun getViajesConductorFiltrados(idConductor: String?, filtroDTO: FiltroDTO): List<ViajeDTO> {
+      return viajeRepository.findViajesFiltradosByConductorId(idConductor,
+          filtroDTO.usernameViajero, filtroDTO.origen, filtroDTO.destino, filtroDTO.cantidadDePasajeros)
+            .map { it.toViajeDTO(it.viajero.nombreYApellido(), it.viajero.foto, viajeCalificable(it)) }
     }
 
-    @Transactional
-    fun calificarViaje(idUsuario: Long, calificacion: CalificacionDTO): ComentarioDTO {
-        val viaje = getViajeById(calificacion.idViaje)
-        val comentario = comentarioService.calificar(calificacion, viaje, idUsuario)
-        return comentario.toComentarioDTO(viaje.conductor.nombreYApellido(), viaje.conductor.foto)
+    fun save(viaje:Viaje){
+        viajeRepository.save(viaje)
     }
 }

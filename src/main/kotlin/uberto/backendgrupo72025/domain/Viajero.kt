@@ -1,17 +1,32 @@
 package uberto.backendgrupo72025.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+import jakarta.persistence.*
+import jakarta.validation.constraints.Min
+
+@Entity
+@Table(name = "viajeros")
 class Viajero(
-    nombre: String,
-    apellido: String,
-    edad: Int,
-    username: String,
-    contrasenia: String,
-    telefono: Int,
-    esChofer: Boolean,
-    foto : String,
-    var saldo: Double,
+    id: String? = null,
+    nombre: String="",
+    apellido: String="",
+    edad: Int=0,
+    username: String="",
+    contrasenia: String="",
+    telefono: Int=0,
+    esChofer: Boolean=false,
+    foto : String="",
+    @Column
+    var saldo: Double = 0.0,
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
+    @JoinTable(
+        name = "amistades",
+        joinColumns = [JoinColumn(name = "viajero_id")],
+        inverseJoinColumns = [JoinColumn(name = "amigo_id")]
+    )
     val amigos: MutableList<Viajero> = mutableListOf()
-) : Usuario(nombre, apellido, edad, username, contrasenia, telefono, esChofer,foto) {
+) : Usuario(id,nombre, apellido, edad, username, contrasenia, telefono, esChofer,foto) {
 
 
     override fun validacionesPorUsuario() {
@@ -59,3 +74,4 @@ class Viajero(
 
     fun descontarSaldo(costoDelViaje: Double) { saldo -= costoDelViaje }
 }
+

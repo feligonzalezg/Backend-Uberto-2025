@@ -1,16 +1,26 @@
 package uberto.backendgrupo72025.domain
 
-import uberto.backendgrupo72025.repository.ItemRepo
+import jakarta.persistence.*
+import jakarta.validation.constraints.Min
 import java.time.LocalDate
 
+@Entity
+@Table(name = "vehiculos")
 class Vehiculo(
-//    var id: Long? = 0,
-    var marca: String,
-    var modelo : String,
-    var dominio: String,
-    var anio: Int,
-) : ItemRepo {
-    override var id: Long = -1
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    var id: String = "",
+    @Column(length = 20)
+    var marca: String = "",
+    @Column(length = 20)
+    var modelo : String = "",
+    @Column(length = 7)
+    var dominio: String = "",
+    @Column(length = 4)
+    var anio: Int = 0,
+    @Column(nullable = false)
+    var active: Boolean = true
+) {
 
     fun antiguedad(): Int = LocalDate.now().year - anio
 
